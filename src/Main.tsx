@@ -1,15 +1,19 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { registerRootComponent } from "expo";
 
+import DatePicker from "component/DatePicker";
+
 export default registerRootComponent(() => (
-  <View
-    style={{
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-    }}
-  >
-    <Text>Hello, World!</Text>
+  <View style={style.center}>
+    <DatePicker onCancel={() => {}} onSubmit={() => {}} />
   </View>
 ));
+
+const style = StyleSheet.create({
+  center: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
