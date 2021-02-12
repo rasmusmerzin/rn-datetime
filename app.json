@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "Joinem",
+    "slug": "joinem",
+    "version": "0.1.0",
+    "privacy": "hidden",
+    "orientation": "portrait",
+    "entryPoint": "./src/Main.tsx"
+  }
+}

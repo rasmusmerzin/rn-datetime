@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "strict": true,
+
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "jsx": "react-native",
+    "lib": ["dom", "esnext"],
+    "downlevelIteration": true,
+
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "baseUrl": "./src",
+
+    "skipLibCheck": true,
+    "noEmit": true
+  }
+}
