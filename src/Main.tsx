@@ -1,38 +1,81 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Modal, StyleSheet, Text, View } from "react-native";
 import { registerRootComponent } from "expo";
 
-import { DatePicker, NaiveDate } from "./datetime";
+import { DatePicker, TimePicker, NaiveDate, NaiveTime } from "./datetime";
 
 export default registerRootComponent(() => {
   const [date, setDate] = useState(new NaiveDate());
+  const [time, setTime] = useState(
+    new NaiveTime(
+      new Date().getHours(),
+      (Math.ceil(new Date().getMinutes() / 5) * 5) % 60
+    )
+  );
   const [datePickerVisibility, setDatePickerVisibility] = useState(false);
+  const [timePickerVisibility, setTimePickerVisibility] = useState(false);
+
   return (
     <>
-      <View style={style.main}>
-        <Text style={style.date} onPress={() => setDatePickerVisibility(true)}>
-          {date.toLocalDate().toDateString()}
-        </Text>
-        <Text style={style.time}>12:00</Text>
+      <View style={style.center}>
+        <View style={style.row}>
+          <Text
+            style={style.date}
+            onPress={() => setDatePickerVisibility(true)}
+          >
+            {date.toLocalDate().toDateString()}
+          </Text>
+          <Text
+            style={style.time}
+            onPress={() => setTimePickerVisibility(true)}
+          >
+            {time.toString()}
+          </Text>
+        </View>
+        <Text>{date.toLocalDate(time).toISOString()}</Text>
       </View>
-      <DatePicker
+      <Modal
+        animationType="fade"
+        transparent={true}
         visible={datePickerVisibility}
-        onCancel={() => setDatePickerVisibility(false)}
-        onSubmit={(date) => {
-          setDate(date);
-          setDatePickerVisibility(false);
-        }}
-      />
+        onRequestClose={() => setDatePickerVisibility(false)}
+      >
+        <DatePicker
+          value={date}
+          onCancel={() => setDatePickerVisibility(false)}
+          onSubmit={(date) => {
+            setDate(date);
+            setDatePickerVisibility(false);
+          }}
+        />
+      </Modal>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={timePickerVisibility}
+        onRequestClose={() => setTimePickerVisibility(false)}
+      >
+        <TimePicker
+          value={time}
+          onCancel={() => setTimePickerVisibility(false)}
+          onSubmit={(time) => {
+            setTime(time);
+            setTimePickerVisibility(false);
+          }}
+        />
+      </Modal>
     </>
   );
 });
 
 const style = StyleSheet.create({
-  main: {
+  center: {
     flex: 1,
-    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+  },
+  row: {
+    flexDirection: "row",
   },
   date: {
     paddingRight: 10,

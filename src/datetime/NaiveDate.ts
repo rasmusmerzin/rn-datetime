@@ -1,3 +1,5 @@
+import NaiveTime from "./NaiveTime";
+
 export default class NaiveDate {
   year: number;
   // 0 through 11
@@ -5,15 +7,15 @@ export default class NaiveDate {
   day: number;
 
   constructor(year?: number, month = 0, day = 1) {
-    if (year) {
-      this.year = year;
-      this.month = month;
-      this.day = day;
-    } else {
+    if (year === undefined) {
       const date = new Date();
       this.year = date.getFullYear();
       this.month = date.getMonth();
       this.day = date.getDate();
+    } else {
+      this.year = year;
+      this.month = month;
+      this.day = day;
     }
   }
 
@@ -31,7 +33,12 @@ export default class NaiveDate {
     return this.toString();
   }
 
-  toLocalDate() {
-    return new Date(this.toString());
+  toLocalDate(time?: NaiveTime) {
+    const date = new Date(this.toString());
+    if (time) {
+      date.setHours(time.hour);
+      date.setMinutes(time.minute);
+    }
+    return date;
   }
 }
