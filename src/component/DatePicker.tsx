@@ -20,6 +20,7 @@ const UNIT = 44;
 const COLORS = {
   primary: "#4af",
 };
+const DAY_MS = 1000 * 60 * 60 * 24;
 
 export class NaiveDate {
   year: number;
@@ -67,16 +68,17 @@ interface Props {
 
 const getMonthWeeks = (year: number, month: number): number[][] => {
   const date = new NaiveDate(year, month).toLocalDate();
+  const days =
+    (new NaiveDate(year, month + 1).toLocalDate().getTime() - date.getTime()) /
+    DAY_MS;
+  console.log(days);
   const weeks: number[][] = [[]];
   for (let i = 1; i < date.getDay(); i++) weeks[0]?.push(0);
-  for (let i = 0; i < 31; i++) {
+  for (let day = 1; day <= days; day++) {
     let lastWeek = weeks[weeks.length - 1];
     if (!lastWeek || lastWeek.length >= 7) weeks.push([]);
     lastWeek = weeks[weeks.length - 1];
-    const day = date.getDate();
     lastWeek?.push(day);
-    date.setDate(day + 1);
-    if (date.getMonth() !== month) break;
   }
   const lastWeek = weeks[weeks.length - 1];
   if (lastWeek) {
