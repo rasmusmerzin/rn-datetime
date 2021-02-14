@@ -8,6 +8,7 @@ import {
   MINUTES,
   COLORS,
   UNIT,
+  BASE_STYLE,
 } from "./constant";
 
 interface ModeProps {
@@ -25,7 +26,7 @@ const Minutes = ({ selected, onChange }: ModeProps) => (
             style.clockItem,
             // @ts-ignore
             style["clockOuter" + i],
-            selected === m && style.selected,
+            selected === m && BASE_STYLE.selected,
           ]}
           onPress={() => onChange(m)}
         >
@@ -46,7 +47,7 @@ const Hours = ({ selected, onChange }: ModeProps) => (
             style.clockItem,
             // @ts-ignore
             style["clockOuter" + i],
-            selected === h && style.selected,
+            selected === h && BASE_STYLE.selected,
           ]}
           onPress={() => onChange(h)}
         >
@@ -62,7 +63,7 @@ const Hours = ({ selected, onChange }: ModeProps) => (
             style.clockItem,
             // @ts-ignore
             style["clockInner" + i],
-            selected === h && style.selected,
+            selected === h && BASE_STYLE.selected,
           ]}
           onPress={() => onChange(h)}
         >
@@ -89,49 +90,54 @@ export default ({ value, onSubmit, onCancel }: Props) => {
   const [mode, setMode] = useState(Mode.Hour);
 
   return (
-    <View style={style.background}>
-      <View style={style.window}>
-        <View style={style.title}>
-          <Text
-            style={[style.titleText, mode === Mode.Hour && style.selectedTitle]}
-            onPress={() => setMode(Mode.Hour)}
-          >
-            {String(time.hour).padStart(2, "0")}
-          </Text>
-          <Text style={style.titleText}>:</Text>
-          <Text
-            style={[
-              style.titleText,
-              mode === Mode.Minute && style.selectedTitle,
-            ]}
-            onPress={() => setMode(Mode.Minute)}
-          >
-            {String(time.minute).padStart(2, "0")}
-          </Text>
+    <View style={BASE_STYLE.background}>
+      <View style={BASE_STYLE.window}>
+        <View style={style.split}>
+          <View style={style.title}>
+            <Text
+              style={[
+                style.titleText,
+                mode === Mode.Hour && style.selectedTitle,
+              ]}
+              onPress={() => setMode(Mode.Hour)}
+            >
+              {String(time.hour).padStart(2, "0")}
+            </Text>
+            <Text style={style.titleText}>:</Text>
+            <Text
+              style={[
+                style.titleText,
+                mode === Mode.Minute && style.selectedTitle,
+              ]}
+              onPress={() => setMode(Mode.Minute)}
+            >
+              {String(time.minute).padStart(2, "0")}
+            </Text>
+          </View>
+
+          <View style={style.clockCircle}>
+            {mode === Mode.Hour ? (
+              <Hours
+                selected={time.hour}
+                onChange={(val) => {
+                  setMode(Mode.Minute);
+                  setTime(new NaiveTime(val, time.minute));
+                }}
+              />
+            ) : (
+              <Minutes
+                selected={time.minute}
+                onChange={(val) => setTime(new NaiveTime(time.hour, val))}
+              />
+            )}
+          </View>
         </View>
 
-        <View style={style.clockCircle}>
-          {mode === Mode.Hour ? (
-            <Hours
-              selected={time.hour}
-              onChange={(val) => {
-                setMode(Mode.Minute);
-                setTime(new NaiveTime(val, time.minute));
-              }}
-            />
-          ) : (
-            <Minutes
-              selected={time.minute}
-              onChange={(val) => setTime(new NaiveTime(time.hour, val))}
-            />
-          )}
-        </View>
-
-        <View style={style.submitRow}>
-          <Text style={style.submitRowItem} onPress={() => onSubmit(time)}>
+        <View style={BASE_STYLE.submitRow}>
+          <Text style={BASE_STYLE.submitRowItem} onPress={() => onSubmit(time)}>
             OK
           </Text>
-          <Text style={style.submitRowItem} onPress={onCancel}>
+          <Text style={BASE_STYLE.submitRowItem} onPress={onCancel}>
             Cancel
           </Text>
         </View>
@@ -141,11 +147,21 @@ export default ({ value, onSubmit, onCancel }: Props) => {
 };
 
 const CLOCK_DIAMETER = UNIT * 6.4;
+const TITLE_HEIGHT = UNIT * 2;
 
 const style = StyleSheet.create({
+  split: {
+    flexWrap: "wrap",
+    maxHeight: CLOCK_DIAMETER + UNIT + TITLE_HEIGHT,
+    alignItems: "center",
+  },
   title: {
+    flex: 1,
+    minHeight: TITLE_HEIGHT,
+    maxHeight: CLOCK_DIAMETER + UNIT,
+    marginRight: 20,
     flexDirection: "row",
-    justifyContent: "center",
+    alignItems: "center",
   },
   titleText: {
     color: COLORS.shadow,
@@ -193,35 +209,4 @@ const style = StyleSheet.create({
     }
     return generatedStyle;
   })(),
-  selected: {
-    backgroundColor: COLORS.primary,
-    color: COLORS.background,
-  },
-  submitRow: {
-    flexDirection: "row-reverse",
-  },
-  submitRowItem: {
-    color: COLORS.primary,
-    paddingHorizontal: 15,
-    paddingVertical: UNIT / 4,
-    textAlignVertical: "center",
-  },
-  background: {
-    position: "absolute",
-    backgroundColor: COLORS.blurred,
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  window: {
-    width: UNIT * 8,
-    backgroundColor: COLORS.background,
-    paddingHorizontal: UNIT / 2,
-    paddingTop: UNIT / 2,
-    paddingBottom: UNIT / 2,
-    borderRadius: UNIT / 4,
-  },
 });

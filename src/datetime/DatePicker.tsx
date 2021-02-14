@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextStyle, View } from "react-native";
 
 import NaiveDate from "./NaiveDate";
 import { nextMonth, prevMonth } from "./YearMonth";
-import { WEEKDAYS, MONTHS, UNIT, COLORS, DAY_MS } from "./constant";
+import { WEEKDAYS, MONTHS, UNIT, COLORS, DAY_MS, BASE_STYLE } from "./constant";
 
 const getMonthDays = (year: number, month: number): [number[], number] => {
   const date = new NaiveDate(year, month).toLocalDate();
@@ -50,62 +50,67 @@ export default ({ value, onSubmit, onCancel }: Props) => {
     today.day === day;
 
   return (
-    <View style={style.background}>
-      <View style={style.window}>
-        <Text style={style.titleYear}>{date.year}</Text>
-        <Text style={style.titleDate}>
-          {date.toLocalDate().toDateString().substring(0, 10)}
-        </Text>
-
-        <View style={style.monthPicker}>
-          <Text
-            style={style.monthPickerArrow}
-            onPress={() => setFocused(prevMonth(focused))}
-          >
-            {"‹"}
-          </Text>
-          <Text style={style.monthPickerTitle}>
-            {MONTHS[focused.month]} {focused.year}
-          </Text>
-          <Text
-            style={style.monthPickerArrow}
-            onPress={() => setFocused(nextMonth(focused))}
-          >
-            {"›"}
-          </Text>
-        </View>
-
-        <View style={style.table}>
-          {WEEKDAYS.map((day, i) => (
-            // @ts-ignore
-            <Text key={i} style={[style.tableItem, style["tableItem" + i]]}>
-              {day}
+    <View style={BASE_STYLE.background}>
+      <View style={BASE_STYLE.window}>
+        <View style={style.split}>
+          <View>
+            <Text style={style.titleYear}>{date.year}</Text>
+            <Text style={style.titleDate}>
+              {date.toLocalDate().toDateString().substring(0, 10)}
             </Text>
-          ))}
-          {days.map((day, i) => (
-            <Text
-              key={i}
-              style={[
-                style.tableItem,
+          </View>
+
+          <View>
+            <View style={style.monthPicker}>
+              <Text
+                style={style.monthPickerArrow}
+                onPress={() => setFocused(prevMonth(focused))}
+              >
+                {"‹"}
+              </Text>
+              <Text style={style.monthPickerTitle}>
+                {MONTHS[focused.month]} {focused.year}
+              </Text>
+              <Text
+                style={style.monthPickerArrow}
+                onPress={() => setFocused(nextMonth(focused))}
+              >
+                {"›"}
+              </Text>
+            </View>
+            <View style={style.table}>
+              {WEEKDAYS.map((day, i) => (
                 // @ts-ignore
-                style["tableItem" + (7 + offset + i)],
-                isToday(day) && style.today,
-                isSelected(day) && style.selected,
-              ]}
-              onPress={() =>
-                setDate(new NaiveDate(focused.year, focused.month, day))
-              }
-            >
-              {day}
-            </Text>
-          ))}
+                <Text key={i} style={[style.tableItem, style["tableItem" + i]]}>
+                  {day}
+                </Text>
+              ))}
+              {days.map((day, i) => (
+                <Text
+                  key={i}
+                  style={[
+                    style.tableItem,
+                    // @ts-ignore
+                    style["tableItem" + (7 + offset + i)],
+                    isToday(day) && style.today,
+                    isSelected(day) && BASE_STYLE.selected,
+                  ]}
+                  onPress={() =>
+                    setDate(new NaiveDate(focused.year, focused.month, day))
+                  }
+                >
+                  {day}
+                </Text>
+              ))}
+            </View>
+          </View>
         </View>
 
-        <View style={style.submitRow}>
-          <Text style={style.submitRowItem} onPress={() => onSubmit(date)}>
+        <View style={BASE_STYLE.submitRow}>
+          <Text style={BASE_STYLE.submitRowItem} onPress={() => onSubmit(date)}>
             OK
           </Text>
-          <Text style={style.submitRowItem} onPress={onCancel}>
+          <Text style={BASE_STYLE.submitRowItem} onPress={onCancel}>
             Cancel
           </Text>
         </View>
@@ -115,12 +120,16 @@ export default ({ value, onSubmit, onCancel }: Props) => {
 };
 
 const style = StyleSheet.create({
+  split: {
+    flexWrap: "wrap",
+  },
   titleYear: {
     color: COLORS.text,
   },
   titleDate: {
     fontSize: 32,
     fontWeight: "700",
+    width: 200,
     height: UNIT * 2,
     color: COLORS.text,
   },
@@ -145,6 +154,7 @@ const style = StyleSheet.create({
     paddingBottom: 10,
   },
   table: {
+    width: UNIT * 7,
     height: UNIT * 7,
   },
   tableItem: {
@@ -170,36 +180,5 @@ const style = StyleSheet.create({
   })(),
   today: {
     color: COLORS.primary,
-  },
-  selected: {
-    backgroundColor: COLORS.primary,
-    color: COLORS.background,
-  },
-  submitRow: {
-    flexDirection: "row-reverse",
-  },
-  submitRowItem: {
-    color: COLORS.primary,
-    paddingHorizontal: 15,
-    paddingVertical: UNIT / 4,
-    textAlignVertical: "center",
-  },
-  background: {
-    position: "absolute",
-    backgroundColor: COLORS.blurred,
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  window: {
-    width: UNIT * 8,
-    backgroundColor: COLORS.background,
-    paddingHorizontal: UNIT / 2,
-    paddingTop: UNIT / 2,
-    paddingBottom: UNIT / 2,
-    borderRadius: UNIT / 4,
   },
 });

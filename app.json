@@ -4,7 +4,6 @@
     "slug": "datetime",
     "version": "0.1.0",
     "privacy": "public",
-    "orientation": "portrait",
     "entryPoint": "./src/Main.tsx"
   }
 }
