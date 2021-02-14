@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { registerRootComponent } from "expo";
 
 import { DatePicker, TimePicker, NaiveDate, NaiveTime } from "./datetime";
@@ -34,36 +34,24 @@ export default registerRootComponent(() => {
         </View>
         <Text>{date.toLocalDate(time).toISOString()}</Text>
       </View>
-      <Modal
-        animationType="fade"
-        transparent={true}
+      <DatePicker
+        value={date}
         visible={datePickerVisibility}
-        onRequestClose={() => setDatePickerVisibility(false)}
-      >
-        <DatePicker
-          value={date}
-          onCancel={() => setDatePickerVisibility(false)}
-          onSubmit={(date) => {
-            setDate(date);
-            setDatePickerVisibility(false);
-          }}
-        />
-      </Modal>
-      <Modal
-        animationType="fade"
-        transparent={true}
+        onCancel={() => setDatePickerVisibility(false)}
+        onSubmit={(date) => {
+          setDate(date);
+          setDatePickerVisibility(false);
+        }}
+      />
+      <TimePicker
+        value={time}
         visible={timePickerVisibility}
-        onRequestClose={() => setTimePickerVisibility(false)}
-      >
-        <TimePicker
-          value={time}
-          onCancel={() => setTimePickerVisibility(false)}
-          onSubmit={(time) => {
-            setTime(time);
-            setTimePickerVisibility(false);
-          }}
-        />
-      </Modal>
+        onCancel={() => setTimePickerVisibility(false)}
+        onSubmit={(time) => {
+          setTime(time);
+          setTimePickerVisibility(false);
+        }}
+      />
     </>
   );
 });

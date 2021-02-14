@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { StyleSheet, Text, TextStyle, View } from "react-native";
+import { Modal, StyleSheet, Text, TextStyle, View } from "react-native";
 
 import NaiveDate from "./NaiveDate";
 import { nextMonth, prevMonth } from "./YearMonth";
@@ -23,11 +23,12 @@ const getMonthDays = (year: number, month: number): [number[], number] => {
 
 interface Props {
   value?: NaiveDate;
+  visible: boolean;
   onSubmit(date: NaiveDate): void;
   onCancel(): void;
 }
 
-export default ({ value, onSubmit, onCancel }: Props) => {
+export default ({ value, visible, onSubmit, onCancel }: Props) => {
   const today = new NaiveDate();
   const [date, setDate] = useState(value || today);
   const [focused, setFocused] = useState({
@@ -50,72 +51,85 @@ export default ({ value, onSubmit, onCancel }: Props) => {
     today.day === day;
 
   return (
-    <View style={BASE_STYLE.background}>
-      <View style={BASE_STYLE.window}>
-        <View style={style.split}>
-          <View>
-            <Text style={style.titleYear}>{date.year}</Text>
-            <Text style={style.titleDate}>
-              {date.toLocalDate().toDateString().substring(0, 10)}
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={visible}
+      onRequestClose={onCancel}
+    >
+      <View style={BASE_STYLE.background}>
+        <View style={BASE_STYLE.window}>
+          <View style={style.split}>
+            <View>
+              <Text style={style.titleYear}>{date.year}</Text>
+              <Text style={style.titleDate}>
+                {date.toLocalDate().toDateString().substring(0, 10)}
+              </Text>
+            </View>
+
+            <View>
+              <View style={style.monthPicker}>
+                <Text
+                  style={style.monthPickerArrow}
+                  onPress={() => setFocused(prevMonth(focused))}
+                >
+                  {"‹"}
+                </Text>
+                <Text style={style.monthPickerTitle}>
+                  {MONTHS[focused.month]} {focused.year}
+                </Text>
+                <Text
+                  style={style.monthPickerArrow}
+                  onPress={() => setFocused(nextMonth(focused))}
+                >
+                  {"›"}
+                </Text>
+              </View>
+              <View style={style.table}>
+                {WEEKDAYS.map((day, i) => (
+                  // @ts-ignore
+                  <Text
+                    key={i}
+                    style={[style.tableItem, style["tableItem" + i]]}
+                  >
+                    {day}
+                  </Text>
+                ))}
+                {days.map((day, i) => (
+                  <Text
+                    key={i}
+                    style={[
+                      style.tableItem,
+                      // @ts-ignore
+                      style["tableItem" + (7 + offset + i)],
+                      isToday(day) && style.today,
+                      isSelected(day) && BASE_STYLE.selected,
+                    ]}
+                    onPress={() =>
+                      setDate(new NaiveDate(focused.year, focused.month, day))
+                    }
+                  >
+                    {day}
+                  </Text>
+                ))}
+              </View>
+            </View>
+          </View>
+
+          <View style={BASE_STYLE.submitRow}>
+            <Text
+              style={BASE_STYLE.submitRowItem}
+              onPress={() => onSubmit(date)}
+            >
+              OK
+            </Text>
+            <Text style={BASE_STYLE.submitRowItem} onPress={onCancel}>
+              Cancel
             </Text>
           </View>
-
-          <View>
-            <View style={style.monthPicker}>
-              <Text
-                style={style.monthPickerArrow}
-                onPress={() => setFocused(prevMonth(focused))}
-              >
-                {"‹"}
-              </Text>
-              <Text style={style.monthPickerTitle}>
-                {MONTHS[focused.month]} {focused.year}
-              </Text>
-              <Text
-                style={style.monthPickerArrow}
-                onPress={() => setFocused(nextMonth(focused))}
-              >
-                {"›"}
-              </Text>
-            </View>
-            <View style={style.table}>
-              {WEEKDAYS.map((day, i) => (
-                // @ts-ignore
-                <Text key={i} style={[style.tableItem, style["tableItem" + i]]}>
-                  {day}
-                </Text>
-              ))}
-              {days.map((day, i) => (
-                <Text
-                  key={i}
-                  style={[
-                    style.tableItem,
-                    // @ts-ignore
-                    style["tableItem" + (7 + offset + i)],
-                    isToday(day) && style.today,
-                    isSelected(day) && BASE_STYLE.selected,
-                  ]}
-                  onPress={() =>
-                    setDate(new NaiveDate(focused.year, focused.month, day))
-                  }
-                >
-                  {day}
-                </Text>
-              ))}
-            </View>
-          </View>
-        </View>
-
-        <View style={BASE_STYLE.submitRow}>
-          <Text style={BASE_STYLE.submitRowItem} onPress={() => onSubmit(date)}>
-            OK
-          </Text>
-          <Text style={BASE_STYLE.submitRowItem} onPress={onCancel}>
-            Cancel
-          </Text>
         </View>
       </View>
-    </View>
+    </Modal>
   );
 };
 

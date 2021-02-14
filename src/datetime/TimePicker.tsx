@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Animated, StyleSheet, Text, TextStyle, View } from "react-native";
+import {
+  Modal,
+  Animated,
+  StyleSheet,
+  Text,
+  TextStyle,
+  View,
+} from "react-native";
 
 import NaiveTime from "./NaiveTime";
 import {
@@ -70,12 +77,6 @@ const Hours = ({ onChange }: ModeProps) => (
   </>
 );
 
-interface Props {
-  value?: NaiveTime;
-  onSubmit(date: NaiveTime): void;
-  onCancel(): void;
-}
-
 enum Mode {
   Hour,
   Minute,
@@ -86,7 +87,14 @@ const TIMING = {
   useNativeDriver: true,
 };
 
-export default ({ value, onSubmit, onCancel }: Props) => {
+interface Props {
+  value?: NaiveTime;
+  visible: boolean;
+  onSubmit(date: NaiveTime): void;
+  onCancel(): void;
+}
+
+export default ({ value, visible, onSubmit, onCancel }: Props) => {
   const [time, setTime] = useState(value || new NaiveTime());
   const [mode, setMode] = useState(Mode.Hour);
   const opacity = useRef(new Animated.Value(0)).current;
@@ -104,82 +112,92 @@ export default ({ value, onSubmit, onCancel }: Props) => {
       : OUTER_DIST;
 
   return (
-    <View style={BASE_STYLE.background}>
-      <View style={BASE_STYLE.window}>
-        <View style={style.split}>
-          <View style={style.title}>
-            <Text
-              style={[
-                style.titleText,
-                mode === Mode.Hour && style.selectedTitle,
-              ]}
-              onPress={() => setMode(Mode.Hour)}
-            >
-              {String(time.hour).padStart(2, "0")}
-            </Text>
-            <Text style={style.titleText}>:</Text>
-            <Text
-              style={[
-                style.titleText,
-                mode === Mode.Minute && style.selectedTitle,
-              ]}
-              onPress={() => setMode(Mode.Minute)}
-            >
-              {String(time.minute).padStart(2, "0")}
-            </Text>
-          </View>
-
-          <View style={style.clockCircle}>
-            {mode === Mode.Hour ? (
-              <Hours
-                onChange={(val) => {
-                  setTime(new NaiveTime(val, time.minute));
-                  setTimeout(() => setMode(Mode.Minute));
-                }}
-              />
-            ) : (
-              <Minutes
-                onChange={(val) => setTime(new NaiveTime(time.hour, val))}
-              />
-            )}
-
-            <Animated.View
-              style={[
-                style.clockCenter,
-                { transform: [{ rotate: `${selectAngle}deg` }] },
-              ]}
-            >
-              <Animated.Text
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={visible}
+      onRequestClose={onCancel}
+    >
+      <View style={BASE_STYLE.background}>
+        <View style={BASE_STYLE.window}>
+          <View style={style.split}>
+            <View style={style.title}>
+              <Text
                 style={[
-                  style.clockItem,
-                  BASE_STYLE.selected,
-                  {
-                    opacity,
-                    transform: [
-                      { translateY: -selectDist },
-                      { rotate: `${360 - selectAngle}deg` },
-                    ],
-                  },
+                  style.titleText,
+                  mode === Mode.Hour && style.selectedTitle,
+                ]}
+                onPress={() => setMode(Mode.Hour)}
+              >
+                {String(time.hour).padStart(2, "0")}
+              </Text>
+              <Text style={style.titleText}>:</Text>
+              <Text
+                style={[
+                  style.titleText,
+                  mode === Mode.Minute && style.selectedTitle,
+                ]}
+                onPress={() => setMode(Mode.Minute)}
+              >
+                {String(time.minute).padStart(2, "0")}
+              </Text>
+            </View>
+
+            <View style={style.clockCircle}>
+              {mode === Mode.Hour ? (
+                <Hours
+                  onChange={(val) => {
+                    setTime(new NaiveTime(val, time.minute));
+                    setTimeout(() => setMode(Mode.Minute));
+                  }}
+                />
+              ) : (
+                <Minutes
+                  onChange={(val) => setTime(new NaiveTime(time.hour, val))}
+                />
+              )}
+
+              <Animated.View
+                style={[
+                  style.clockCenter,
+                  { transform: [{ rotate: `${selectAngle}deg` }] },
                 ]}
               >
-                {mode === Mode.Hour
-                  ? time.hour || String(time.hour).padStart(2, "0")
-                  : String(time.minute).padStart(2, "0")}
-              </Animated.Text>
-            </Animated.View>
+                <Animated.Text
+                  style={[
+                    style.clockItem,
+                    BASE_STYLE.selected,
+                    {
+                      opacity,
+                      transform: [
+                        { translateY: -selectDist },
+                        { rotate: `${360 - selectAngle}deg` },
+                      ],
+                    },
+                  ]}
+                >
+                  {mode === Mode.Hour
+                    ? time.hour || String(time.hour).padStart(2, "0")
+                    : String(time.minute).padStart(2, "0")}
+                </Animated.Text>
+              </Animated.View>
+            </View>
+          </View>
+
+          <View style={BASE_STYLE.submitRow}>
+            <Text
+              style={BASE_STYLE.submitRowItem}
+              onPress={() => onSubmit(time)}
+            >
+              OK
+            </Text>
+            <Text style={BASE_STYLE.submitRowItem} onPress={onCancel}>
+              Cancel
+            </Text>
           </View>
         </View>
-
-        <View style={BASE_STYLE.submitRow}>
-          <Text style={BASE_STYLE.submitRowItem} onPress={() => onSubmit(time)}>
-            OK
-          </Text>
-          <Text style={BASE_STYLE.submitRowItem} onPress={onCancel}>
-            Cancel
-          </Text>
-        </View>
       </View>
-    </View>
+    </Modal>
   );
 };
 
