@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Modal,
-  Animated,
+  Pressable,
   StyleSheet,
   Text,
   TextStyle,
@@ -82,11 +82,6 @@ enum Mode {
   Minute,
 }
 
-const TIMING = {
-  duration: 200,
-  useNativeDriver: true,
-};
-
 interface Props {
   value?: NaiveTime;
   visible: boolean;
@@ -97,12 +92,6 @@ interface Props {
 export default ({ value, visible, onSubmit, onCancel }: Props) => {
   const [time, setTime] = useState(value || new NaiveTime());
   const [mode, setMode] = useState(Mode.Hour);
-  const opacity = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    opacity.setValue(0);
-    Animated.timing(opacity, { ...TIMING, toValue: 1 }).start();
-  }, [mode]);
 
   const selectAngle =
     mode === Mode.Hour ? (time.hour % 12) * 30 : time.minute * 6;
@@ -118,8 +107,8 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
       visible={visible}
       onRequestClose={onCancel}
     >
-      <View style={BASE_STYLE.background}>
-        <View style={BASE_STYLE.window}>
+      <Pressable style={BASE_STYLE.background} onPress={onCancel}>
+        <Pressable style={BASE_STYLE.window}>
           <View style={style.split}>
             <View style={style.title}>
               <Text
@@ -157,18 +146,17 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
                 />
               )}
 
-              <Animated.View
+              <View
                 style={[
                   style.clockCenter,
                   { transform: [{ rotate: `${selectAngle}deg` }] },
                 ]}
               >
-                <Animated.Text
+                <Text
                   style={[
                     style.clockItem,
                     BASE_STYLE.selected,
                     {
-                      opacity,
                       transform: [
                         { translateY: -selectDist },
                         { rotate: `${360 - selectAngle}deg` },
@@ -179,8 +167,8 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
                   {mode === Mode.Hour
                     ? time.hour || String(time.hour).padStart(2, "0")
                     : String(time.minute).padStart(2, "0")}
-                </Animated.Text>
-              </Animated.View>
+                </Text>
+              </View>
             </View>
           </View>
 
@@ -195,8 +183,8 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
               Cancel
             </Text>
           </View>
-        </View>
-      </View>
+        </Pressable>
+      </Pressable>
     </Modal>
   );
 };

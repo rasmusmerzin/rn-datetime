@@ -1,5 +1,12 @@
 import React, { useState, useMemo } from "react";
-import { Modal, StyleSheet, Text, TextStyle, View } from "react-native";
+import {
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextStyle,
+  View,
+} from "react-native";
 
 import NaiveDate from "./NaiveDate";
 import { nextMonth, prevMonth } from "./YearMonth";
@@ -57,8 +64,8 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
       visible={visible}
       onRequestClose={onCancel}
     >
-      <View style={BASE_STYLE.background}>
-        <View style={BASE_STYLE.window}>
+      <Pressable style={BASE_STYLE.background} onPress={onCancel}>
+        <Pressable style={BASE_STYLE.window}>
           <View style={style.split}>
             <View>
               <Text style={style.titleYear}>{date.year}</Text>
@@ -87,9 +94,9 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
               </View>
               <View style={style.table}>
                 {WEEKDAYS.map((day, i) => (
-                  // @ts-ignore
                   <Text
                     key={i}
+                    // @ts-ignore
                     style={[style.tableItem, style["tableItem" + i]]}
                   >
                     {day}
@@ -127,8 +134,8 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
               Cancel
             </Text>
           </View>
-        </View>
-      </View>
+        </Pressable>
+      </Pressable>
     </Modal>
   );
 };
