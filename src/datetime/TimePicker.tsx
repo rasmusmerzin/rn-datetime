@@ -21,8 +21,12 @@ const Minutes = ({ selected, onChange }: ModeProps) => (
       return (
         <Text
           key={i}
-          // @ts-ignore
-          style={[style["outer" + i], selected === m && style.selected]}
+          style={[
+            style.clockItem,
+            // @ts-ignore
+            style["clockOuter" + i],
+            selected === m && style.selected,
+          ]}
           onPress={() => onChange(m)}
         >
           {String(m).padStart(2, "0")}
@@ -38,8 +42,12 @@ const Hours = ({ selected, onChange }: ModeProps) => (
       return (
         <Text
           key={i}
-          // @ts-ignore
-          style={[style["outer" + i], selected === h && style.selected]}
+          style={[
+            style.clockItem,
+            // @ts-ignore
+            style["clockOuter" + i],
+            selected === h && style.selected,
+          ]}
           onPress={() => onChange(h)}
         >
           {h}
@@ -50,8 +58,12 @@ const Hours = ({ selected, onChange }: ModeProps) => (
       return (
         <Text
           key={i}
-          // @ts-ignore
-          style={[style["inner" + i], selected === h && style.selected]}
+          style={[
+            style.clockItem,
+            // @ts-ignore
+            style["clockInner" + i],
+            selected === h && style.selected,
+          ]}
           onPress={() => onChange(h)}
         >
           {String(h).padStart(2, "0")}
@@ -129,35 +141,6 @@ export default ({ value, onSubmit, onCancel }: Props) => {
 };
 
 const style = StyleSheet.create({
-  ...(() => {
-    const generatedStyle: { [key: string]: TextStyle } = {};
-    for (let i = 0; i < 12; i++) {
-      const angle = (i * Math.PI) / 6;
-      generatedStyle["outer" + i] = {
-        color: COLORS.text,
-        fontSize: 16,
-        position: "absolute",
-        textAlign: "center",
-        textAlignVertical: "center",
-        width: UNIT,
-        height: UNIT,
-        left: UNIT * 2.4 + Math.sin(angle) * UNIT * 2.3,
-        top: UNIT * 2.4 - Math.cos(angle) * UNIT * 2.3,
-      };
-      generatedStyle["inner" + i] = {
-        color: COLORS.shadow,
-        fontSize: 11,
-        position: "absolute",
-        textAlign: "center",
-        textAlignVertical: "center",
-        width: UNIT,
-        height: UNIT,
-        left: UNIT * 2.4 + Math.sin(angle) * UNIT * 1.4,
-        top: UNIT * 2.4 - Math.cos(angle) * UNIT * 1.4,
-      };
-    }
-    return generatedStyle;
-  })(),
   title: {
     flexDirection: "row",
     justifyContent: "center",
@@ -177,10 +160,36 @@ const style = StyleSheet.create({
     marginVertical: 20,
     marginHorizontal: UNIT * 0.1,
   },
+  clockItem: {
+    color: COLORS.text,
+    position: "absolute",
+    textAlign: "center",
+    textAlignVertical: "center",
+    width: UNIT,
+    height: UNIT,
+    borderRadius: UNIT,
+  },
+  ...(() => {
+    const generatedStyle: { [key: string]: TextStyle } = {};
+    for (let i = 0; i < 12; i++) {
+      const angle = (i * Math.PI) / 6;
+      generatedStyle["clockOuter" + i] = {
+        fontSize: 16,
+        left: UNIT * 2.4 + Math.sin(angle) * UNIT * 2.3,
+        top: UNIT * 2.4 - Math.cos(angle) * UNIT * 2.3,
+      };
+      generatedStyle["clockInner" + i] = {
+        color: COLORS.shadow,
+        fontSize: 12,
+        left: UNIT * 2.4 + Math.sin(angle) * UNIT * 1.4,
+        top: UNIT * 2.4 - Math.cos(angle) * UNIT * 1.4,
+      };
+    }
+    return generatedStyle;
+  })(),
   selected: {
     backgroundColor: COLORS.primary,
     color: COLORS.background,
-    borderRadius: UNIT,
   },
   submitRow: {
     flexDirection: "row-reverse",

@@ -78,9 +78,9 @@ const style = StyleSheet.create({
     flexDirection: "row",
   },
   date: {
-    paddingRight: 10,
+    paddingHorizontal: 10,
   },
   time: {
-    paddingLeft: 10,
+    paddingHorizontal: 10,
   },
 });
