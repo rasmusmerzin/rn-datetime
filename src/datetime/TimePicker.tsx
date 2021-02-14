@@ -89,61 +89,19 @@ const TIMING = {
 export default ({ value, onSubmit, onCancel }: Props) => {
   const [time, setTime] = useState(value || new NaiveTime());
   const [mode, setMode] = useState(Mode.Hour);
-  const selectRot = useRef(new Animated.Value(0)).current;
-  const translateY = useRef(new Animated.Value(0)).current;
   const opacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     opacity.setValue(0);
     Animated.timing(opacity, { ...TIMING, toValue: 1 }).start();
-    switch (mode) {
-      case Mode.Hour:
-        Animated.timing(translateY, {
-          ...TIMING,
-          toValue: !time.hour || time.hour > 12 ? INNER_DIST : OUTER_DIST,
-        }).start();
-        Animated.timing(selectRot, {
-          ...TIMING,
-          toValue: (time.hour % 12) / 12,
-        }).start();
-        break;
-      case Mode.Minute:
-        Animated.timing(translateY, {
-          ...TIMING,
-          toValue: OUTER_DIST,
-        }).start();
-        Animated.timing(selectRot, {
-          ...TIMING,
-          toValue: time.minute / 60,
-        }).start();
-        break;
-    }
   }, [mode]);
 
-  useEffect(() => {
-    switch (mode) {
-      case Mode.Hour:
-        translateY.setValue(
-          !time.hour || time.hour > 12 ? INNER_DIST : OUTER_DIST
-        );
-        selectRot.setValue((time.hour % 12) / 12);
-        break;
-      case Mode.Minute:
-        translateY.setValue(OUTER_DIST);
-        selectRot.setValue(time.minute / 60);
-        break;
-    }
-  }, [time]);
-
-  const rotate = selectRot.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["-180deg", "180deg"],
-  });
-
-  const rotateComplement = selectRot.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["180deg", "-180deg"],
-  });
+  const selectAngle =
+    mode === Mode.Hour ? (time.hour % 12) * 30 : time.minute * 6;
+  const selectDist =
+    mode === Mode.Hour && (!time.hour || time.hour > 12)
+      ? INNER_DIST
+      : OUTER_DIST;
 
   return (
     <View style={BASE_STYLE.background}>
@@ -186,22 +144,21 @@ export default ({ value, onSubmit, onCancel }: Props) => {
             )}
 
             <Animated.View
-              style={{
-                position: "absolute",
-                left: CLOCK_DIAMETER / 2,
-                top: CLOCK_DIAMETER / 2,
-                transform: [{ rotate }],
-              }}
+              style={[
+                style.clockCenter,
+                { transform: [{ rotate: `${selectAngle}deg` }] },
+              ]}
             >
               <Animated.Text
                 style={[
                   style.clockItem,
                   BASE_STYLE.selected,
                   {
-                    top: -UNIT / 2,
-                    left: -UNIT / 2,
                     opacity,
-                    transform: [{ translateY }, { rotate: rotateComplement }],
+                    transform: [
+                      { translateY: -selectDist },
+                      { rotate: `${360 - selectAngle}deg` },
+                    ],
                   },
                 ]}
               >
@@ -263,11 +220,18 @@ const style = StyleSheet.create({
   clockItem: {
     color: COLORS.text,
     position: "absolute",
+    top: -UNIT / 2,
+    left: -UNIT / 2,
     textAlign: "center",
     textAlignVertical: "center",
     width: UNIT,
     height: UNIT,
     borderRadius: UNIT,
+  },
+  clockCenter: {
+    position: "absolute",
+    left: CLOCK_DIAMETER / 2,
+    top: CLOCK_DIAMETER / 2,
   },
   ...(() => {
     const generatedStyle: { [key: string]: TextStyle } = {};
