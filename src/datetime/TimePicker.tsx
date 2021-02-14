@@ -140,6 +140,8 @@ export default ({ value, onSubmit, onCancel }: Props) => {
   );
 };
 
+const CLOCK_DIAMETER = UNIT * 6.4;
+
 const style = StyleSheet.create({
   title: {
     flexDirection: "row",
@@ -153,12 +155,12 @@ const style = StyleSheet.create({
     color: COLORS.text,
   },
   clockCircle: {
-    width: UNIT * 5.8,
-    height: UNIT * 5.8,
-    borderRadius: UNIT * 6,
+    width: CLOCK_DIAMETER,
+    height: CLOCK_DIAMETER,
+    borderRadius: CLOCK_DIAMETER,
     backgroundColor: COLORS.highlight,
-    marginVertical: 20,
-    marginHorizontal: UNIT * 0.1,
+    marginHorizontal: (UNIT * 7 - CLOCK_DIAMETER) / 2,
+    marginVertical: UNIT / 2,
   },
   clockItem: {
     color: COLORS.text,
@@ -175,14 +177,18 @@ const style = StyleSheet.create({
       const angle = (i * Math.PI) / 6;
       generatedStyle["clockOuter" + i] = {
         fontSize: 16,
-        left: UNIT * 2.4 + Math.sin(angle) * UNIT * 2.3,
-        top: UNIT * 2.4 - Math.cos(angle) * UNIT * 2.3,
+        left:
+          (CLOCK_DIAMETER - UNIT) / 2 + Math.sin(angle) * CLOCK_DIAMETER * 0.4,
+        top:
+          (CLOCK_DIAMETER - UNIT) / 2 - Math.cos(angle) * CLOCK_DIAMETER * 0.4,
       };
       generatedStyle["clockInner" + i] = {
         color: COLORS.shadow,
         fontSize: 12,
-        left: UNIT * 2.4 + Math.sin(angle) * UNIT * 1.4,
-        top: UNIT * 2.4 - Math.cos(angle) * UNIT * 1.4,
+        left:
+          (CLOCK_DIAMETER - UNIT) / 2 + Math.sin(angle) * CLOCK_DIAMETER * 0.25,
+        top:
+          (CLOCK_DIAMETER - UNIT) / 2 - Math.cos(angle) * CLOCK_DIAMETER * 0.25,
       };
     }
     return generatedStyle;
@@ -211,7 +217,7 @@ const style = StyleSheet.create({
     justifyContent: "center",
   },
   window: {
-    width: UNIT * 7,
+    width: UNIT * 8,
     backgroundColor: COLORS.background,
     paddingHorizontal: UNIT / 2,
     paddingTop: UNIT / 2,

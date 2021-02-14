@@ -1,13 +1,13 @@
 import React, { useState, useMemo } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TextStyle, View } from "react-native";
 
 import NaiveDate from "./NaiveDate";
 import { nextMonth, prevMonth } from "./YearMonth";
 import { WEEKDAYS, MONTHS, UNIT, COLORS, DAY_MS } from "./constant";
 
-const getMonthWeeks = (year: number, month: number): number[][] => {
+const getMonthDays = (year: number, month: number): [number[], number] => {
   const date = new NaiveDate(year, month).toLocalDate();
-  const days = (() => {
+  const count = (() => {
     const yearMonth = nextMonth({ year, month });
     return (
       (new NaiveDate(yearMonth.year, yearMonth.month).toLocalDate().getTime() -
@@ -15,20 +15,10 @@ const getMonthWeeks = (year: number, month: number): number[][] => {
       DAY_MS
     );
   })();
-  const weeks: number[][] = [[]];
-  // @ts-ignore
-  for (let i = 1; i < date.getDay(); i++) weeks[0].push(0);
-  for (let day = 1; day <= days; day++) {
-    let lastWeek = weeks[weeks.length - 1];
-    // @ts-ignore
-    if (lastWeek.length >= 7) weeks.push([]);
-    lastWeek = weeks[weeks.length - 1];
-    lastWeek?.push(day);
-  }
-  const lastWeek = weeks[weeks.length - 1];
-  // @ts-ignore
-  while (lastWeek.length < 7) lastWeek.push(0);
-  return weeks;
+  return [
+    Array.from(Array(count).values()).map((_, i) => i + 1),
+    date.getDay() - 1,
+  ];
 };
 
 interface Props {
@@ -38,19 +28,26 @@ interface Props {
 }
 
 export default ({ value, onSubmit, onCancel }: Props) => {
-  const [date, setDate] = useState(value || new NaiveDate());
+  const today = new NaiveDate();
+  const [date, setDate] = useState(value || today);
   const [focused, setFocused] = useState({
     year: date.year,
     month: date.month,
   });
-  const weeks = useMemo(() => getMonthWeeks(focused.year, focused.month), [
-    focused,
-  ]);
+  const [days, offset] = useMemo(
+    () => getMonthDays(focused.year, focused.month),
+    [focused]
+  );
 
   const isSelected = (day: number) =>
     date.year === focused.year &&
     date.month === focused.month &&
     date.day === day;
+
+  const isToday = (day: number) =>
+    today.year === focused.year &&
+    today.month === focused.month &&
+    today.day === day;
 
   return (
     <View style={style.background}>
@@ -62,7 +59,7 @@ export default ({ value, onSubmit, onCancel }: Props) => {
 
         <View style={style.monthPicker}>
           <Text
-            style={style.monthPickerLeft}
+            style={style.monthPickerArrow}
             onPress={() => setFocused(prevMonth(focused))}
           >
             {"‹"}
@@ -71,7 +68,7 @@ export default ({ value, onSubmit, onCancel }: Props) => {
             {MONTHS[focused.month]} {focused.year}
           </Text>
           <Text
-            style={style.monthPickerLeft}
+            style={style.monthPickerArrow}
             onPress={() => setFocused(nextMonth(focused))}
           >
             {"›"}
@@ -79,44 +76,28 @@ export default ({ value, onSubmit, onCancel }: Props) => {
         </View>
 
         <View style={style.table}>
-          <View style={style.row}>
-            {WEEKDAYS.map((day, i) => (
-              <Text key={i} style={[style.rowItemText, style.grayedText]}>
-                {day}
-              </Text>
-            ))}
-          </View>
-          {weeks.map((week, i) => (
-            <View key={i} style={style.row}>
-              {week.map((day, j) => (
-                <View key={j} style={style.rowItem}>
-                  {day ? (
-                    <View
-                      style={[
-                        style.circle,
-                        isSelected(day) && style.selectedCircle,
-                      ]}
-                    >
-                      <Text
-                        style={[
-                          style.rowItemText,
-                          isSelected(day) && style.selectedText,
-                        ]}
-                        onPress={() =>
-                          setDate(
-                            new NaiveDate(focused.year, focused.month, day)
-                          )
-                        }
-                      >
-                        {day}
-                      </Text>
-                    </View>
-                  ) : (
-                    <></>
-                  )}
-                </View>
-              ))}
-            </View>
+          {WEEKDAYS.map((day, i) => (
+            // @ts-ignore
+            <Text key={i} style={[style.tableItem, style["tableItem" + i]]}>
+              {day}
+            </Text>
+          ))}
+          {days.map((day, i) => (
+            <Text
+              key={i}
+              style={[
+                style.tableItem,
+                // @ts-ignore
+                style["tableItem" + (7 + offset + i)],
+                isToday(day) && style.today,
+                isSelected(day) && style.selected,
+              ]}
+              onPress={() =>
+                setDate(new NaiveDate(focused.year, focused.month, day))
+              }
+            >
+              {day}
+            </Text>
           ))}
         </View>
 
@@ -154,7 +135,7 @@ const style = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
   },
-  monthPickerLeft: {
+  monthPickerArrow: {
     color: COLORS.text,
     flex: 1,
     textAlignVertical: "center",
@@ -162,48 +143,37 @@ const style = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     paddingBottom: 10,
-  },
-  monthPickerRight: {
-    color: COLORS.text,
-    flex: 1,
-    textAlignVertical: "center",
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 30,
-    paddingBottom: 10,
-  },
-  row: {
-    flexDirection: "row",
-    height: UNIT,
-  },
-  rowItem: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  rowItemText: {
-    flex: 1,
-    textAlign: "center",
-    textAlignVertical: "center",
-    fontSize: 12,
-    color: COLORS.text,
-  },
-  grayedText: {
-    color: COLORS.shadow,
-  },
-  selectedText: {
-    color: COLORS.background,
-  },
-  circle: {
-    width: UNIT * 0.9,
-    height: UNIT * 0.9,
-  },
-  selectedCircle: {
-    backgroundColor: COLORS.primary,
-    borderRadius: UNIT,
   },
   table: {
     height: UNIT * 7,
+  },
+  tableItem: {
+    color: COLORS.text,
+    position: "absolute",
+    textAlign: "center",
+    textAlignVertical: "center",
+    fontSize: 12,
+    width: UNIT,
+    height: UNIT,
+    borderRadius: UNIT,
+  },
+  ...(() => {
+    const generatedStyle: { [key: string]: TextStyle } = {};
+    for (let i = 0; i < 49; i++) {
+      generatedStyle["tableItem" + i] = {
+        color: i < 7 ? COLORS.shadow : COLORS.text,
+        left: UNIT * (i % 7),
+        top: UNIT * Math.floor(i / 7),
+      };
+    }
+    return generatedStyle;
+  })(),
+  today: {
+    color: COLORS.primary,
+  },
+  selected: {
+    backgroundColor: COLORS.primary,
+    color: COLORS.background,
   },
   submitRow: {
     flexDirection: "row-reverse",
@@ -225,7 +195,7 @@ const style = StyleSheet.create({
     justifyContent: "center",
   },
   window: {
-    width: UNIT * 7,
+    width: UNIT * 8,
     backgroundColor: COLORS.background,
     paddingHorizontal: UNIT / 2,
     paddingTop: UNIT / 2,
