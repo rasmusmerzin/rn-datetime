@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "Joinem",
-    "slug": "joinem",
+    "name": "DateTime",
+    "slug": "datetime",
     "version": "0.1.0",
-    "privacy": "hidden",
+    "privacy": "public",
     "orientation": "portrait",
     "entryPoint": "./src/Main.tsx"
   }
