@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, TextStyle, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Animated, StyleSheet, Text, TextStyle, View } from "react-native";
 
 import NaiveTime from "./NaiveTime";
 import {
@@ -12,11 +12,10 @@ import {
 } from "./constant";
 
 interface ModeProps {
-  selected: number;
   onChange(value: number): void;
 }
 
-const Minutes = ({ selected, onChange }: ModeProps) => (
+const Minutes = ({ onChange }: ModeProps) => (
   <>
     {MINUTES.map((m, i) => {
       return (
@@ -26,7 +25,6 @@ const Minutes = ({ selected, onChange }: ModeProps) => (
             style.clockItem,
             // @ts-ignore
             style["clockOuter" + i],
-            selected === m && BASE_STYLE.selected,
           ]}
           onPress={() => onChange(m)}
         >
@@ -37,7 +35,7 @@ const Minutes = ({ selected, onChange }: ModeProps) => (
   </>
 );
 
-const Hours = ({ selected, onChange }: ModeProps) => (
+const Hours = ({ onChange }: ModeProps) => (
   <>
     {MORNING_HOURS.map((h, i) => {
       return (
@@ -47,7 +45,6 @@ const Hours = ({ selected, onChange }: ModeProps) => (
             style.clockItem,
             // @ts-ignore
             style["clockOuter" + i],
-            selected === h && BASE_STYLE.selected,
           ]}
           onPress={() => onChange(h)}
         >
@@ -63,7 +60,6 @@ const Hours = ({ selected, onChange }: ModeProps) => (
             style.clockItem,
             // @ts-ignore
             style["clockInner" + i],
-            selected === h && BASE_STYLE.selected,
           ]}
           onPress={() => onChange(h)}
         >
@@ -85,9 +81,69 @@ enum Mode {
   Minute,
 }
 
+const TIMING = {
+  duration: 200,
+  useNativeDriver: true,
+};
+
 export default ({ value, onSubmit, onCancel }: Props) => {
   const [time, setTime] = useState(value || new NaiveTime());
   const [mode, setMode] = useState(Mode.Hour);
+  const selectRot = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(0)).current;
+  const opacity = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    opacity.setValue(0);
+    Animated.timing(opacity, { ...TIMING, toValue: 1 }).start();
+    switch (mode) {
+      case Mode.Hour:
+        Animated.timing(translateY, {
+          ...TIMING,
+          toValue: !time.hour || time.hour > 12 ? INNER_DIST : OUTER_DIST,
+        }).start();
+        Animated.timing(selectRot, {
+          ...TIMING,
+          toValue: (time.hour % 12) / 12,
+        }).start();
+        break;
+      case Mode.Minute:
+        Animated.timing(translateY, {
+          ...TIMING,
+          toValue: OUTER_DIST,
+        }).start();
+        Animated.timing(selectRot, {
+          ...TIMING,
+          toValue: time.minute / 60,
+        }).start();
+        break;
+    }
+  }, [mode]);
+
+  useEffect(() => {
+    switch (mode) {
+      case Mode.Hour:
+        translateY.setValue(
+          !time.hour || time.hour > 12 ? INNER_DIST : OUTER_DIST
+        );
+        selectRot.setValue((time.hour % 12) / 12);
+        break;
+      case Mode.Minute:
+        translateY.setValue(OUTER_DIST);
+        selectRot.setValue(time.minute / 60);
+        break;
+    }
+  }, [time]);
+
+  const rotate = selectRot.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["-180deg", "180deg"],
+  });
+
+  const rotateComplement = selectRot.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["180deg", "-180deg"],
+  });
 
   return (
     <View style={BASE_STYLE.background}>
@@ -118,18 +174,42 @@ export default ({ value, onSubmit, onCancel }: Props) => {
           <View style={style.clockCircle}>
             {mode === Mode.Hour ? (
               <Hours
-                selected={time.hour}
                 onChange={(val) => {
-                  setMode(Mode.Minute);
                   setTime(new NaiveTime(val, time.minute));
+                  setTimeout(() => setMode(Mode.Minute));
                 }}
               />
             ) : (
               <Minutes
-                selected={time.minute}
                 onChange={(val) => setTime(new NaiveTime(time.hour, val))}
               />
             )}
+
+            <Animated.View
+              style={{
+                position: "absolute",
+                left: CLOCK_DIAMETER / 2,
+                top: CLOCK_DIAMETER / 2,
+                transform: [{ rotate }],
+              }}
+            >
+              <Animated.Text
+                style={[
+                  style.clockItem,
+                  BASE_STYLE.selected,
+                  {
+                    top: -UNIT / 2,
+                    left: -UNIT / 2,
+                    opacity,
+                    transform: [{ translateY }, { rotate: rotateComplement }],
+                  },
+                ]}
+              >
+                {mode === Mode.Hour
+                  ? time.hour || String(time.hour).padStart(2, "0")
+                  : String(time.minute).padStart(2, "0")}
+              </Animated.Text>
+            </Animated.View>
           </View>
         </View>
 
@@ -148,6 +228,8 @@ export default ({ value, onSubmit, onCancel }: Props) => {
 
 const CLOCK_DIAMETER = UNIT * 6.4;
 const TITLE_HEIGHT = UNIT * 2;
+const OUTER_DIST = CLOCK_DIAMETER * 0.4;
+const INNER_DIST = CLOCK_DIAMETER * 0.25;
 
 const style = StyleSheet.create({
   split: {
@@ -193,18 +275,14 @@ const style = StyleSheet.create({
       const angle = (i * Math.PI) / 6;
       generatedStyle["clockOuter" + i] = {
         fontSize: 16,
-        left:
-          (CLOCK_DIAMETER - UNIT) / 2 + Math.sin(angle) * CLOCK_DIAMETER * 0.4,
-        top:
-          (CLOCK_DIAMETER - UNIT) / 2 - Math.cos(angle) * CLOCK_DIAMETER * 0.4,
+        left: (CLOCK_DIAMETER - UNIT) / 2 + Math.sin(angle) * OUTER_DIST,
+        top: (CLOCK_DIAMETER - UNIT) / 2 - Math.cos(angle) * OUTER_DIST,
       };
       generatedStyle["clockInner" + i] = {
         color: COLORS.shadow,
         fontSize: 12,
-        left:
-          (CLOCK_DIAMETER - UNIT) / 2 + Math.sin(angle) * CLOCK_DIAMETER * 0.25,
-        top:
-          (CLOCK_DIAMETER - UNIT) / 2 - Math.cos(angle) * CLOCK_DIAMETER * 0.25,
+        left: (CLOCK_DIAMETER - UNIT) / 2 + Math.sin(angle) * INNER_DIST,
+        top: (CLOCK_DIAMETER - UNIT) / 2 - Math.cos(angle) * INNER_DIST,
       };
     }
     return generatedStyle;
