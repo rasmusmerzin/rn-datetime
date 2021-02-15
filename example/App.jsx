@@ -4,12 +4,7 @@ import { DatePicker, TimePicker, NaiveDate, NaiveTime } from "rn-datetime";
 
 export default () => {
   const [date, setDate] = useState(new NaiveDate());
-  const [time, setTime] = useState(
-    new NaiveTime(
-      new Date().getHours(),
-      (Math.ceil(new Date().getMinutes() / 5) * 5) % 60
-    )
-  );
+  const [time, setTime] = useState(new NaiveTime(12, 0));
   const [datePickerVisibility, setDatePickerVisibility] = useState(false);
   const [timePickerVisibility, setTimePickerVisibility] = useState(false);
 
