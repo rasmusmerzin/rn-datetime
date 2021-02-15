@@ -9,14 +9,15 @@ import {
 } from "react-native";
 
 import NaiveTime from "./NaiveTime";
-import {
-  MORNING_HOURS,
-  EVENING_HOURS,
-  MINUTES,
-  COLORS,
-  UNIT,
-  BASE_STYLE,
-} from "./constant";
+import { COLORS, UNIT, BASE_STYLE } from "./constant";
+
+const MORNING_HOURS = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+const EVENING_HOURS = [0, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+const MINUTES = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+const TABLE_DIAMETER = UNIT * 6.4;
+const TITLE_HEIGHT = UNIT * 2;
+const OUTER_DIST = TABLE_DIAMETER * 0.4;
+const INNER_DIST = TABLE_DIAMETER * 0.25;
 
 interface ModeProps {
   onChange(value: number): void;
@@ -190,11 +191,6 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
     </Modal>
   );
 };
-
-const TABLE_DIAMETER = UNIT * 6.4;
-const TITLE_HEIGHT = UNIT * 2;
-const OUTER_DIST = TABLE_DIAMETER * 0.4;
-const INNER_DIST = TABLE_DIAMETER * 0.25;
 
 const style = StyleSheet.create({
   split: {

@@ -10,7 +10,24 @@ import {
 
 import NaiveDate from "./NaiveDate";
 import { nextMonth, prevMonth } from "./YearMonth";
-import { WEEKDAYS, MONTHS, UNIT, COLORS, DAY_MS, BASE_STYLE } from "./constant";
+import { UNIT, COLORS, BASE_STYLE } from "./constant";
+
+const WEEKDAYS = ["M", "T", "W", "T", "F", "S", "S"];
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const DAY_MS = 1000 * 60 * 60 * 24;
 
 const getMonthDays = (year: number, month: number): [number[], number] => {
   const date = new NaiveDate(year, month).toLocalDate();
