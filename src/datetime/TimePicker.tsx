@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Modal,
   Pressable,
@@ -95,12 +95,14 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
   const [time, setTime] = useState(value || new NaiveTime());
   const [mode, setMode] = useState(Mode.Hour);
 
-  const selectAngle =
-    mode === Mode.Hour ? (time.hour % 12) * 30 : time.minute * 6;
-  const selectDist =
-    mode === Mode.Hour && (!time.hour || time.hour > 12)
-      ? INNER_DIST
-      : OUTER_DIST;
+  const selectedClass = useMemo(
+    () =>
+      "clock" +
+      (mode === Mode.Hour
+        ? (!time.hour || time.hour > 12 ? "Inner" : "Outer") + (time.hour % 12)
+        : "Outer" + Math.floor(time.minute / 5)),
+    [time, mode]
+  );
 
   const cancel = () => {
     setMode(Mode.Hour);
@@ -160,28 +162,17 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
 
               <View
                 style={[
-                  style.clockCenter,
-                  { transform: [{ rotate: `${selectAngle}deg` }] },
+                  style.clockItem,
+                  BASE_STYLE.selected,
+                  // @ts-ignore
+                  style[selectedClass],
                 ]}
               >
-                <View
-                  style={[
-                    style.clockItem,
-                    BASE_STYLE.selected,
-                    {
-                      transform: [
-                        { translateY: -selectDist },
-                        { rotate: `${360 - selectAngle}deg` },
-                      ],
-                    },
-                  ]}
-                >
-                  <Text style={[style.clockItemText, BASE_STYLE.selectedText]}>
-                    {mode === Mode.Hour
-                      ? time.hour || String(time.hour).padStart(2, "0")
-                      : String(time.minute).padStart(2, "0")}
-                  </Text>
-                </View>
+                <Text style={[style.clockItemText, BASE_STYLE.selectedText]}>
+                  {mode === Mode.Hour
+                    ? time.hour || String(time.hour).padStart(2, "0")
+                    : String(time.minute).padStart(2, "0")}
+                </Text>
               </View>
             </View>
           </View>
@@ -238,8 +229,6 @@ const style = StyleSheet.create({
     position: "absolute",
     alignItems: "center",
     justifyContent: "center",
-    top: -UNIT / 2,
-    left: -UNIT / 2,
     width: UNIT,
     height: UNIT,
     borderRadius: UNIT,

@@ -47,12 +47,13 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
     [focused]
   );
 
-  const focusedDayIndex = useMemo(() => {
-    if (date.year === focused.year && date.month === focused.month) {
-      const index = days.indexOf(date.day);
-      return index >= 0 ? 7 + offset + index : undefined;
-    } else return undefined;
-  }, [date, focused]);
+  const selectedClass = useMemo(
+    () =>
+      date.year === focused.year && date.month === focused.month
+        ? "tableItem" + (6 + offset + date.day)
+        : undefined,
+    [date, focused]
+  );
 
   const isToday = (day: number) =>
     today.year === focused.year &&
@@ -142,13 +143,13 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
                     </Text>
                   </Pressable>
                 ))}
-                {focusedDayIndex && (
+                {selectedClass && (
                   <View
                     style={[
                       style.tableItem,
                       BASE_STYLE.selected,
                       // @ts-ignore
-                      style["tableItem" + focusedDayIndex],
+                      style[selectedClass],
                     ]}
                   >
                     <Text
