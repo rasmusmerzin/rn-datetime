@@ -85,7 +85,7 @@ enum Mode {
 interface Props {
   value?: NaiveTime;
   visible: boolean;
-  onSubmit(date: NaiveTime): void;
+  onSubmit(time: NaiveTime): void;
   onCancel(): void;
 }
 
@@ -100,14 +100,24 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
       ? INNER_DIST
       : OUTER_DIST;
 
+  const cancel = () => {
+    setMode(Mode.Hour);
+    onCancel();
+  };
+
+  const submit = () => {
+    setMode(Mode.Hour);
+    onSubmit(time);
+  };
+
   return (
     <Modal
       animationType="fade"
       transparent={true}
       visible={visible}
-      onRequestClose={onCancel}
+      onRequestClose={cancel}
     >
-      <Pressable style={BASE_STYLE.background} onPress={onCancel}>
+      <Pressable style={BASE_STYLE.background} onPress={cancel}>
         <Pressable style={BASE_STYLE.window}>
           <View style={style.split}>
             <View style={style.title}>
@@ -173,13 +183,10 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
           </View>
 
           <View style={BASE_STYLE.submitRow}>
-            <Text
-              style={BASE_STYLE.submitRowItem}
-              onPress={() => onSubmit(time)}
-            >
+            <Text style={BASE_STYLE.submitRowItem} onPress={submit}>
               OK
             </Text>
-            <Text style={BASE_STYLE.submitRowItem} onPress={onCancel}>
+            <Text style={BASE_STYLE.submitRowItem} onPress={cancel}>
               Cancel
             </Text>
           </View>

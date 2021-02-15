@@ -57,14 +57,30 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
     today.month === focused.month &&
     today.day === day;
 
+  const cancel = () => {
+    setFocused({
+      year: date.year,
+      month: date.month,
+    });
+    onCancel();
+  };
+
+  const submit = () => {
+    setFocused({
+      year: date.year,
+      month: date.month,
+    });
+    onSubmit(date);
+  };
+
   return (
     <Modal
       animationType="fade"
       transparent={true}
       visible={visible}
-      onRequestClose={onCancel}
+      onRequestClose={cancel}
     >
-      <Pressable style={BASE_STYLE.background} onPress={onCancel}>
+      <Pressable style={BASE_STYLE.background} onPress={cancel}>
         <Pressable style={BASE_STYLE.window}>
           <View style={style.split}>
             <View>
@@ -124,13 +140,10 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
           </View>
 
           <View style={BASE_STYLE.submitRow}>
-            <Text
-              style={BASE_STYLE.submitRowItem}
-              onPress={() => onSubmit(date)}
-            >
+            <Text style={BASE_STYLE.submitRowItem} onPress={submit}>
               OK
             </Text>
-            <Text style={BASE_STYLE.submitRowItem} onPress={onCancel}>
+            <Text style={BASE_STYLE.submitRowItem} onPress={cancel}>
               Cancel
             </Text>
           </View>
