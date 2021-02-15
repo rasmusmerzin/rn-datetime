@@ -1,9 +1,0 @@
-{
-  "expo": {
-    "name": "DateTime",
-    "slug": "datetime",
-    "version": "0.1.0",
-    "privacy": "public",
-    "entryPoint": "./src/Main.tsx"
-  }
-}
