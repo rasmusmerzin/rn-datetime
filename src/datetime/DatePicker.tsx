@@ -116,7 +116,7 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
                   <View
                     key={i}
                     style={[
-                      style.tableItem,
+                      BASE_STYLE.tableItem,
                       // @ts-ignore
                       style["tableItem" + i],
                     ]}
@@ -128,7 +128,7 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
                   <Pressable
                     key={i}
                     style={[
-                      style.tableItem,
+                      BASE_STYLE.tableItem,
                       // @ts-ignore
                       style["tableItem" + (7 + offset + i)],
                     ]}
@@ -146,7 +146,7 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
                 {selectedClass && (
                   <View
                     style={[
-                      style.tableItem,
+                      BASE_STYLE.tableItem,
                       BASE_STYLE.selected,
                       // @ts-ignore
                       style[selectedClass],
@@ -188,13 +188,14 @@ const style = StyleSheet.create({
     fontSize: 32,
     fontWeight: "700",
     width: 200,
-    height: UNIT * 2,
     color: COLORS.text,
+    marginBottom: UNIT * 0.7,
   },
   monthPicker: {
     flexDirection: "row",
     alignItems: "center",
-    height: UNIT * 1.2,
+    height: UNIT,
+    marginVertical: UNIT / 3,
   },
   monthPickerTitle: {
     color: COLORS.text,
@@ -213,14 +214,6 @@ const style = StyleSheet.create({
   table: {
     width: UNIT * 7,
     height: UNIT * 7,
-  },
-  tableItem: {
-    position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
-    width: UNIT,
-    height: UNIT,
-    borderRadius: UNIT,
   },
   tableItemText: {
     fontSize: 12,

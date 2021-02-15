@@ -29,13 +29,13 @@ const Minutes = ({ onChange }: ModeProps) => (
         <Pressable
           key={i}
           style={[
-            style.clockItem,
+            BASE_STYLE.tableItem,
             // @ts-ignore
-            style["clockOuter" + i],
+            style["tableOuter" + i],
           ]}
           onPress={() => onChange(m)}
         >
-          <Text style={style.clockItemText}>{String(m).padStart(2, "0")}</Text>
+          <Text style={style.tableItemText}>{String(m).padStart(2, "0")}</Text>
         </Pressable>
       );
     })}
@@ -49,13 +49,13 @@ const Hours = ({ onChange }: ModeProps) => (
         <Pressable
           key={i}
           style={[
-            style.clockItem,
+            BASE_STYLE.tableItem,
             // @ts-ignore
-            style["clockOuter" + i],
+            style["tableOuter" + i],
           ]}
           onPress={() => onChange(h)}
         >
-          <Text style={style.clockItemText}>{h}</Text>
+          <Text style={style.tableItemText}>{h}</Text>
         </Pressable>
       );
     })}
@@ -64,13 +64,13 @@ const Hours = ({ onChange }: ModeProps) => (
         <Pressable
           key={i}
           style={[
-            style.clockItem,
+            BASE_STYLE.tableItem,
             // @ts-ignore
-            style["clockInner" + i],
+            style["tableInner" + i],
           ]}
           onPress={() => onChange(h)}
         >
-          <Text style={[style.clockItemText, style.clockInnerText]}>
+          <Text style={[style.tableItemText, style.tableInnerText]}>
             {String(h).padStart(2, "0")}
           </Text>
         </Pressable>
@@ -97,7 +97,7 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
 
   const selectedClass = useMemo(
     () =>
-      "clock" +
+      "table" +
       (mode === Mode.Hour
         ? (!time.hour || time.hour > 12 ? "Inner" : "Outer") + (time.hour % 12)
         : "Outer" + Math.floor(time.minute / 5)),
@@ -146,12 +146,12 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
               </Text>
             </View>
 
-            <View style={style.clockCircle}>
+            <View style={style.table}>
               {mode === Mode.Hour ? (
                 <Hours
                   onChange={(val) => {
                     setTime(new NaiveTime(val, time.minute));
-                    setTimeout(() => setMode(Mode.Minute));
+                    setTimeout(() => setMode(Mode.Minute), 100);
                   }}
                 />
               ) : (
@@ -162,13 +162,13 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
 
               <View
                 style={[
-                  style.clockItem,
+                  BASE_STYLE.tableItem,
                   BASE_STYLE.selected,
                   // @ts-ignore
                   style[selectedClass],
                 ]}
               >
-                <Text style={[style.clockItemText, BASE_STYLE.selectedText]}>
+                <Text style={[style.tableItemText, BASE_STYLE.selectedText]}>
                   {mode === Mode.Hour
                     ? time.hour || String(time.hour).padStart(2, "0")
                     : String(time.minute).padStart(2, "0")}
@@ -191,21 +191,21 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
   );
 };
 
-const CLOCK_DIAMETER = UNIT * 6.4;
+const TABLE_DIAMETER = UNIT * 6.4;
 const TITLE_HEIGHT = UNIT * 2;
-const OUTER_DIST = CLOCK_DIAMETER * 0.4;
-const INNER_DIST = CLOCK_DIAMETER * 0.25;
+const OUTER_DIST = TABLE_DIAMETER * 0.4;
+const INNER_DIST = TABLE_DIAMETER * 0.25;
 
 const style = StyleSheet.create({
   split: {
     flexWrap: "wrap",
-    maxHeight: CLOCK_DIAMETER + UNIT + TITLE_HEIGHT,
+    maxHeight: TABLE_DIAMETER + UNIT + TITLE_HEIGHT,
     alignItems: "center",
   },
   title: {
     flex: 1,
     minHeight: TITLE_HEIGHT,
-    maxHeight: CLOCK_DIAMETER + UNIT,
+    maxHeight: TABLE_DIAMETER + UNIT,
     marginRight: 20,
     flexDirection: "row",
     alignItems: "center",
@@ -217,32 +217,24 @@ const style = StyleSheet.create({
   selectedTitle: {
     color: COLORS.text,
   },
-  clockCircle: {
-    width: CLOCK_DIAMETER,
-    height: CLOCK_DIAMETER,
-    borderRadius: CLOCK_DIAMETER,
+  table: {
+    width: TABLE_DIAMETER,
+    height: TABLE_DIAMETER,
+    borderRadius: TABLE_DIAMETER,
     backgroundColor: COLORS.highlight,
-    marginHorizontal: (UNIT * 7 - CLOCK_DIAMETER) / 2,
+    marginHorizontal: (UNIT * 7 - TABLE_DIAMETER) / 2,
     marginVertical: UNIT / 2,
   },
-  clockItem: {
-    position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
-    width: UNIT,
-    height: UNIT,
-    borderRadius: UNIT,
-  },
-  clockItemText: {
+  tableItemText: {
     color: COLORS.text,
   },
-  clockCenter: {
+  tableCenter: {
     position: "absolute",
-    left: CLOCK_DIAMETER / 2,
-    top: CLOCK_DIAMETER / 2,
+    left: TABLE_DIAMETER / 2,
+    top: TABLE_DIAMETER / 2,
     fontSize: 16,
   },
-  clockInnerText: {
+  tableInnerText: {
     color: COLORS.shadow,
     fontSize: 12,
   },
@@ -250,13 +242,13 @@ const style = StyleSheet.create({
     const generatedStyle: { [key: string]: TextStyle } = {};
     for (let i = 0; i < 12; i++) {
       const angle = (i * Math.PI) / 6;
-      generatedStyle["clockOuter" + i] = {
-        left: (CLOCK_DIAMETER - UNIT) / 2 + Math.sin(angle) * OUTER_DIST,
-        top: (CLOCK_DIAMETER - UNIT) / 2 - Math.cos(angle) * OUTER_DIST,
+      generatedStyle["tableOuter" + i] = {
+        left: (TABLE_DIAMETER - UNIT) / 2 + Math.sin(angle) * OUTER_DIST,
+        top: (TABLE_DIAMETER - UNIT) / 2 - Math.cos(angle) * OUTER_DIST,
       };
-      generatedStyle["clockInner" + i] = {
-        left: (CLOCK_DIAMETER - UNIT) / 2 + Math.sin(angle) * INNER_DIST,
-        top: (CLOCK_DIAMETER - UNIT) / 2 - Math.cos(angle) * INNER_DIST,
+      generatedStyle["tableInner" + i] = {
+        left: (TABLE_DIAMETER - UNIT) / 2 + Math.sin(angle) * INNER_DIST,
+        top: (TABLE_DIAMETER - UNIT) / 2 - Math.cos(angle) * INNER_DIST,
       };
     }
     return generatedStyle;
