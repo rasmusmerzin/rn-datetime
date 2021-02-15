@@ -1,11 +1,11 @@
 {
   "name": "rn-datetime",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "Platform agnostic date & time pickers for React Native",
   "homepage": "https://gitlab.com/rasmusmerzin/rn-datetime#rn-datetime",
   "repository": {
-    "type" : "git",
-    "url" : "https://gitlab.com/rasmusmerzin/rn-datetime"
+    "type": "git",
+    "url": "https://gitlab.com/rasmusmerzin/rn-datetime"
   },
   "author": "Emil Rasmus Merzin",
   "license": "MIT",
@@ -14,15 +14,13 @@
   ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",
     "prepare": "yarn clean && yarn build"
-  },
-  "dependencies": {
-    "react": "17",
-    "react-dom": "17",
-    "react-native": "0.63"
   },
   "devDependencies": {
     "@babel/core": "7",
