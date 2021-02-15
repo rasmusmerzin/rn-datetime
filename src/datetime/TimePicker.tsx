@@ -26,7 +26,7 @@ const Minutes = ({ onChange }: ModeProps) => (
   <>
     {MINUTES.map((m, i) => {
       return (
-        <Text
+        <Pressable
           key={i}
           style={[
             style.clockItem,
@@ -35,8 +35,8 @@ const Minutes = ({ onChange }: ModeProps) => (
           ]}
           onPress={() => onChange(m)}
         >
-          {String(m).padStart(2, "0")}
-        </Text>
+          <Text style={style.clockItemText}>{String(m).padStart(2, "0")}</Text>
+        </Pressable>
       );
     })}
   </>
@@ -46,7 +46,7 @@ const Hours = ({ onChange }: ModeProps) => (
   <>
     {MORNING_HOURS.map((h, i) => {
       return (
-        <Text
+        <Pressable
           key={i}
           style={[
             style.clockItem,
@@ -55,13 +55,13 @@ const Hours = ({ onChange }: ModeProps) => (
           ]}
           onPress={() => onChange(h)}
         >
-          {h}
-        </Text>
+          <Text style={style.clockItemText}>{h}</Text>
+        </Pressable>
       );
     })}
     {EVENING_HOURS.map((h, i) => {
       return (
-        <Text
+        <Pressable
           key={i}
           style={[
             style.clockItem,
@@ -70,8 +70,10 @@ const Hours = ({ onChange }: ModeProps) => (
           ]}
           onPress={() => onChange(h)}
         >
-          {String(h).padStart(2, "0")}
-        </Text>
+          <Text style={[style.clockItemText, style.clockInnerText]}>
+            {String(h).padStart(2, "0")}
+          </Text>
+        </Pressable>
       );
     })}
   </>
@@ -162,7 +164,7 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
                   { transform: [{ rotate: `${selectAngle}deg` }] },
                 ]}
               >
-                <Text
+                <View
                   style={[
                     style.clockItem,
                     BASE_STYLE.selected,
@@ -174,10 +176,12 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
                     },
                   ]}
                 >
-                  {mode === Mode.Hour
-                    ? time.hour || String(time.hour).padStart(2, "0")
-                    : String(time.minute).padStart(2, "0")}
-                </Text>
+                  <Text style={[style.clockItemText, BASE_STYLE.selectedText]}>
+                    {mode === Mode.Hour
+                      ? time.hour || String(time.hour).padStart(2, "0")
+                      : String(time.minute).padStart(2, "0")}
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -231,33 +235,37 @@ const style = StyleSheet.create({
     marginVertical: UNIT / 2,
   },
   clockItem: {
-    color: COLORS.text,
     position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
     top: -UNIT / 2,
     left: -UNIT / 2,
-    textAlign: "center",
-    textAlignVertical: "center",
     width: UNIT,
     height: UNIT,
     borderRadius: UNIT,
+  },
+  clockItemText: {
+    color: COLORS.text,
   },
   clockCenter: {
     position: "absolute",
     left: CLOCK_DIAMETER / 2,
     top: CLOCK_DIAMETER / 2,
+    fontSize: 16,
+  },
+  clockInnerText: {
+    color: COLORS.shadow,
+    fontSize: 12,
   },
   ...(() => {
     const generatedStyle: { [key: string]: TextStyle } = {};
     for (let i = 0; i < 12; i++) {
       const angle = (i * Math.PI) / 6;
       generatedStyle["clockOuter" + i] = {
-        fontSize: 16,
         left: (CLOCK_DIAMETER - UNIT) / 2 + Math.sin(angle) * OUTER_DIST,
         top: (CLOCK_DIAMETER - UNIT) / 2 - Math.cos(angle) * OUTER_DIST,
       };
       generatedStyle["clockInner" + i] = {
-        color: COLORS.shadow,
-        fontSize: 12,
         left: (CLOCK_DIAMETER - UNIT) / 2 + Math.sin(angle) * INNER_DIST,
         top: (CLOCK_DIAMETER - UNIT) / 2 - Math.cos(angle) * INNER_DIST,
       };

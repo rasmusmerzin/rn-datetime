@@ -55,6 +55,8 @@ export const BASE_STYLE = StyleSheet.create({
   },
   selected: {
     backgroundColor: COLORS.primary,
+  },
+  selectedText: {
     color: COLORS.background,
   },
   submitRow: {

@@ -47,10 +47,12 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
     [focused]
   );
 
-  const isSelected = (day: number) =>
-    date.year === focused.year &&
-    date.month === focused.month &&
-    date.day === day;
+  const focusedDayIndex = useMemo(() => {
+    if (date.year === focused.year && date.month === focused.month) {
+      const index = days.indexOf(date.day);
+      return index >= 0 ? 7 + offset + index : undefined;
+    } else return undefined;
+  }, [date, focused]);
 
   const isToday = (day: number) =>
     today.year === focused.year &&
@@ -110,31 +112,52 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
               </View>
               <View style={style.table}>
                 {WEEKDAYS.map((day, i) => (
-                  <Text
+                  <View
                     key={i}
-                    // @ts-ignore
-                    style={[style.tableItem, style["tableItem" + i]]}
+                    style={[
+                      style.tableItem,
+                      // @ts-ignore
+                      style["tableItem" + i],
+                    ]}
                   >
-                    {day}
-                  </Text>
+                    <Text style={style.tableItemText}>{day}</Text>
+                  </View>
                 ))}
                 {days.map((day, i) => (
-                  <Text
+                  <Pressable
                     key={i}
                     style={[
                       style.tableItem,
                       // @ts-ignore
                       style["tableItem" + (7 + offset + i)],
-                      isToday(day) && style.today,
-                      isSelected(day) && BASE_STYLE.selected,
                     ]}
                     onPress={() =>
                       setDate(new NaiveDate(focused.year, focused.month, day))
                     }
                   >
-                    {day}
-                  </Text>
+                    <Text
+                      style={[style.tableItemText, isToday(day) && style.today]}
+                    >
+                      {day}
+                    </Text>
+                  </Pressable>
                 ))}
+                {focusedDayIndex && (
+                  <View
+                    style={[
+                      style.tableItem,
+                      BASE_STYLE.selected,
+                      // @ts-ignore
+                      style["tableItem" + focusedDayIndex],
+                    ]}
+                  >
+                    <Text
+                      style={[style.tableItemText, BASE_STYLE.selectedText]}
+                    >
+                      {date.day}
+                    </Text>
+                  </View>
+                )}
               </View>
             </View>
           </View>
@@ -169,19 +192,18 @@ const style = StyleSheet.create({
   },
   monthPicker: {
     flexDirection: "row",
+    alignItems: "center",
     height: UNIT * 1.2,
   },
   monthPickerTitle: {
     color: COLORS.text,
     flex: 5,
-    textAlignVertical: "center",
     textAlign: "center",
     fontWeight: "bold",
   },
   monthPickerArrow: {
     color: COLORS.text,
     flex: 1,
-    textAlignVertical: "center",
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 30,
@@ -192,14 +214,16 @@ const style = StyleSheet.create({
     height: UNIT * 7,
   },
   tableItem: {
-    color: COLORS.text,
     position: "absolute",
-    textAlign: "center",
-    textAlignVertical: "center",
-    fontSize: 12,
+    alignItems: "center",
+    justifyContent: "center",
     width: UNIT,
     height: UNIT,
     borderRadius: UNIT,
+  },
+  tableItemText: {
+    fontSize: 12,
+    color: COLORS.text,
   },
   ...(() => {
     const generatedStyle: { [key: string]: TextStyle } = {};
