@@ -28,6 +28,7 @@ export default () => {
         <Text>{date.toLocalDate(time).toISOString()}</Text>
       </View>
       <DatePicker
+        prioritizeYear={true}
         value={date}
         visible={datePickerVisibility}
         onCancel={() => setDatePickerVisibility(false)}

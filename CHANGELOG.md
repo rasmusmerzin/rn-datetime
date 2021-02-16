@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://docs.npmjs.com/about-s
 
 ## [Unreleased]
 
+## [1.1.0] - 2021-02-17
+
+### Added
+
+- Year picker in DatePicker
+
 ## [1.0.2] - 2021-02-16
 
 ### Fixed
@@ -23,7 +29,8 @@ and this project adheres to [Semantic Versioning](https://docs.npmjs.com/about-s
 
 - Initial release
 
-[unreleased]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.0.2...master
+[unreleased]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.1.0...master
+[1.1.0]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.0.2...v1.1.0
 [1.0.2]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.0.1...v1.0.2
 [1.0.1]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.0.0...v1.0.1
 [1.0.0]: https://gitlab.com/rasmusmerzin/rn-datetime/tree/v1.0.0

@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { Pressable, StyleSheet, Text, TextStyle, View } from "react-native";
 
 import NaiveTime from "./NaiveTime";
-import { UNIT, COLORS, BASE_STYLE } from "./constant";
+import { UNIT, COLORS } from "./constant";
 import Modal from "./Modal";
 
 const MORNING_HOURS = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
@@ -20,7 +20,7 @@ const Minutes = ({ onChange }: ModeProps) => (
         <Pressable
           key={i}
           style={[
-            BASE_STYLE.tableItem,
+            style.tableItem,
             // @ts-ignore
             style["tableOuter" + i],
           ]}
@@ -40,7 +40,7 @@ const Hours = ({ onChange }: ModeProps) => (
         <Pressable
           key={i}
           style={[
-            BASE_STYLE.tableItem,
+            style.tableItem,
             // @ts-ignore
             style["tableOuter" + i],
           ]}
@@ -55,7 +55,7 @@ const Hours = ({ onChange }: ModeProps) => (
         <Pressable
           key={i}
           style={[
-            BASE_STYLE.tableItem,
+            style.tableItem,
             // @ts-ignore
             style["tableInner" + i],
           ]}
@@ -147,13 +147,13 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
 
           <View
             style={[
-              BASE_STYLE.tableItem,
-              BASE_STYLE.selected,
+              style.tableItem,
+              style.selected,
               // @ts-ignore
               style[selectedClass],
             ]}
           >
-            <Text style={[style.tableItemText, BASE_STYLE.selectedText]}>
+            <Text style={[style.tableItemText, style.selectedText]}>
               {mode === Mode.Hour
                 ? time.hour || String(time.hour).padStart(2, "0")
                 : String(time.minute).padStart(2, "0")}
@@ -199,8 +199,22 @@ const style = StyleSheet.create({
     marginHorizontal: (UNIT * 7 - TABLE_DIAMETER) / 2,
     marginVertical: UNIT / 2,
   },
+  tableItem: {
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
+    width: UNIT,
+    height: UNIT,
+    borderRadius: UNIT,
+  },
   tableItemText: {
     color: COLORS.text,
+  },
+  selected: {
+    backgroundColor: COLORS.primary,
+  },
+  selectedText: {
+    color: COLORS.background,
   },
   tableCenter: {
     position: "absolute",
