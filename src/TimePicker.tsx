@@ -1,23 +1,13 @@
 import React, { useMemo, useState } from "react";
-import {
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextStyle,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, Text, TextStyle, View } from "react-native";
 
 import NaiveTime from "./NaiveTime";
-import { COLORS, UNIT, BASE_STYLE } from "./constant";
+import { UNIT, COLORS, BASE_STYLE } from "./constant";
+import Modal from "./Modal";
 
 const MORNING_HOURS = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 const EVENING_HOURS = [0, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 const MINUTES = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
-const TABLE_DIAMETER = UNIT * 6.4;
-const TITLE_HEIGHT = UNIT * 2;
-const OUTER_DIST = TABLE_DIAMETER * 0.4;
-const INNER_DIST = TABLE_DIAMETER * 0.25;
 
 interface ModeProps {
   onChange(value: number): void;
@@ -116,82 +106,69 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
     onSubmit(time);
   };
 
+  const selectHour = (hour: number) => {
+    setTime(new NaiveTime(hour, time.minute));
+    setTimeout(() => setMode(Mode.Minute), 100);
+  };
+  const selectMinute = (minute: number) =>
+    setTime(new NaiveTime(time.hour, minute));
+
+  const openHours = () => mode !== Mode.Hour && setMode(Mode.Hour);
+  const openMinutes = () => mode !== Mode.Minute && setMode(Mode.Minute);
+
   return (
-    <Modal
-      animationType="fade"
-      transparent={true}
-      visible={visible}
-      onRequestClose={cancel}
-    >
-      <Pressable style={BASE_STYLE.background} onPress={cancel}>
-        <Pressable style={BASE_STYLE.window}>
-          <View style={style.split}>
-            <View style={style.title}>
-              <Text
-                style={[
-                  style.titleText,
-                  mode === Mode.Hour && style.selectedTitle,
-                ]}
-                onPress={() => setMode(Mode.Hour)}
-              >
-                {String(time.hour).padStart(2, "0")}
-              </Text>
-              <Text style={style.titleText}>:</Text>
-              <Text
-                style={[
-                  style.titleText,
-                  mode === Mode.Minute && style.selectedTitle,
-                ]}
-                onPress={() => setMode(Mode.Minute)}
-              >
-                {String(time.minute).padStart(2, "0")}
-              </Text>
-            </View>
+    <Modal visible={visible} onCancel={cancel} onSubmit={submit}>
+      <View style={style.split}>
+        <View style={style.title}>
+          <Text
+            style={[style.titleText, mode === Mode.Hour && style.selectedTitle]}
+            onPress={openHours}
+          >
+            {String(time.hour).padStart(2, "0")}
+          </Text>
+          <Text style={style.titleText}>:</Text>
+          <Text
+            style={[
+              style.titleText,
+              mode === Mode.Minute && style.selectedTitle,
+            ]}
+            onPress={openMinutes}
+          >
+            {String(time.minute).padStart(2, "0")}
+          </Text>
+        </View>
 
-            <View style={style.table}>
-              {mode === Mode.Hour ? (
-                <Hours
-                  onChange={(val) => {
-                    setTime(new NaiveTime(val, time.minute));
-                    setTimeout(() => setMode(Mode.Minute), 100);
-                  }}
-                />
-              ) : (
-                <Minutes
-                  onChange={(val) => setTime(new NaiveTime(time.hour, val))}
-                />
-              )}
+        <View style={style.table}>
+          {mode === Mode.Hour ? (
+            <Hours onChange={selectHour} />
+          ) : (
+            <Minutes onChange={selectMinute} />
+          )}
 
-              <View
-                style={[
-                  BASE_STYLE.tableItem,
-                  BASE_STYLE.selected,
-                  // @ts-ignore
-                  style[selectedClass],
-                ]}
-              >
-                <Text style={[style.tableItemText, BASE_STYLE.selectedText]}>
-                  {mode === Mode.Hour
-                    ? time.hour || String(time.hour).padStart(2, "0")
-                    : String(time.minute).padStart(2, "0")}
-                </Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={BASE_STYLE.submitRow}>
-            <Text style={BASE_STYLE.submitRowItem} onPress={submit}>
-              OK
-            </Text>
-            <Text style={BASE_STYLE.submitRowItem} onPress={cancel}>
-              Cancel
+          <View
+            style={[
+              BASE_STYLE.tableItem,
+              BASE_STYLE.selected,
+              // @ts-ignore
+              style[selectedClass],
+            ]}
+          >
+            <Text style={[style.tableItemText, BASE_STYLE.selectedText]}>
+              {mode === Mode.Hour
+                ? time.hour || String(time.hour).padStart(2, "0")
+                : String(time.minute).padStart(2, "0")}
             </Text>
           </View>
-        </Pressable>
-      </Pressable>
+        </View>
+      </View>
     </Modal>
   );
 };
+
+const TABLE_DIAMETER = UNIT * 6.4;
+const TITLE_HEIGHT = UNIT * 2;
+const OUTER_DIST = TABLE_DIAMETER * 0.4;
+const INNER_DIST = TABLE_DIAMETER * 0.25;
 
 const style = StyleSheet.create({
   split: {

@@ -1,16 +1,18 @@
 import React, { useState, useMemo } from "react";
-import {
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextStyle,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, Text, TextStyle, View } from "react-native";
 
 import NaiveDate from "./NaiveDate";
-import { nextMonth, prevMonth } from "./YearMonth";
 import { UNIT, COLORS, BASE_STYLE } from "./constant";
+import { nextMonth, prevMonth } from "./YearMonth";
+import getMonthDays from "./getMonthDays";
+import Modal from "./Modal";
+
+interface Props {
+  value?: NaiveDate;
+  visible: boolean;
+  onSubmit(date: NaiveDate): void;
+  onCancel(): void;
+}
 
 const WEEKDAYS = ["M", "T", "W", "T", "F", "S", "S"];
 const MONTHS = [
@@ -27,30 +29,6 @@ const MONTHS = [
   "November",
   "December",
 ];
-const DAY_MS = 1000 * 60 * 60 * 24;
-
-const getMonthDays = (year: number, month: number): [number[], number] => {
-  const date = new NaiveDate(year, month).toLocalDate();
-  const count = (() => {
-    const yearMonth = nextMonth({ year, month });
-    return (
-      (new NaiveDate(yearMonth.year, yearMonth.month).toLocalDate().getTime() -
-        date.getTime()) /
-      DAY_MS
-    );
-  })();
-  return [
-    Array.from(Array(count).values()).map((_, i) => i + 1),
-    date.getDay() - 1,
-  ];
-};
-
-interface Props {
-  value?: NaiveDate;
-  visible: boolean;
-  onSubmit(date: NaiveDate): void;
-  onCancel(): void;
-}
 
 export default ({ value, visible, onSubmit, onCancel }: Props) => {
   const today = new NaiveDate();
@@ -101,105 +79,83 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
     onSubmit(date);
   };
 
+  const focusPrevMonth = () => setFocused(prevMonth(focused));
+  const focusNextMonth = () => setFocused(nextMonth(focused));
+  const selectDay = (day: number) =>
+    setDate(new NaiveDate(focused.year, focused.month, day));
+
   return (
-    <Modal
-      animationType="fade"
-      transparent={true}
-      visible={visible}
-      onRequestClose={cancel}
-    >
-      <Pressable style={BASE_STYLE.background} onPress={cancel}>
-        <Pressable style={BASE_STYLE.window}>
-          <View style={style.split}>
-            <View>
-              <Text style={style.titleYear}>{date.year}</Text>
-              <Text style={style.titleDate}>
-                {date.toLocalDate().toDateString().substring(0, 10)}
-              </Text>
-            </View>
+    <Modal visible={visible} onCancel={cancel} onSubmit={submit}>
+      <View style={style.split}>
+        <View>
+          <Text style={style.titleYear}>{date.year}</Text>
+          <Text style={style.titleDate}>
+            {date.toLocalDate().toDateString().substring(0, 10)}
+          </Text>
+        </View>
 
-            <View>
-              <View style={style.monthPicker}>
-                <Text
-                  style={style.monthPickerArrow}
-                  onPress={() => setFocused(prevMonth(focused))}
-                >
-                  {"‹"}
-                </Text>
-                <Text style={style.monthPickerTitle}>
-                  {MONTHS[focused.month]} {focused.year}
-                </Text>
-                <Text
-                  style={style.monthPickerArrow}
-                  onPress={() => setFocused(nextMonth(focused))}
-                >
-                  {"›"}
-                </Text>
-              </View>
-              <View style={style.table}>
-                {WEEKDAYS.map((day, i) => (
-                  <View
-                    key={i}
-                    style={[
-                      BASE_STYLE.tableItem,
-                      // @ts-ignore
-                      style["tableItem" + i],
-                    ]}
-                  >
-                    <Text style={[style.tableItemText, style.tableWeekDay]}>
-                      {day}
-                    </Text>
-                  </View>
-                ))}
-                {days.map((day, i) => (
-                  <Pressable
-                    key={i}
-                    style={[
-                      BASE_STYLE.tableItem,
-                      // @ts-ignore
-                      style["tableItem" + (7 + offset + i)],
-                    ]}
-                    onPress={() =>
-                      setDate(new NaiveDate(focused.year, focused.month, day))
-                    }
-                  >
-                    <Text
-                      style={[style.tableItemText, isToday(day) && style.today]}
-                    >
-                      {day}
-                    </Text>
-                  </Pressable>
-                ))}
-                {selectedClass && (
-                  <View
-                    style={[
-                      BASE_STYLE.tableItem,
-                      BASE_STYLE.selected,
-                      // @ts-ignore
-                      style[selectedClass],
-                    ]}
-                  >
-                    <Text
-                      style={[style.tableItemText, BASE_STYLE.selectedText]}
-                    >
-                      {date.day}
-                    </Text>
-                  </View>
-                )}
-              </View>
-            </View>
-          </View>
-
-          <View style={BASE_STYLE.submitRow}>
-            <Text style={BASE_STYLE.submitRowItem} onPress={submit}>
-              OK
+        <View>
+          <View style={style.monthPicker}>
+            <Text style={style.monthPickerArrow} onPress={focusPrevMonth}>
+              {"‹"}
             </Text>
-            <Text style={BASE_STYLE.submitRowItem} onPress={cancel}>
-              Cancel
+            <Text style={style.monthPickerTitle}>
+              {MONTHS[focused.month]} {focused.year}
+            </Text>
+            <Text style={style.monthPickerArrow} onPress={focusNextMonth}>
+              {"›"}
             </Text>
           </View>
-        </Pressable>
-      </Pressable>
+
+          <View style={style.table}>
+            {WEEKDAYS.map((day, i) => (
+              <View
+                key={i}
+                style={[
+                  BASE_STYLE.tableItem,
+                  // @ts-ignore
+                  style["tableItem" + i],
+                ]}
+              >
+                <Text style={[style.tableItemText, style.tableWeekDay]}>
+                  {day}
+                </Text>
+              </View>
+            ))}
+            {days.map((day, i) => (
+              <Pressable
+                key={i}
+                style={[
+                  BASE_STYLE.tableItem,
+                  // @ts-ignore
+                  style["tableItem" + (7 + offset + i)],
+                ]}
+                onPress={() => selectDay(day)}
+              >
+                <Text
+                  style={[style.tableItemText, isToday(day) && style.today]}
+                >
+                  {day}
+                </Text>
+              </Pressable>
+            ))}
+            {selectedClass && (
+              <View
+                style={[
+                  BASE_STYLE.tableItem,
+                  BASE_STYLE.selected,
+                  // @ts-ignore
+                  style[selectedClass],
+                ]}
+              >
+                <Text style={[style.tableItemText, BASE_STYLE.selectedText]}>
+                  {date.day}
+                </Text>
+              </View>
+            )}
+          </View>
+        </View>
+      </View>
     </Modal>
   );
 };
