@@ -11,5 +11,5 @@ and this project adheres to [Semantic Versioning](https://docs.npmjs.com/about-s
 
 - Initial release
 
-[unreleased]: https://gitlab.com/osoy/osoy/compare/v1.0.0...master
-[1.0.0]: https://gitlab.com/osoy/osoy/tree/v1.0.0
+[unreleased]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.0.0...master
+[1.0.0]: https://gitlab.com/rasmusmerzin/rn-datetime/tree/v1.0.0
