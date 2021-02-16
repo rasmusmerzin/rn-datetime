@@ -12,7 +12,8 @@ RN DateTime
 </a>
 </h1>
 
-Platform agnostic date & time pickers for React Native. This project has been tested with Expo on iOS and Android.
+Platform agnostic date & time pickers for React Native.
+This project has been tested with Expo on iOS and Android but doesn't yet support React Native Web.
 
 These are simple implementations written in Typescript that mimic Google Calendar's date & time pickers.
 
