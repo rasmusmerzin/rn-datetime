@@ -20,7 +20,8 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",
-    "prepare": "yarn clean && yarn build"
+    "prepare": "yarn clean && yarn build",
+    "example": "./scripts/example.sh"
   },
   "devDependencies": {
     "@babel/core": "7",
