@@ -23,10 +23,10 @@ which do not include timezone and can be converted into ES Date type (inheriting
 
 ## Demos
 
-<img alt="Portrait Demo" src="https://gitlab.com/rasmusmerzin/rn-datetime/-/blob/master/demo-portrait.gif" height='400' />
-<img alt="Landscape Demo" src="https://gitlab.com/rasmusmerzin/rn-datetime/-/blob/master/demo-landscape.gif" width='400' />
-
 > These demos are recorded in GMT+02:00.
+
+- [Portrait Demo](https://gitlab.com/rasmusmerzin/rn-datetime/-/blob/master/demo-portrait.gif)
+- [Landscape Demo](https://gitlab.com/rasmusmerzin/rn-datetime/-/blob/master/demo-landscape.gif)
 
 ## Installation
 
