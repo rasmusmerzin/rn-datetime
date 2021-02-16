@@ -106,6 +106,7 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
   );
 
   const cancel = () => {
+    value && setTime(value);
     setMode(Mode.Hour);
     onCancel();
   };

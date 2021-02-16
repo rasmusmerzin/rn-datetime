@@ -78,10 +78,18 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
     today.day === day;
 
   const cancel = () => {
-    setFocused({
-      year: date.year,
-      month: date.month,
-    });
+    if (value) {
+      setDate(value);
+      setFocused({
+        year: value.year,
+        month: value.month,
+      });
+    } else {
+      setFocused({
+        year: date.year,
+        month: date.month,
+      });
+    }
     onCancel();
   };
 
