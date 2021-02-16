@@ -146,7 +146,9 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
                       style["tableItem" + i],
                     ]}
                   >
-                    <Text style={style.tableItemText}>{day}</Text>
+                    <Text style={[style.tableItemText, style.tableWeekDay]}>
+                      {day}
+                    </Text>
                   </View>
                 ))}
                 {days.map((day, i) => (
@@ -244,11 +246,13 @@ const style = StyleSheet.create({
     fontSize: 12,
     color: COLORS.text,
   },
+  tableWeekDay: {
+    color: COLORS.shadow,
+  },
   ...(() => {
     const generatedStyle: { [key: string]: TextStyle } = {};
     for (let i = 0; i < 49; i++) {
       generatedStyle["tableItem" + i] = {
-        color: i < 7 ? COLORS.shadow : COLORS.text,
         left: UNIT * (i % 7),
         top: UNIT * Math.floor(i / 7),
       };
