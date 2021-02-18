@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
-import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Modal } from "./compat";
 import { UNIT, COLORS } from "./constant";
 
 interface Props {
@@ -53,6 +54,7 @@ const style = StyleSheet.create({
   },
   submitRow: {
     flexDirection: "row-reverse",
+    alignItems: "center",
     position: "absolute",
     height: UNIT,
     bottom: UNIT / 2,
@@ -61,6 +63,6 @@ const style = StyleSheet.create({
   submitRowItem: {
     color: COLORS.primary,
     paddingHorizontal: 15,
-    textAlignVertical: "center",
+    paddingVertical: 7,
   },
 });

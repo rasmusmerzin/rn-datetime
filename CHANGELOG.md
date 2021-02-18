@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://docs.npmjs.com/about-s
 
 ## [Unreleased]
 
+### Added
+
+- Minimal support for React Native Web
+
 ## [1.1.1] - 2021-02-18
 
 ### Fixed

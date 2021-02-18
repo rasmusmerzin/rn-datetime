@@ -8,7 +8,7 @@
     "noUnusedParameters": true,
     "forceConsistentCasingInFileNames": true,
 
-    "jsx": "react-native",
+    "jsx": "react",
     "lib": ["dom", "esnext"],
     "downlevelIteration": true,
 
