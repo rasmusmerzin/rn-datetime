@@ -96,16 +96,19 @@ export default ({
   };
 
   const submit = () => {
-    const defaultMode = prioritizeYear ? Mode.Year : Mode.Calendar;
-    mode !== defaultMode && setMode(defaultMode);
+    if (mode === Mode.Year) setMode(Mode.Calendar);
+    else {
+      const defaultMode = prioritizeYear ? Mode.Year : Mode.Calendar;
+      mode !== defaultMode && setMode(defaultMode);
 
-    (focused.year !== date.year || focused.month !== date.month) &&
-      setFocused({
-        year: date.year,
-        month: date.month,
-      });
+      (focused.year !== date.year || focused.month !== date.month) &&
+        setFocused({
+          year: date.year,
+          month: date.month,
+        });
 
-    onSubmit(date);
+      onSubmit(date);
+    }
   };
 
   const focusPrevMonth = () => setFocused(prevMonth(focused));
