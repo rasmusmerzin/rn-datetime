@@ -42,5 +42,4 @@ For usage check [`example`](https://gitlab.com/rasmusmerzin/rn-datetime/-/blob/m
 
 ## Roadmap
 
-- `1.2.x` Improve performance with memoization (and possibly with pure components).
 - `1.3.0` Add support for theming or styling
