@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { memo, ReactNode } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Modal } from "./compat";
 import { UNIT, COLORS } from "./constant";
@@ -10,7 +10,7 @@ interface Props {
   children?: ReactNode;
 }
 
-export default ({ visible, children, onCancel, onSubmit }: Props) => (
+export default memo(({ visible, children, onCancel, onSubmit }: Props) => (
   <Modal
     animationType="fade"
     transparent={true}
@@ -31,7 +31,7 @@ export default ({ visible, children, onCancel, onSubmit }: Props) => (
       </Pressable>
     </Pressable>
   </Modal>
-);
+));
 
 const style = StyleSheet.create({
   background: {

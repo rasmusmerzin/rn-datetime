@@ -10,11 +10,11 @@ const YEARS = Array.from(Array(YEAR_COUNT), (_, i) => MIN_YEAR + i);
 interface YearProps {
   value: number;
   selected: boolean;
-  select(year: number): void;
+  select(value: number): void;
 }
 
 const Year = memo(({ value, selected, select }: YearProps) => {
-  const onPress = useCallback(() => select(value), []);
+  const onPress = useCallback(() => select(value), [value, select]);
   return (
     <Pressable style={style.year} onPress={onPress}>
       <Text style={[style.yearText, selected && style.selectedText]}>
@@ -29,22 +29,29 @@ interface Props {
   select(year: number): void;
 }
 
-export default ({ selected, select }: Props) => (
-  <FlatList
-    style={style.list}
-    data={YEARS}
-    initialScrollIndex={Math.max(0, selected - MIN_YEAR - 2)}
-    getItemLayout={(_, index) => ({
-      length: ITEM_HEIGHT,
-      offset: ITEM_HEIGHT * index,
-      index,
-    })}
-    renderItem={({ item }) => (
-      <Year value={item} selected={selected === item} select={select} />
-    )}
-    keyExtractor={(year, _) => String(year)}
-  />
-);
+const getItemLayout = (_: any, index: number) => ({
+  length: ITEM_HEIGHT,
+  offset: ITEM_HEIGHT * index,
+  index,
+});
+
+const keyExtractor = (value: number, _: any) => String(value);
+
+export default memo(({ selected, select }: Props) => {
+  const renderItem = ({ item }: { item: number }) => (
+    <Year value={item} selected={selected === item} select={select} />
+  );
+  return (
+    <FlatList
+      style={style.list}
+      data={YEARS}
+      initialScrollIndex={Math.max(0, selected - MIN_YEAR - 2)}
+      getItemLayout={getItemLayout}
+      renderItem={renderItem}
+      keyExtractor={keyExtractor}
+    />
+  );
+});
 
 const style = StyleSheet.create({
   list: {

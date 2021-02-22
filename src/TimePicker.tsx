@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 import { Pressable, StyleSheet, Text, TextStyle, View } from "react-native";
 
 import NaiveTime from "./NaiveTime";
@@ -13,7 +13,7 @@ interface ModeProps {
   onChange(value: number): void;
 }
 
-const Minutes = ({ onChange }: ModeProps) => (
+const Minutes = memo(({ onChange }: ModeProps) => (
   <>
     {MINUTES.map((m, i) => {
       return (
@@ -31,9 +31,9 @@ const Minutes = ({ onChange }: ModeProps) => (
       );
     })}
   </>
-);
+));
 
-const Hours = ({ onChange }: ModeProps) => (
+const Hours = memo(({ onChange }: ModeProps) => (
   <>
     {MORNING_HOURS.map((h, i) => {
       return (
@@ -68,7 +68,7 @@ const Hours = ({ onChange }: ModeProps) => (
       );
     })}
   </>
-);
+));
 
 enum Mode {
   Hour,
@@ -95,26 +95,37 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
     [time, mode]
   );
 
-  const cancel = () => {
+  const cancel = useCallback(() => {
     value && setTime(value);
     setMode(Mode.Hour);
     onCancel();
-  };
+  }, [value, setTime, setMode, onCancel]);
 
-  const submit = () => {
+  const submit = useCallback(() => {
     setMode(Mode.Hour);
     onSubmit(time);
-  };
+  }, [setMode, time, onSubmit]);
 
-  const selectHour = (hour: number) => {
-    setTime(new NaiveTime(hour, time.minute));
-    setTimeout(() => setMode(Mode.Minute), 100);
-  };
-  const selectMinute = (minute: number) =>
-    setTime(new NaiveTime(time.hour, minute));
+  const selectHour = useCallback(
+    (hour: number) => {
+      setTime((time) => new NaiveTime(hour, time.minute));
+      setMode(Mode.Minute);
+    },
+    [setTime]
+  );
+  const selectMinute = useCallback(
+    (minute: number) => setTime((time) => new NaiveTime(time.hour, minute)),
+    [setTime]
+  );
 
-  const openHours = () => mode !== Mode.Hour && setMode(Mode.Hour);
-  const openMinutes = () => mode !== Mode.Minute && setMode(Mode.Minute);
+  const openHours = useCallback(
+    () => mode !== Mode.Hour && setMode(Mode.Hour),
+    [mode]
+  );
+  const openMinutes = useCallback(
+    () => mode !== Mode.Minute && setMode(Mode.Minute),
+    [mode]
+  );
 
   return (
     <Modal visible={visible} onCancel={cancel} onSubmit={submit}>

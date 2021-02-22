@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { DatePicker, TimePicker, NaiveDate, NaiveTime } from "rn-datetime";
 
@@ -8,20 +8,42 @@ export default () => {
   const [datePickerVisibility, setDatePickerVisibility] = useState(false);
   const [timePickerVisibility, setTimePickerVisibility] = useState(false);
 
+  const showDatePicker = useCallback(() => setDatePickerVisibility(true), [
+    setDatePickerVisibility,
+  ]);
+  const hideDatePicker = useCallback(() => setDatePickerVisibility(false), [
+    setDatePickerVisibility,
+  ]);
+  const showTimePicker = useCallback(() => setTimePickerVisibility(true), [
+    setTimePickerVisibility,
+  ]);
+  const hideTimePicker = useCallback(() => setTimePickerVisibility(false), [
+    setTimePickerVisibility,
+  ]);
+
+  const submitDate = useCallback(
+    (time) => {
+      setDate(time);
+      hideDatePicker();
+    },
+    [time, setDate, hideDatePicker]
+  );
+  const submitTime = useCallback(
+    (time) => {
+      setTime(time);
+      hideTimePicker();
+    },
+    [time, setTime, hideTimePicker]
+  );
+
   return (
     <>
       <View style={style.center}>
         <View style={style.row}>
-          <Text
-            style={style.date}
-            onPress={() => setDatePickerVisibility(true)}
-          >
+          <Text style={style.date} onPress={showDatePicker}>
             {date.toLocalDate().toDateString()}
           </Text>
-          <Text
-            style={style.time}
-            onPress={() => setTimePickerVisibility(true)}
-          >
+          <Text style={style.time} onPress={showTimePicker}>
             {time.toString()}
           </Text>
         </View>
@@ -31,20 +53,14 @@ export default () => {
         prioritizeYear={true}
         value={date}
         visible={datePickerVisibility}
-        onCancel={() => setDatePickerVisibility(false)}
-        onSubmit={(date) => {
-          setDate(date);
-          setDatePickerVisibility(false);
-        }}
+        onCancel={hideDatePicker}
+        onSubmit={submitDate}
       />
       <TimePicker
         value={time}
         visible={timePickerVisibility}
-        onCancel={() => setTimePickerVisibility(false)}
-        onSubmit={(time) => {
-          setTime(time);
-          setTimePickerVisibility(false);
-        }}
+        onCancel={hideTimePicker}
+        onSubmit={submitTime}
       />
     </>
   );
