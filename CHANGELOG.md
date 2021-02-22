@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://docs.npmjs.com/about-s
 
 ## [Unreleased]
 
+## [1.2.2] - 2021-02-22
+
+### Fixed
+
+- NaiveDate toLocaleDate method
+
 ## [1.2.1] - 2021-02-22
 
 ### Added
@@ -47,7 +53,8 @@ and this project adheres to [Semantic Versioning](https://docs.npmjs.com/about-s
 
 - Initial release
 
-[unreleased]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.1...master
+[unreleased]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.2...master
+[1.2.2]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.1...v1.2.2
 [1.2.1]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.0...v1.2.1
 [1.2.0]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.1.1...v1.2.0
 [1.1.1]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.1.0...v1.1.1

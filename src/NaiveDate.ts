@@ -34,11 +34,8 @@ export default class NaiveDate {
   }
 
   toLocalDate(time?: NaiveTime) {
-    const date = new Date(this.toString());
-    if (time) {
-      date.setHours(time.hour);
-      date.setMinutes(time.minute);
-    }
-    return date;
+    return time
+      ? new Date(this.year, this.month, this.day, time.hour, time.minute)
+      : new Date(this.year, this.month, this.day);
   }
 }

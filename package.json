@@ -1,6 +1,6 @@
 {
   "name": "rn-datetime",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Platform agnostic date & time pickers for React Native",
   "homepage": "https://gitlab.com/rasmusmerzin/rn-datetime#rn-datetime",
   "repository": {
@@ -18,17 +18,21 @@
     "dist"
   ],
   "scripts": {
+    "test": "jest",
     "build": "tsc",
     "clean": "rm -rf dist",
-    "prepare": "yarn clean && yarn build",
+    "prepare": "yarn test && yarn clean && yarn build",
     "example": "./scripts/example.sh"
   },
   "devDependencies": {
     "@babel/core": "7",
+    "@types/jest": "^26.0.20",
     "@types/react": "17",
     "@types/react-dom": "17",
     "@types/react-native": "0.63",
+    "jest": "^26.6.3",
     "prettier": "2",
+    "ts-jest": "^26.5.1",
     "typescript": "4"
   }
 }

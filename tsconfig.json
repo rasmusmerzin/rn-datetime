@@ -18,7 +18,7 @@
     "skipLibCheck": true,
     "declaration": true,
     "module": "esnext",
-    "outDir": "./dist"
+    "outDir": "dist"
   },
   "include": ["src/**/*"]
 }

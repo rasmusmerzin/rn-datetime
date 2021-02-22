@@ -24,4 +24,8 @@ export default class NaiveTime {
   toJSON() {
     return this.toString();
   }
+
+  toMinutes() {
+    return this.hour * 60 + this.minute;
+  }
 }
