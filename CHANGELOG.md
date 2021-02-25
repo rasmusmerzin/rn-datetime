@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://docs.npmjs.com/about-s
 
 ### Added
 
-- Implemented memoization
+- Memoization
 
 ## [1.2.0] - 2021-02-22
 
