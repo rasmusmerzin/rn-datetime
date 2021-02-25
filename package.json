@@ -1,6 +1,6 @@
 {
   "name": "rn-datetime",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Platform agnostic date & time pickers for React Native",
   "homepage": "https://gitlab.com/rasmusmerzin/rn-datetime#rn-datetime",
   "repository": {

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://docs.npmjs.com/about-s
 
 ## [Unreleased]
 
+## [1.2.3] - 2021-02-25
+
+### Fixed
+
+- Accessing months with fraction day count (getMonthDays)
+
 ## [1.2.2] - 2021-02-22
 
 ### Fixed
@@ -53,7 +59,8 @@ and this project adheres to [Semantic Versioning](https://docs.npmjs.com/about-s
 
 - Initial release
 
-[unreleased]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.2...master
+[unreleased]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.3...master
+[1.2.3]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.2...v1.2.3
 [1.2.2]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.1...v1.2.2
 [1.2.1]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.0...v1.2.1
 [1.2.0]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.1.1...v1.2.0
