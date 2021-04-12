@@ -42,7 +42,3 @@ Add this package to a React Native project with
 - `npm install rn-datetime`
 
 For usage check [`example`](https://gitlab.com/rasmusmerzin/rn-datetime/-/blob/master/example) directory.
-
-## Roadmap
-
-- `1.3.0` Add support for theming or styling
