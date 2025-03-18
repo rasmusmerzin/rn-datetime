@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://docs.npmjs.com/about-s
 
 ## [Unreleased]
 
+## [1.3.0] - 2025-03-18
+
+### Updated
+
+- Updated dependencies
+
 ## [1.2.3] - 2021-02-25
 
 ### Fixed
@@ -59,7 +65,8 @@ and this project adheres to [Semantic Versioning](https://docs.npmjs.com/about-s
 
 - Initial release
 
-[unreleased]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.3...master
+[unreleased]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.3.0...master
+[1.3.0]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.3...v1.3.0
 [1.2.3]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.2...v1.2.3
 [1.2.2]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.1...v1.2.2
 [1.2.1]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.0...v1.2.1
