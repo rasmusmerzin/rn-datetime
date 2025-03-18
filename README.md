@@ -30,7 +30,7 @@ which do not include timezone and can be converted into ES Date type (inheriting
 
 > These demos are recorded in GMT+02:00.
 
-<img src="./demo-portrait.gif" width="240px" />
+<img alt="Portrait Demo" src="./demo-portrait.gif" width="240px" />
 
 ![Landscape Demo](./demo-landscape.gif)
 

@@ -1,0 +1,49 @@
+# Based on gist https://gist.github.com/AndrewLester/2d3e6257d932831756226ca9a281d9b5
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: 'main'
+
+jobs:
+  build_site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: cd example && npm install
+
+      - name: Build
+        run: |
+          cd example
+          npm run build
+          sed -i 's|/_expo|_expo|' dist/index.html
+      - name: Upload Artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'example/dist/'
+
+  deploy:
+    needs: build_site
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

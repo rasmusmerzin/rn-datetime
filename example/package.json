@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "expo start"
+    "start": "expo start",
+    "build": "expo export -p web"
   },
   "dependencies": {
     "@expo/metro-runtime": "4",
