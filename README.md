@@ -30,8 +30,8 @@ which do not include timezone and can be converted into ES Date type (inheriting
 
 > These demos are recorded in GMT+02:00.
 
-- [Portrait Demo](https://gitlab.com/rasmusmerzin/rn-datetime/-/raw/master/demo-portrait.gif)
-- [Landscape Demo](https://gitlab.com/rasmusmerzin/rn-datetime/-/raw/master/demo-landscape.gif)
+![Portrait Demo](./demo-portrait.gif)
+![Landscape Demo](./demo-landscape.gif)
 
 ## Installation
 
