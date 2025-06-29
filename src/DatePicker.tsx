@@ -59,21 +59,17 @@ export default ({
     if (!visible)
       stateResetTimeout.current = setTimeout(() => {
         if (mode !== defaultMode.current) setMode(defaultMode.current);
+        if (
+          value &&
+          (date.year !== value.year ||
+            date.month !== value.month ||
+            date.day !== value.day)
+        )
+          setDate(value);
         if (focused.year !== date.year || focused.month !== date.month)
           setFocused({ year: date.year, month: date.month });
       }, 300);
   }, [visible]);
-
-  function cancel() {
-    if (
-      value &&
-      (date.year !== value.year ||
-        date.month !== value.month ||
-        date.day !== value.day)
-    )
-      setDate(value);
-    onCancel();
-  }
 
   function submit() {
     if (mode === Mode.Year) setMode(Mode.Calendar);
@@ -96,7 +92,7 @@ export default ({
   return (
     <Modal
       visible={visible}
-      onCancel={cancel}
+      onCancel={onCancel}
       onSubmit={submit}
       colorOverride={colorOverride}
     >
