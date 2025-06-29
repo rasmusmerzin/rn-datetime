@@ -1,8 +1,8 @@
 <h1>
 RN DateTime
 <br />
-<a href="https://gitlab.com/rasmusmerzin/rn-datetime/-/commits/master">
-<img alt="build" src="https://img.shields.io/gitlab/pipeline/rasmusmerzin/rn-datetime/master" />
+<a href="https://github.com/rasmusmerzin/rn-datetime/commits/main">
+<img alt="build" src="https://img.shields.io/github/pipeline/rasmusmerzin/rn-datetime/main" />
 </a>
 <a href="https://www.npmjs.com/package/rn-datetime">
 <img src="https://img.shields.io/npm/l/rn-datetime.svg" alt="License">
@@ -22,8 +22,8 @@ Support for React Native Web is currently minimal.
 These are simple implementations written in Typescript that mimic Google Calendar's date & time pickers.
 
 This project also includes
-[NaiveDate](https://gitlab.com/rasmusmerzin/rn-datetime/-/blob/master/src/NaiveDate.ts) &
-[NaiveTime](https://gitlab.com/rasmusmerzin/rn-datetime/-/blob/master/src/NaiveTime.ts) types
+[NaiveDate](https://github.com/rasmusmerzin/rn-datetime/blob/main/src/NaiveDate.ts) &
+[NaiveTime](https://github.com/rasmusmerzin/rn-datetime/blob/main/src/NaiveTime.ts) types
 which do not include timezone and can be converted into ES Date type (inheriting local timezone).
 
 ## Demos
@@ -42,4 +42,4 @@ Add this package to a React Native project with
 - `yarn add rn-datetime` or
 - `npm install rn-datetime`
 
-For usage check [`example`](https://gitlab.com/rasmusmerzin/rn-datetime/-/blob/master/example) directory.
+For usage check [`example`](https://github.com/rasmusmerzin/rn-datetime/blob/main/example) directory.
