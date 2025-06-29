@@ -1,8 +1,15 @@
 import React, { useState } from "react";
-import { DatePicker, TimePicker, NaiveDate, NaiveTime } from "rn-datetime";
+import {
+  DatePicker,
+  TimePicker,
+  NaiveDate,
+  NaiveTime,
+  useColors,
+} from "rn-datetime";
 import { StyleSheet, Text, View } from "react-native";
 
 export default () => {
+  const colors = useColors();
   const [date, setDate] = useState(new NaiveDate());
   const [time, setTime] = useState(new NaiveTime(12, 0));
   const [datePickerVisibility, setDatePickerVisibility] = useState(false);
@@ -24,16 +31,24 @@ export default () => {
 
   return (
     <>
-      <View style={style.center}>
+      <View style={[style.center, { backgroundColor: colors.background }]}>
         <View style={style.row}>
-          <Text style={style.date} onPress={showDatePicker}>
+          <Text
+            style={[style.date, { color: colors.text }]}
+            onPress={showDatePicker}
+          >
             {date.toLocalDate().toDateString()}
           </Text>
-          <Text style={style.time} onPress={showTimePicker}>
+          <Text
+            style={[style.time, { color: colors.text }]}
+            onPress={showTimePicker}
+          >
             {time.toString()}
           </Text>
         </View>
-        <Text>{date.toLocalDate(time).toISOString()}</Text>
+        <Text style={{ color: colors.text }}>
+          {date.toLocalDate(time).toISOString()}
+        </Text>
       </View>
       <DatePicker
         prioritizeYear={true}
