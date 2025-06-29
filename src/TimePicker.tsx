@@ -1,6 +1,12 @@
 import Modal from "./Modal";
 import NaiveTime from "./NaiveTime";
-import React, { useCallback, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Colors, useColors } from "./colors";
 import { Pressable, StyleSheet, Text, TextStyle, View } from "react-native";
 import { Style, mergeStyleSheets } from "./style";
@@ -61,8 +67,8 @@ const Hours = ({ onChange, style }: ModeProps) => (
 );
 
 enum Mode {
-  Hour,
-  Minute,
+  Hour = "hour",
+  Minute = "minute",
 }
 
 interface Props {
@@ -72,6 +78,7 @@ interface Props {
   onCancel(): void;
 }
 
+const defaultMode = Mode.Hour;
 export default ({ value, visible, onSubmit, onCancel }: Props) => {
   const colors = useColors();
   const style = useMemo(
@@ -79,7 +86,17 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
     [colors],
   );
   const [time, setTime] = useState(value || new NaiveTime());
-  const [mode, setMode] = useState(Mode.Hour);
+  const [mode, setMode] = useState(defaultMode);
+  const stateResetTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (stateResetTimeout.current) clearTimeout(stateResetTimeout.current);
+    if (!visible)
+      stateResetTimeout.current = setTimeout(() => {
+        if (value) setTime(value);
+        if (mode !== defaultMode) setMode(defaultMode);
+      }, 200);
+  }, [visible]);
 
   const selectedClass = useMemo(
     () =>
@@ -89,17 +106,6 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
         : "Outer" + Math.floor(time.minute / 5)),
     [time, mode],
   );
-
-  const cancel = useCallback(() => {
-    value && setTime(value);
-    setMode(Mode.Hour);
-    onCancel();
-  }, [value, onCancel]);
-
-  const submit = useCallback(() => {
-    setMode(Mode.Hour);
-    onSubmit(time);
-  }, [time, onSubmit]);
 
   function selectHour(hour: number) {
     setTime((time) => new NaiveTime(hour, time.minute));
@@ -119,7 +125,11 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
   );
 
   return (
-    <Modal visible={visible} onCancel={cancel} onSubmit={submit}>
+    <Modal
+      visible={visible}
+      onCancel={onCancel}
+      onSubmit={() => onSubmit(time)}
+    >
       <View style={style.split}>
         <View style={style.title}>
           <Text

@@ -2,7 +2,13 @@ import Calendar from "./Calendar";
 import Modal from "./Modal";
 import MonthPicker from "./MonthPicker";
 import NaiveDate from "./NaiveDate";
-import React, { useState, useCallback, useMemo } from "react";
+import React, {
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+  useRef,
+} from "react";
 import YearPicker from "./YearPicker";
 import { Colors, useColors } from "./colors";
 import { StyleSheet, Text, View } from "react-native";
@@ -10,8 +16,8 @@ import { UNIT } from "./constant";
 import { mergeStyleSheets } from "./style";
 
 enum Mode {
-  Calendar,
-  Year,
+  Calendar = "calendar",
+  Year = "year",
 }
 
 interface Props {
@@ -40,42 +46,36 @@ export default ({
     month: date.month,
   });
   const [mode, setMode] = useState(prioritizeYear ? Mode.Year : Mode.Calendar);
+  const defaultMode = useRef(mode);
+  const stateResetTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    defaultMode.current = prioritizeYear ? Mode.Year : Mode.Calendar;
+  }, [prioritizeYear]);
+  useEffect(() => {
+    if (stateResetTimeout.current) clearTimeout(stateResetTimeout.current);
+    if (!visible)
+      stateResetTimeout.current = setTimeout(() => {
+        if (mode !== defaultMode.current) setMode(defaultMode.current);
+        if (focused.year !== date.year || focused.month !== date.month)
+          setFocused({ year: date.year, month: date.month });
+      }, 200);
+  }, [visible]);
 
   function cancel() {
-    const defaultMode = prioritizeYear ? Mode.Year : Mode.Calendar;
-    mode !== defaultMode && setMode(defaultMode);
-    if (value) {
+    if (
+      value &&
       (date.year !== value.year ||
         date.month !== value.month ||
-        date.day !== value.day) &&
-        setDate(value);
-      (focused.year !== value.year || focused.month !== value.month) &&
-        setFocused({
-          year: value.year,
-          month: value.month,
-        });
-    } else {
-      (focused.year !== date.year || focused.month !== date.month) &&
-        setFocused({
-          year: date.year,
-          month: date.month,
-        });
-    }
+        date.day !== value.day)
+    )
+      setDate(value);
     onCancel();
   }
 
   function submit() {
     if (mode === Mode.Year) setMode(Mode.Calendar);
-    else {
-      const defaultMode = prioritizeYear ? Mode.Year : Mode.Calendar;
-      mode !== defaultMode && setMode(defaultMode);
-      (focused.year !== date.year || focused.month !== date.month) &&
-        setFocused({
-          year: date.year,
-          month: date.month,
-        });
-      onSubmit(date);
-    }
+    else onSubmit(date);
   }
 
   const toggleMode = useCallback(
