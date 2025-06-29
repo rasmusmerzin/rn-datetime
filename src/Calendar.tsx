@@ -39,18 +39,18 @@ const Day = memo(({ value, offset, isToday, selected, select }: DayProps) => {
     () =>
       // @ts-ignore
       style["tableItem" + (6 + offset + value)],
-    [offset, value]
+    [offset, value],
   );
   const pressableStyles = useMemo(
     () => [style.tableItem, posStyle, selected && style.selected],
-    [selected, posStyle]
+    [selected, posStyle],
   );
   const textStyles = useMemo(
     () => [
       style.tableItemText,
       selected ? style.selectedText : isToday && style.today,
     ],
-    [selected ? 0 : isToday ? 1 : 2]
+    [selected ? 0 : isToday ? 1 : 2],
   );
   return (
     <Pressable style={pressableStyles} onPress={onPress}>
@@ -68,28 +68,28 @@ interface Props {
 export default memo(({ date, setDate, focused }: Props) => {
   const [days, offset] = useMemo(
     () => getMonthDays(focused.year, focused.month),
-    [focused]
+    [focused],
   );
 
   const today = useMemo(() => new NaiveDate(), []);
 
   const selectDay = useCallback(
     (day: number) => setDate(new NaiveDate(focused.year, focused.month, day)),
-    [focused, setDate]
+    [focused, setDate],
   );
   const isToday = useCallback(
     (day: number) =>
       today.year === focused.year &&
       today.month === focused.month &&
       today.day === day,
-    [today, focused]
+    [today, focused],
   );
   const isSelected = useCallback(
     (day: number) =>
       date.year === focused.year &&
       date.month === focused.month &&
       date.day === day,
-    [date, focused]
+    [date, focused],
   );
 
   return (

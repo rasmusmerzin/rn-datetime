@@ -25,14 +25,14 @@ interface Props {
 }
 
 export default memo(({ focused, setFocused }: Props) => {
-  const focusPrevMonth = useCallback(() => setFocused(prevMonth(focused)), [
-    focused,
-    setFocused,
-  ]);
-  const focusNextMonth = useCallback(() => setFocused(nextMonth(focused)), [
-    focused,
-    setFocused,
-  ]);
+  const focusPrevMonth = useCallback(
+    () => setFocused(prevMonth(focused)),
+    [focused, setFocused],
+  );
+  const focusNextMonth = useCallback(
+    () => setFocused(nextMonth(focused)),
+    [focused, setFocused],
+  );
   return (
     <View style={style.monthPicker}>
       <Text style={style.monthPickerArrow} onPress={focusPrevMonth}>

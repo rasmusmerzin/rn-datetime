@@ -27,8 +27,8 @@ test("toString", () => {
   expect(new NaiveDate().toString()).toBe(
     `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(
       2,
-      "0"
-    )}-${String(new Date().getDate()).padStart(2, "0")}`
+      "0",
+    )}-${String(new Date().getDate()).padStart(2, "0")}`,
   );
   expect(new NaiveDate(2000).toString()).toBe("2000-01-01");
   expect(String(new NaiveDate(4, 3))).toBe("0004-04-01");

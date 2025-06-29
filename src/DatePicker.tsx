@@ -29,7 +29,7 @@ export default memo(
       month: date.month,
     });
     const [mode, setMode] = useState(
-      prioritizeYear ? Mode.Year : Mode.Calendar
+      prioritizeYear ? Mode.Year : Mode.Calendar,
     );
 
     const cancel = useCallback(() => {
@@ -85,7 +85,7 @@ export default memo(
 
     const toggleMode = useCallback(
       () => setMode(mode === Mode.Calendar ? Mode.Year : Mode.Calendar),
-      [mode, setMode]
+      [mode, setMode],
     );
     const focusYear = useCallback(
       (year: number) => {
@@ -93,7 +93,7 @@ export default memo(
         date.year !== year && setDate(new NaiveDate(year, date.month, 1));
         setMode(Mode.Calendar);
       },
-      [focused, setFocused, date, setDate, setMode]
+      [focused, setFocused, date, setDate, setMode],
     );
 
     return (
@@ -121,7 +121,7 @@ export default memo(
         </View>
       </Modal>
     );
-  }
+  },
 );
 
 const style = StyleSheet.create({

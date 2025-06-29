@@ -92,7 +92,7 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
       (mode === Mode.Hour
         ? (!time.hour || time.hour > 12 ? "Inner" : "Outer") + (time.hour % 12)
         : "Outer" + Math.floor(time.minute / 5)),
-    [time, mode]
+    [time, mode],
   );
 
   const cancel = useCallback(() => {
@@ -111,20 +111,20 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
       setTime((time) => new NaiveTime(hour, time.minute));
       setMode(Mode.Minute);
     },
-    [setTime]
+    [setTime],
   );
   const selectMinute = useCallback(
     (minute: number) => setTime((time) => new NaiveTime(time.hour, minute)),
-    [setTime]
+    [setTime],
   );
 
   const openHours = useCallback(
     () => mode !== Mode.Hour && setMode(Mode.Hour),
-    [mode]
+    [mode],
   );
   const openMinutes = useCallback(
     () => mode !== Mode.Minute && setMode(Mode.Minute),
-    [mode]
+    [mode],
   );
 
   return (

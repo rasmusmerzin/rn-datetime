@@ -21,8 +21,8 @@ test("constructor", () => {
 test("toString", () => {
   expect(new NaiveTime().toString()).toBe(
     `${String(new Date().getHours()).padStart(2, "0")}:${String(
-      new Date().getMinutes()
-    ).padStart(2, "0")}`
+      new Date().getMinutes(),
+    ).padStart(2, "0")}`,
   );
   expect(new NaiveTime(0).toString()).toBe("00:00");
   expect(String(new NaiveTime(4, 20))).toBe("04:20");
@@ -44,7 +44,7 @@ test("toJSON", () => {
 
 test("toMinutes", () => {
   expect(new NaiveTime().toMinutes()).toBe(
-    new Date().getHours() * 60 + new Date().getMinutes()
+    new Date().getHours() * 60 + new Date().getMinutes(),
   );
   expect(new NaiveTime(0).toMinutes()).toBe(0);
   expect(new NaiveTime(23, 59).toMinutes()).toBe(1439);
