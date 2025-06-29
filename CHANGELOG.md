@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://docs.npmjs.com/about-s
 
 ## [Unreleased]
 
+### Added
+
+- Support for native dark mode (recompute styles on theme change)
+
+### Updated
+
+- Updated dependencies
+- Migrated from Jest to Vitest
+- Improved overall state management
+
 ## [1.3.0] - 2025-03-18
 
 ### Updated
