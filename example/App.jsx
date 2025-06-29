@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { DatePicker, TimePicker, NaiveDate, NaiveTime } from "rn-datetime";
 
@@ -8,33 +8,19 @@ export default () => {
   const [datePickerVisibility, setDatePickerVisibility] = useState(false);
   const [timePickerVisibility, setTimePickerVisibility] = useState(false);
 
-  const showDatePicker = useCallback(() => setDatePickerVisibility(true), [
-    setDatePickerVisibility,
-  ]);
-  const hideDatePicker = useCallback(() => setDatePickerVisibility(false), [
-    setDatePickerVisibility,
-  ]);
-  const showTimePicker = useCallback(() => setTimePickerVisibility(true), [
-    setTimePickerVisibility,
-  ]);
-  const hideTimePicker = useCallback(() => setTimePickerVisibility(false), [
-    setTimePickerVisibility,
-  ]);
+  const showDatePicker = () => setDatePickerVisibility(true);
+  const hideDatePicker = () => setDatePickerVisibility(false);
+  const showTimePicker = () => setTimePickerVisibility(true);
+  const hideTimePicker = () => setTimePickerVisibility(false);
 
-  const submitDate = useCallback(
-    (time) => {
-      setDate(time);
-      hideDatePicker();
-    },
-    [time, setDate, hideDatePicker]
-  );
-  const submitTime = useCallback(
-    (time) => {
-      setTime(time);
-      hideTimePicker();
-    },
-    [time, setTime, hideTimePicker]
-  );
+  function submitDate(time) {
+    setDate(time);
+    hideDatePicker();
+  }
+  function submitTime(time) {
+    setTime(time);
+    hideTimePicker();
+  }
 
   return (
     <>
