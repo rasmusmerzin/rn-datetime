@@ -1,7 +1,11 @@
 import NaiveDate from "./NaiveDate";
 import { nextMonth } from "./YearMonth";
 
-export default (year: number, month: number): [number[], number] => {
+export default (
+  year: number,
+  month: number,
+  startOfWeek: "S" | "M" = "M",
+): [number[], number] => {
   const date = new NaiveDate(year, month).toLocalDate();
   const dayCount = (() => {
     const yearMonth = nextMonth({ year, month });
@@ -13,6 +17,6 @@ export default (year: number, month: number): [number[], number] => {
   })();
   return [
     Array.from(Array(Math.round(dayCount)), (_, i) => i + 1),
-    date.getDay() - 1,
+    startOfWeek === "S" ? date.getDay() : (date.getDay() + 6) % 7,
   ];
 };

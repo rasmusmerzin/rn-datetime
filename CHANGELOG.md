@@ -3,19 +3,28 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0),
-and this project adheres to [Semantic Versioning](https://docs.npmjs.com/about-semantic-versioning).
+and this project adheres to
+[Semantic Versioning](https://docs.npmjs.com/about-semantic-versioning).
 
 ## [Unreleased]
 
 ### Added
 
+- Support for overriding native color theme for TimePicker and DatePicker
+  components
 - Support for native dark mode (recompute styles on theme change)
+- Small fade-in for modal in web build which matches the native behavior
 
 ### Updated
 
 - Updated dependencies
 - Migrated from Jest to Vitest
-- Improved overall state management
+- Improved overall state management (removed many memo and useCallback calls)
+
+### Fixed
+
+- Solved edge case where calendar first day of month would be rendered on top of
+  weekday labels due to week starting with monday.
 
 ## [1.3.0] - 2025-03-18
 

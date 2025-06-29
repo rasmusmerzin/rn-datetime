@@ -102,7 +102,7 @@ export default ({
       stateResetTimeout.current = setTimeout(() => {
         if (value) setTime(value);
         if (mode !== defaultMode) setMode(defaultMode);
-      }, 200);
+      }, 300);
   }, [visible]);
 
   const selectedClass = useMemo(

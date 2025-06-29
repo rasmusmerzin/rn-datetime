@@ -25,6 +25,9 @@ which do not include timezone and can be converted into ES Date type (inheriting
 
 ## Demos
 
+A demo is exported as a Web App and can be viewed in a browser at
+[rasmusmerzin.github.io/rn-datetime](https://rasmusmerzin.github.io/rn-datetime).
+
 > These demos are recorded in GMT+02:00.
 
 <img alt="Portrait Demo" src="./demo-portrait.gif" width="240px" />

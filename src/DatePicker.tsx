@@ -156,11 +156,11 @@ const staticStyle = StyleSheet.create({
   titleDate: {
     fontSize: 32,
     fontWeight: "700",
-    width: 200,
+    width: 300,
     marginBottom: UNIT * 0.7,
   },
   table: {
     width: UNIT * 7,
-    height: UNIT * 8.1,
+    height: UNIT * 8.3,
   },
 });
