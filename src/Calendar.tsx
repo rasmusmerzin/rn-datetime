@@ -1,10 +1,10 @@
-import NaiveDate from "./NaiveDate";
 import React, { useCallback, useMemo } from "react";
-import YearMonth from "./YearMonth";
-import getMonthDays from "./getMonthDays";
 import { ColorOverride, Colors, useColors } from "./colors";
+import { NaiveDate } from "./NaiveDate";
 import { Pressable, StyleSheet, Text, TextStyle, View } from "react-native";
 import { UNIT } from "./constant";
+import { YearMonth } from "./YearMonth";
+import { getMonthDays } from "./getMonthDays";
 import { mergeStyleSheets, Style } from "./style";
 
 const WEEKDAYS = ["M", "T", "W", "T", "F", "S", "S"];
@@ -59,7 +59,7 @@ interface Props {
   colorOverride?: ColorOverride;
 }
 
-export default ({ date, setDate, focused, colorOverride }: Props) => {
+export function Calendar({ date, setDate, focused, colorOverride }: Props) {
   const colors = useColors(colorOverride);
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
@@ -109,7 +109,7 @@ export default ({ date, setDate, focused, colorOverride }: Props) => {
       </View>
     </>
   );
-};
+}
 
 const dynamicStyle = (colors: Colors) =>
   StyleSheet.create({

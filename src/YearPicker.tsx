@@ -41,7 +41,7 @@ const getItemLayout = (_: any, index: number) => ({
 
 const keyExtractor = (value: number, _: any) => String(value);
 
-export default ({ selected, select, colorOverride }: Props) => {
+export function YearPicker({ selected, select, colorOverride }: Props) {
   const colors = useColors(colorOverride);
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
@@ -67,7 +67,7 @@ export default ({ selected, select, colorOverride }: Props) => {
       showsHorizontalScrollIndicator={false}
     />
   );
-};
+}
 
 const dynamicStyle = (colors: Colors) =>
   StyleSheet.create({

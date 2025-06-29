@@ -1,5 +1,3 @@
-import Modal from "./Modal";
-import NaiveTime from "./NaiveTime";
 import React, {
   useCallback,
   useEffect,
@@ -8,6 +6,8 @@ import React, {
   useState,
 } from "react";
 import { ColorOverride, Colors, useColors } from "./colors";
+import { ModalWindow } from "./ModalWindow";
+import { NaiveTime } from "./NaiveTime";
 import { Pressable, StyleSheet, Text, TextStyle, View } from "react-native";
 import { Style, mergeStyleSheets } from "./style";
 import { UNIT } from "./constant";
@@ -80,13 +80,13 @@ interface Props {
 }
 
 const defaultMode = Mode.Hour;
-export default ({
+export function TimePicker({
   value,
   visible,
   onSubmit,
   onCancel,
   colorOverride,
-}: Props) => {
+}: Props) {
   const colors = useColors(colorOverride);
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
@@ -132,7 +132,7 @@ export default ({
   );
 
   return (
-    <Modal
+    <ModalWindow
       visible={visible}
       onCancel={onCancel}
       onSubmit={() => onSubmit(time)}
@@ -174,9 +174,9 @@ export default ({
           </View>
         </View>
       </View>
-    </Modal>
+    </ModalWindow>
   );
-};
+}
 
 const TABLE_DIAMETER = UNIT * 6.4;
 const TITLE_HEIGHT = UNIT * 2;

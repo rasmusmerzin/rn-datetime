@@ -1,7 +1,3 @@
-import Calendar from "./Calendar";
-import Modal from "./Modal";
-import MonthPicker from "./MonthPicker";
-import NaiveDate from "./NaiveDate";
 import React, {
   useState,
   useCallback,
@@ -9,10 +5,14 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-import YearPicker from "./YearPicker";
+import { Calendar } from "./Calendar";
 import { ColorOverride, Colors, useColors } from "./colors";
+import { ModalWindow } from "./ModalWindow";
+import { MonthPicker } from "./MonthPicker";
+import { NaiveDate } from "./NaiveDate";
 import { StyleSheet, Text, View } from "react-native";
 import { UNIT } from "./constant";
+import { YearPicker } from "./YearPicker";
 import { mergeStyleSheets } from "./style";
 
 enum Mode {
@@ -29,14 +29,14 @@ interface Props {
   colorOverride?: ColorOverride;
 }
 
-export default ({
+export function DatePicker({
   prioritizeYear,
   value,
   visible,
   onSubmit,
   onCancel,
   colorOverride,
-}: Props) => {
+}: Props) {
   const colors = useColors(colorOverride);
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
@@ -90,7 +90,7 @@ export default ({
   );
 
   return (
-    <Modal
+    <ModalWindow
       visible={visible}
       onCancel={onCancel}
       onSubmit={submit}
@@ -130,9 +130,9 @@ export default ({
           )}
         </View>
       </View>
-    </Modal>
+    </ModalWindow>
   );
-};
+}
 
 const dynamicStyle = (colors: Colors) =>
   StyleSheet.create({

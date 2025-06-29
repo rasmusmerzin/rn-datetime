@@ -1,4 +1,4 @@
-export default class NaiveTime {
+export class NaiveTime {
   hour: number;
   minute: number;
 

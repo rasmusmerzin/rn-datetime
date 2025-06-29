@@ -1,6 +1,6 @@
-import NaiveTime from "./NaiveTime";
+import { NaiveTime } from "./NaiveTime";
 
-export default class NaiveDate {
+export class NaiveDate {
   year: number;
   // 0 through 11
   month: number;

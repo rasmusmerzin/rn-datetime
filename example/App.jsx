@@ -57,18 +57,14 @@ const style = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "inherit",
   },
   row: {
     flexDirection: "row",
-    backgroundColor: "inherit",
   },
   date: {
     padding: 10,
-    backgroundColor: "inherit",
   },
   time: {
     padding: 10,
-    backgroundColor: "inherit",
   },
 });

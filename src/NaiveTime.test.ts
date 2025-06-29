@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import NaiveTime from "./NaiveTime";
+import { NaiveTime } from "./NaiveTime";
 
 test("constructor", () => {
   let time = new NaiveTime();

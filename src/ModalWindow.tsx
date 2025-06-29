@@ -12,13 +12,13 @@ interface Props {
   colorOverride?: ColorOverride;
 }
 
-export default ({
+export function ModalWindow({
   visible,
   children,
   onCancel,
   onSubmit,
   colorOverride,
-}: Props) => {
+}: Props) {
   const colors = useColors(colorOverride);
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
@@ -27,7 +27,7 @@ export default ({
   return (
     <Modal
       animationType="fade"
-      transparent={true}
+      transparent
       visible={visible}
       onRequestClose={onCancel}
     >
@@ -46,7 +46,7 @@ export default ({
       </Pressable>
     </Modal>
   );
-};
+}
 
 const dynamicStyle = (colors: Colors) =>
   StyleSheet.create({
