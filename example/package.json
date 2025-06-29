@@ -4,12 +4,12 @@
     "build": "expo export -p web"
   },
   "dependencies": {
-    "@expo/metro-runtime": "4",
-    "expo": "52",
-    "react": "18",
-    "react-dom": "18",
-    "react-native": "0.76",
-    "react-native-web": "0.19",
+    "@expo/metro-runtime": "5",
+    "expo": "53",
+    "react": "19",
+    "react-dom": "19",
+    "react-native": "0.80",
+    "react-native-web": "0.20",
     "rn-datetime": "*"
   },
   "devDependencies": {
