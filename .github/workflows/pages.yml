@@ -18,10 +18,21 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install Dependencies
+      - name: Install Package Dependencies
+        run: npm install
+
+      - name: Build Package
+        run: npm run build
+
+      - name: Install Example Dependencies
         run: cd example && npm install
 
-      - name: Expo Web Export
+      - name: Overwrite Example Dependency
+        run: |
+          rm -rf example/node_modules/rn-datetime/dist
+          cp -r dist example/node_modules/rn-datetime
+
+      - name: Export Example Web
         run: |
           cd example
           npm run build
