@@ -10,7 +10,7 @@ import React, {
   useRef,
 } from "react";
 import YearPicker from "./YearPicker";
-import { Colors, useColors } from "./colors";
+import { ColorOverride, Colors, useColors } from "./colors";
 import { StyleSheet, Text, View } from "react-native";
 import { UNIT } from "./constant";
 import { mergeStyleSheets } from "./style";
@@ -26,6 +26,7 @@ interface Props {
   visible: boolean;
   onSubmit(date: NaiveDate): void;
   onCancel(): void;
+  colorOverride?: ColorOverride;
 }
 
 export default ({
@@ -34,8 +35,9 @@ export default ({
   visible,
   onSubmit,
   onCancel,
+  colorOverride,
 }: Props) => {
-  const colors = useColors();
+  const colors = useColors(colorOverride);
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
     [colors],
@@ -92,7 +94,12 @@ export default ({
   );
 
   return (
-    <Modal visible={visible} onCancel={cancel} onSubmit={submit}>
+    <Modal
+      visible={visible}
+      onCancel={cancel}
+      onSubmit={submit}
+      colorOverride={colorOverride}
+    >
       <View style={style.split}>
         <View>
           <Text style={style.titleYear} onPress={toggleMode}>
@@ -106,11 +113,24 @@ export default ({
         <View style={style.table}>
           {mode === Mode.Calendar ? (
             <>
-              <MonthPicker focused={focused} setFocused={setFocused} />
-              <Calendar focused={focused} date={date} setDate={setDate} />
+              <MonthPicker
+                focused={focused}
+                setFocused={setFocused}
+                colorOverride={colorOverride}
+              />
+              <Calendar
+                focused={focused}
+                date={date}
+                setDate={setDate}
+                colorOverride={colorOverride}
+              />
             </>
           ) : (
-            <YearPicker selected={date.year} select={focusYear} />
+            <YearPicker
+              selected={date.year}
+              select={focusYear}
+              colorOverride={colorOverride}
+            />
           )}
         </View>
       </View>

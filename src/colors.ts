@@ -1,5 +1,7 @@
 import { ColorSchemeName, useColorScheme } from "react-native";
 
+export type ColorOverride = ColorSchemeName | Colors | ColorPalette;
+
 export interface Colors {
   primary: string;
   shadow: string;
@@ -9,12 +11,12 @@ export interface Colors {
   blurred: string;
 }
 
-export interface ColorsPalette {
+export interface ColorPalette {
   light: Colors;
   dark: Colors;
 }
 
-export const COLORS: ColorsPalette = {
+export const COLORS: ColorPalette = {
   light: {
     primary: "#07f",
     shadow: "#999",
@@ -33,11 +35,9 @@ export const COLORS: ColorsPalette = {
   },
 };
 
-export function useColors(
-  override?: ColorSchemeName | Colors | ColorsPalette,
-): Colors {
+export function useColors(override?: ColorOverride): Colors {
   const theme = useColorScheme() || "light";
   if (override && typeof override === "object")
-    return (override as ColorsPalette)[theme] || (override as Colors);
+    return (override as ColorPalette)[theme] || (override as Colors);
   return COLORS[override || theme];
 }

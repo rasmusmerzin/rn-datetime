@@ -1,5 +1,5 @@
 import React, { ReactNode, useMemo } from "react";
-import { Colors, useColors } from "./colors";
+import { ColorOverride, Colors, useColors } from "./colors";
 import { Modal } from "./compat";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { UNIT } from "./constant";
@@ -10,10 +10,17 @@ interface Props {
   onCancel(): void;
   onSubmit(): void;
   children?: ReactNode;
+  colorOverride?: ColorOverride;
 }
 
-export default ({ visible, children, onCancel, onSubmit }: Props) => {
-  const colors = useColors();
+export default ({
+  visible,
+  children,
+  onCancel,
+  onSubmit,
+  colorOverride,
+}: Props) => {
+  const colors = useColors(colorOverride);
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
     [colors],

@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Colors, useColors } from "./colors";
+import { ColorOverride, Colors, useColors } from "./colors";
 import { Pressable, StyleSheet, Text, TextStyle, View } from "react-native";
 import { Style, mergeStyleSheets } from "./style";
 import { UNIT } from "./constant";
@@ -76,11 +76,18 @@ interface Props {
   visible: boolean;
   onSubmit(time: NaiveTime): void;
   onCancel(): void;
+  colorOverride?: ColorOverride;
 }
 
 const defaultMode = Mode.Hour;
-export default ({ value, visible, onSubmit, onCancel }: Props) => {
-  const colors = useColors();
+export default ({
+  value,
+  visible,
+  onSubmit,
+  onCancel,
+  colorOverride,
+}: Props) => {
+  const colors = useColors(colorOverride);
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
     [colors],
@@ -129,6 +136,7 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
       visible={visible}
       onCancel={onCancel}
       onSubmit={() => onSubmit(time)}
+      colorOverride={colorOverride}
     >
       <View style={style.split}>
         <View style={style.title}>

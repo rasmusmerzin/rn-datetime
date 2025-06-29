@@ -2,7 +2,7 @@ import NaiveDate from "./NaiveDate";
 import React, { useCallback, useMemo } from "react";
 import YearMonth from "./YearMonth";
 import getMonthDays from "./getMonthDays";
-import { Colors, useColors } from "./colors";
+import { ColorOverride, Colors, useColors } from "./colors";
 import { Pressable, StyleSheet, Text, TextStyle, View } from "react-native";
 import { UNIT } from "./constant";
 import { mergeStyleSheets, Style } from "./style";
@@ -51,14 +51,16 @@ const Day = ({ value, offset, isToday, selected, select, style }: DayProps) => {
     </Pressable>
   );
 };
+
 interface Props {
   focused: YearMonth;
   date: NaiveDate;
   setDate(date: NaiveDate): void;
+  colorOverride?: ColorOverride;
 }
 
-export default ({ date, setDate, focused }: Props) => {
-  const colors = useColors();
+export default ({ date, setDate, focused, colorOverride }: Props) => {
+  const colors = useColors(colorOverride);
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
     [colors],

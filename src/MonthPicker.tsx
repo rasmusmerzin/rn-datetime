@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from "react";
 import YearMonth, { nextMonth, prevMonth } from "./YearMonth";
-import { Colors, useColors } from "./colors";
+import { ColorOverride, Colors, useColors } from "./colors";
 import { StyleSheet, Text, View } from "react-native";
 import { UNIT } from "./constant";
 import { mergeStyleSheets } from "./style";
@@ -23,10 +23,11 @@ const MONTHS = [
 interface Props {
   focused: YearMonth;
   setFocused(focused: YearMonth): void;
+  colorOverride?: ColorOverride;
 }
 
-export default ({ focused, setFocused }: Props) => {
-  const colors = useColors();
+export default ({ focused, setFocused, colorOverride }: Props) => {
+  const colors = useColors(colorOverride);
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
     [colors],
