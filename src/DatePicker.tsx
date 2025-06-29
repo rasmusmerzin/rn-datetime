@@ -61,7 +61,7 @@ export default ({
         if (mode !== defaultMode.current) setMode(defaultMode.current);
         if (focused.year !== date.year || focused.month !== date.month)
           setFocused({ year: date.year, month: date.month });
-      }, 200);
+      }, 300);
   }, [visible]);
 
   function cancel() {
@@ -156,7 +156,7 @@ const staticStyle = StyleSheet.create({
   titleDate: {
     fontSize: 32,
     fontWeight: "700",
-    width: 300,
+    width: 200,
     marginBottom: UNIT * 0.7,
   },
   table: {

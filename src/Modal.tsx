@@ -1,7 +1,6 @@
 import React, { ReactNode, useMemo } from "react";
 import { ColorOverride, Colors, useColors } from "./colors";
-import { Modal } from "./compat";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View, Modal } from "react-native";
 import { UNIT } from "./constant";
 import { mergeStyleSheets } from "./style";
 

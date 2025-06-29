@@ -12,6 +12,10 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Removed
+
+- Removed modal compatibility layer for web as it is now built into React Native
+
 ## [1.4.0] - 2025-06-29
 
 ### Added
