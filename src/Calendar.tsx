@@ -1,29 +1,23 @@
-import React, { memo, useCallback, useMemo } from "react";
-import { Pressable, StyleSheet, Text, TextStyle, View } from "react-native";
-
-import { UNIT, COLORS } from "./constant";
+import NaiveDate from "./NaiveDate";
+import React, { useCallback, useMemo } from "react";
 import YearMonth from "./YearMonth";
 import getMonthDays from "./getMonthDays";
-import NaiveDate from "./NaiveDate";
+import { Colors, useColors } from "./colors";
+import { Pressable, StyleSheet, Text, TextStyle, View } from "react-native";
+import { UNIT } from "./constant";
+import { mergeStyleSheets, Style } from "./style";
 
 const WEEKDAYS = ["M", "T", "W", "T", "F", "S", "S"];
 
-const Weekdays = memo(() => (
+const Weekdays = ({ style }: { style: Record<string, Style> }) => (
   <>
     {WEEKDAYS.map((day, i) => (
-      <View
-        key={i}
-        style={[
-          style.tableItem,
-          // @ts-ignore
-          style["tableItem" + i],
-        ]}
-      >
+      <View key={i} style={[style.tableItem, style["tableItem" + i]]}>
         <Text style={[style.tableItemText, style.tableWeekDay]}>{day}</Text>
       </View>
     ))}
   </>
-));
+);
 
 interface DayProps {
   value: number;
@@ -31,15 +25,14 @@ interface DayProps {
   isToday: boolean;
   selected: boolean;
   select(value: number): void;
+  style: Record<string, Style>;
 }
 
-const Day = memo(({ value, offset, isToday, selected, select }: DayProps) => {
+const Day = ({ value, offset, isToday, selected, select, style }: DayProps) => {
   const onPress = useCallback(() => select(value), [value, select]);
   const posStyle = useMemo(
-    () =>
-      // @ts-ignore
-      style["tableItem" + (6 + offset + value)],
-    [offset, value],
+    () => style["tableItem" + (6 + offset + value)],
+    [offset, value, style],
   );
   const pressableStyles = useMemo(
     () => [style.tableItem, posStyle, selected && style.selected],
@@ -50,22 +43,26 @@ const Day = memo(({ value, offset, isToday, selected, select }: DayProps) => {
       style.tableItemText,
       selected ? style.selectedText : isToday && style.today,
     ],
-    [selected ? 0 : isToday ? 1 : 2],
+    [selected ? 0 : isToday ? 1 : 2, style],
   );
   return (
     <Pressable style={pressableStyles} onPress={onPress}>
       <Text style={textStyles}>{value}</Text>
     </Pressable>
   );
-});
-
+};
 interface Props {
   focused: YearMonth;
   date: NaiveDate;
   setDate(date: NaiveDate): void;
 }
 
-export default memo(({ date, setDate, focused }: Props) => {
+export default ({ date, setDate, focused }: Props) => {
+  const colors = useColors();
+  const style = useMemo(
+    () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
+    [colors],
+  );
   const [days, offset] = useMemo(
     () => getMonthDays(focused.year, focused.month),
     [focused],
@@ -95,9 +92,10 @@ export default memo(({ date, setDate, focused }: Props) => {
   return (
     <>
       <View>
-        <Weekdays />
+        <Weekdays style={style} />
         {days.map((day) => (
           <Day
+            style={style}
             key={day}
             value={day}
             offset={offset}
@@ -109,12 +107,30 @@ export default memo(({ date, setDate, focused }: Props) => {
       </View>
     </>
   );
-});
+};
 
-const style = StyleSheet.create({
+const dynamicStyle = (colors: Colors) =>
+  StyleSheet.create({
+    tableItemText: {
+      color: colors.text,
+    },
+    selected: {
+      backgroundColor: colors.primary,
+    },
+    selectedText: {
+      color: colors.background,
+    },
+    today: {
+      color: colors.primary,
+    },
+    tableWeekDay: {
+      color: colors.shadow,
+    },
+  });
+
+const staticStyle = StyleSheet.create({
   tableItemText: {
     fontSize: 12,
-    color: COLORS.text,
   },
   tableItem: {
     position: "absolute",
@@ -123,18 +139,6 @@ const style = StyleSheet.create({
     width: UNIT,
     height: UNIT,
     borderRadius: UNIT,
-  },
-  selected: {
-    backgroundColor: COLORS.primary,
-  },
-  selectedText: {
-    color: COLORS.background,
-  },
-  today: {
-    color: COLORS.primary,
-  },
-  tableWeekDay: {
-    color: COLORS.shadow,
   },
   ...(() => {
     const generatedStyle: { [key: string]: TextStyle } = {};

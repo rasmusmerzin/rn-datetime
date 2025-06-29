@@ -1,6 +1,8 @@
-import React, { memo, useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { FlatList, Pressable, StyleSheet, Text } from "react-native";
-import { COLORS, UNIT } from "./constant";
+import { UNIT } from "./constant";
+import { Colors, useColors } from "./colors";
+import { mergeStyleSheets, Style } from "./style";
 
 const MIN_YEAR = 1900;
 const YEAR_COUNT = 201;
@@ -11,9 +13,10 @@ interface YearProps {
   value: number;
   selected: boolean;
   select(value: number): void;
+  style: Record<string, Style>;
 }
 
-const Year = memo(({ value, selected, select }: YearProps) => {
+const Year = ({ value, selected, select, style }: YearProps) => {
   const onPress = useCallback(() => select(value), [value, select]);
   return (
     <Pressable style={style.year} onPress={onPress}>
@@ -22,7 +25,7 @@ const Year = memo(({ value, selected, select }: YearProps) => {
       </Text>
     </Pressable>
   );
-});
+};
 
 interface Props {
   selected: number;
@@ -37,9 +40,19 @@ const getItemLayout = (_: any, index: number) => ({
 
 const keyExtractor = (value: number, _: any) => String(value);
 
-export default memo(({ selected, select }: Props) => {
+export default ({ selected, select }: Props) => {
+  const colors = useColors();
+  const style = useMemo(
+    () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
+    [colors],
+  );
   const renderItem = ({ item }: { item: number }) => (
-    <Year value={item} selected={selected === item} select={select} />
+    <Year
+      value={item}
+      selected={selected === item}
+      select={select}
+      style={style}
+    />
   );
   return (
     <FlatList
@@ -53,9 +66,19 @@ export default memo(({ selected, select }: Props) => {
       showsHorizontalScrollIndicator={false}
     />
   );
-});
+};
 
-const style = StyleSheet.create({
+const dynamicStyle = (colors: Colors) =>
+  StyleSheet.create({
+    yearText: {
+      color: colors.text,
+    },
+    selectedText: {
+      color: colors.primary,
+    },
+  });
+
+const staticStyle = StyleSheet.create({
   list: {
     marginBottom: UNIT / 2,
   },
@@ -66,11 +89,9 @@ const style = StyleSheet.create({
   },
   yearText: {
     fontSize: 16,
-    color: COLORS.text,
   },
   selectedText: {
     fontSize: 28,
     fontWeight: "bold",
-    color: COLORS.primary,
   },
 });

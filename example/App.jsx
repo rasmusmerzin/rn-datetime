@@ -1,12 +1,6 @@
 import React, { useState } from "react";
+import { DatePicker, TimePicker, NaiveDate, NaiveTime } from "rn-datetime";
 import { StyleSheet, Text, View } from "react-native";
-import {
-  DatePicker,
-  TimePicker,
-  NaiveDate,
-  NaiveTime,
-  COLORS,
-} from "rn-datetime";
 
 export default () => {
   const [date, setDate] = useState(new NaiveDate());
@@ -63,16 +57,18 @@ const style = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "inherit",
   },
   row: {
     flexDirection: "row",
+    backgroundColor: "inherit",
   },
   date: {
     padding: 10,
-    backgroundColor: COLORS.background,
+    backgroundColor: "inherit",
   },
   time: {
     padding: 10,
-    backgroundColor: COLORS.background,
+    backgroundColor: "inherit",
   },
 });

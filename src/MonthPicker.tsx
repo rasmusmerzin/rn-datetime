@@ -1,8 +1,9 @@
-import React, { memo, useCallback } from "react";
-import { StyleSheet, Text, View } from "react-native";
-
+import React, { useCallback, useMemo } from "react";
 import YearMonth, { nextMonth, prevMonth } from "./YearMonth";
-import { UNIT, COLORS } from "./constant";
+import { Colors, useColors } from "./colors";
+import { StyleSheet, Text, View } from "react-native";
+import { UNIT } from "./constant";
+import { mergeStyleSheets } from "./style";
 
 const MONTHS = [
   "January",
@@ -24,7 +25,12 @@ interface Props {
   setFocused(focused: YearMonth): void;
 }
 
-export default memo(({ focused, setFocused }: Props) => {
+export default ({ focused, setFocused }: Props) => {
+  const colors = useColors();
+  const style = useMemo(
+    () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
+    [colors],
+  );
   const focusPrevMonth = useCallback(
     () => setFocused(prevMonth(focused)),
     [focused, setFocused],
@@ -46,27 +52,35 @@ export default memo(({ focused, setFocused }: Props) => {
       </Text>
     </View>
   );
-});
+};
 
-const style = StyleSheet.create({
+const dynamicStyle = (colors: Colors) =>
+  StyleSheet.create({
+    monthPickerTitle: {
+      color: colors.text,
+    },
+    monthPickerArrow: {
+      color: colors.text,
+      backgroundColor: colors.background,
+    },
+  });
+
+const staticStyle = StyleSheet.create({
   monthPicker: {
     flexDirection: "row",
     alignItems: "center",
     height: UNIT * 1.1,
   },
   monthPickerTitle: {
-    color: COLORS.text,
     flex: 5,
     textAlign: "center",
     fontWeight: "bold",
   },
   monthPickerArrow: {
-    color: COLORS.text,
     flex: 1,
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 30,
     paddingBottom: 10,
-    backgroundColor: COLORS.background,
   },
 });

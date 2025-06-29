@@ -1,9 +1,10 @@
-import React, { memo, useCallback, useMemo, useState } from "react";
-import { Pressable, StyleSheet, Text, TextStyle, View } from "react-native";
-
-import NaiveTime from "./NaiveTime";
-import { UNIT, COLORS } from "./constant";
 import Modal from "./Modal";
+import NaiveTime from "./NaiveTime";
+import React, { useCallback, useMemo, useState } from "react";
+import { Colors, useColors } from "./colors";
+import { Pressable, StyleSheet, Text, TextStyle, View } from "react-native";
+import { Style, mergeStyleSheets } from "./style";
+import { UNIT } from "./constant";
 
 const MORNING_HOURS = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 const EVENING_HOURS = [0, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
@@ -11,19 +12,16 @@ const MINUTES = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
 
 interface ModeProps {
   onChange(value: number): void;
+  style: Record<string, Style>;
 }
 
-const Minutes = memo(({ onChange }: ModeProps) => (
+const Minutes = ({ onChange, style }: ModeProps) => (
   <>
     {MINUTES.map((m, i) => {
       return (
         <Pressable
           key={i}
-          style={[
-            style.tableItem,
-            // @ts-ignore
-            style["tableOuter" + i],
-          ]}
+          style={[style.tableItem, style["tableOuter" + i]]}
           onPress={() => onChange(m)}
         >
           <Text style={style.tableItemText}>{String(m).padStart(2, "0")}</Text>
@@ -31,19 +29,15 @@ const Minutes = memo(({ onChange }: ModeProps) => (
       );
     })}
   </>
-));
+);
 
-const Hours = memo(({ onChange }: ModeProps) => (
+const Hours = ({ onChange, style }: ModeProps) => (
   <>
     {MORNING_HOURS.map((h, i) => {
       return (
         <Pressable
           key={i}
-          style={[
-            style.tableItem,
-            // @ts-ignore
-            style["tableOuter" + i],
-          ]}
+          style={[style.tableItem, style["tableOuter" + i]]}
           onPress={() => onChange(h)}
         >
           <Text style={style.tableItemText}>{h}</Text>
@@ -54,11 +48,7 @@ const Hours = memo(({ onChange }: ModeProps) => (
       return (
         <Pressable
           key={i}
-          style={[
-            style.tableItem,
-            // @ts-ignore
-            style["tableInner" + i],
-          ]}
+          style={[style.tableItem, style["tableInner" + i]]}
           onPress={() => onChange(h)}
         >
           <Text style={[style.tableItemText, style.tableInnerText]}>
@@ -68,7 +58,7 @@ const Hours = memo(({ onChange }: ModeProps) => (
       );
     })}
   </>
-));
+);
 
 enum Mode {
   Hour,
@@ -83,6 +73,11 @@ interface Props {
 }
 
 export default ({ value, visible, onSubmit, onCancel }: Props) => {
+  const colors = useColors();
+  const style = useMemo(
+    () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
+    [colors],
+  );
   const [time, setTime] = useState(value || new NaiveTime());
   const [mode, setMode] = useState(Mode.Hour);
 
@@ -147,19 +142,12 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
 
         <View style={style.table}>
           {mode === Mode.Hour ? (
-            <Hours onChange={selectHour} />
+            <Hours onChange={selectHour} style={style} />
           ) : (
-            <Minutes onChange={selectMinute} />
+            <Minutes onChange={selectMinute} style={style} />
           )}
 
-          <View
-            style={[
-              style.tableItem,
-              style.selected,
-              // @ts-ignore
-              style[selectedClass],
-            ]}
-          >
+          <View style={[style.tableItem, style.selected, style[selectedClass]]}>
             <Text style={[style.tableItemText, style.selectedText]}>
               {mode === Mode.Hour
                 ? time.hour || String(time.hour).padStart(2, "0")
@@ -177,7 +165,33 @@ const TITLE_HEIGHT = UNIT * 2;
 const OUTER_DIST = TABLE_DIAMETER * 0.4;
 const INNER_DIST = TABLE_DIAMETER * 0.25;
 
-const style = StyleSheet.create({
+const dynamicStyle = (colors: Colors) =>
+  StyleSheet.create({
+    titleText: {
+      color: colors.shadow,
+      backgroundColor: colors.background,
+    },
+    selectedTitle: {
+      color: colors.text,
+    },
+    table: {
+      backgroundColor: colors.highlight,
+    },
+    tableItemText: {
+      color: colors.text,
+    },
+    selected: {
+      backgroundColor: colors.primary,
+    },
+    selectedText: {
+      color: colors.background,
+    },
+    tableInnerText: {
+      color: colors.shadow,
+    },
+  });
+
+const staticStyle = StyleSheet.create({
   split: {
     flexWrap: "wrap",
     maxHeight: TABLE_DIAMETER + UNIT + TITLE_HEIGHT,
@@ -187,23 +201,16 @@ const style = StyleSheet.create({
     flex: 1,
     minHeight: TITLE_HEIGHT,
     maxHeight: TABLE_DIAMETER + UNIT,
-    marginRight: 20,
     flexDirection: "row",
     alignItems: "center",
   },
   titleText: {
-    color: COLORS.shadow,
     fontSize: 56,
-    backgroundColor: COLORS.background,
-  },
-  selectedTitle: {
-    color: COLORS.text,
   },
   table: {
     width: TABLE_DIAMETER,
     height: TABLE_DIAMETER,
     borderRadius: TABLE_DIAMETER,
-    backgroundColor: COLORS.highlight,
     marginHorizontal: (UNIT * 7 - TABLE_DIAMETER) / 2,
     marginVertical: UNIT / 2,
   },
@@ -215,15 +222,6 @@ const style = StyleSheet.create({
     height: UNIT,
     borderRadius: UNIT,
   },
-  tableItemText: {
-    color: COLORS.text,
-  },
-  selected: {
-    backgroundColor: COLORS.primary,
-  },
-  selectedText: {
-    color: COLORS.background,
-  },
   tableCenter: {
     position: "absolute",
     left: TABLE_DIAMETER / 2,
@@ -231,7 +229,6 @@ const style = StyleSheet.create({
     fontSize: 16,
   },
   tableInnerText: {
-    color: COLORS.shadow,
     fontSize: 12,
   },
   ...(() => {
