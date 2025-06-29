@@ -50,7 +50,7 @@ const style = StyleSheet.create({
     backgroundColor: COLORS.background,
     paddingTop: UNIT / 2,
     paddingBottom: UNIT * 1.5,
-    borderRadius: UNIT / 4,
+    borderRadius: UNIT / 2,
   },
   submitRow: {
     flexDirection: "row-reverse",
@@ -62,6 +62,7 @@ const style = StyleSheet.create({
   },
   submitRowItem: {
     color: COLORS.primary,
+    backgroundColor: COLORS.background,
     paddingHorizontal: 15,
     paddingVertical: 7,
   },

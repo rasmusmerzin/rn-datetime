@@ -99,24 +99,20 @@ export default ({ value, visible, onSubmit, onCancel }: Props) => {
     value && setTime(value);
     setMode(Mode.Hour);
     onCancel();
-  }, [value, setTime, setMode, onCancel]);
+  }, [value, onCancel]);
 
   const submit = useCallback(() => {
     setMode(Mode.Hour);
     onSubmit(time);
-  }, [setMode, time, onSubmit]);
+  }, [time, onSubmit]);
 
-  const selectHour = useCallback(
-    (hour: number) => {
-      setTime((time) => new NaiveTime(hour, time.minute));
-      setMode(Mode.Minute);
-    },
-    [setTime],
-  );
-  const selectMinute = useCallback(
-    (minute: number) => setTime((time) => new NaiveTime(time.hour, minute)),
-    [setTime],
-  );
+  function selectHour(hour: number) {
+    setTime((time) => new NaiveTime(hour, time.minute));
+    setTimeout(setMode, 100, Mode.Minute);
+  }
+  function selectMinute(minute: number) {
+    setTime((time) => new NaiveTime(time.hour, minute));
+  }
 
   const openHours = useCallback(
     () => mode !== Mode.Hour && setMode(Mode.Hour),
@@ -198,6 +194,7 @@ const style = StyleSheet.create({
   titleText: {
     color: COLORS.shadow,
     fontSize: 56,
+    backgroundColor: COLORS.background,
   },
   selectedTitle: {
     color: COLORS.text,

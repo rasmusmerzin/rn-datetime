@@ -49,6 +49,8 @@ export default memo(({ selected, select }: Props) => {
       getItemLayout={getItemLayout}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
     />
   );
 });

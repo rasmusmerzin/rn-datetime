@@ -1,9 +1,6 @@
 <h1>
 RN DateTime
 <br />
-<a href="https://github.com/rasmusmerzin/rn-datetime/commits/main">
-<img alt="build" src="https://img.shields.io/github/pipeline/rasmusmerzin/rn-datetime/main" />
-</a>
 <a href="https://www.npmjs.com/package/rn-datetime">
 <img src="https://img.shields.io/npm/l/rn-datetime.svg" alt="License">
 </a>

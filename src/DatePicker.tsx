@@ -130,6 +130,7 @@ const style = StyleSheet.create({
   },
   titleYear: {
     color: COLORS.text,
+    backgroundColor: COLORS.background,
   },
   titleDate: {
     fontSize: 32,
