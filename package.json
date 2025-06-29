@@ -24,8 +24,8 @@
     "test": "vitest",
     "build": "tsc",
     "clean": "rm -rf dist",
-    "prepublishOnly": "npm test -- --run && npm run clean && npm run build",
-    "example": "./scripts/example.sh"
+    "format": "prettier -w .",
+    "prepublishOnly": "npm test -- --run && npm run clean && npm run build"
   },
   "devDependencies": {
     "@babel/core": "7",
