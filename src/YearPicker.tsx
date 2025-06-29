@@ -93,6 +93,6 @@ const staticStyle = StyleSheet.create({
   },
   selectedText: {
     fontSize: 28,
-    fontWeight: "bold",
+    fontWeight: 700,
   },
 });

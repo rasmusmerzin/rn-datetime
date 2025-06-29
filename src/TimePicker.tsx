@@ -102,7 +102,7 @@ export function TimePicker({
       stateResetTimeout.current = setTimeout(() => {
         if (value) setTime(value);
         if (mode !== defaultMode) setMode(defaultMode);
-      }, 300);
+      }, 200);
   }, [visible]);
 
   const selectedClass = useMemo(

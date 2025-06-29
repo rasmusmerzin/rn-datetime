@@ -1,8 +1,18 @@
-import React, { ReactNode, useMemo } from "react";
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { ColorOverride, Colors, useColors } from "./colors";
-import { Pressable, StyleSheet, Text, View, Modal } from "react-native";
+import {
+  Animated,
+  Easing,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { UNIT } from "./constant";
 import { mergeStyleSheets } from "./style";
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 interface Props {
   visible: boolean;
@@ -24,15 +34,60 @@ export function ModalWindow({
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
     [colors],
   );
+  const [mounted, setMounted] = useState(false);
+  const scaleAnim = useRef(new Animated.Value(0)).current;
+  const opacityAnim = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    let animation: Animated.CompositeAnimation;
+    if (visible) {
+      setMounted(true);
+      scaleAnim.setValue(0);
+      opacityAnim.setValue(0);
+      (animation = Animated.parallel([
+        Animated.spring(scaleAnim, {
+          toValue: 1,
+          tension: 100,
+          friction: 9,
+          overshootClamping: false,
+          useNativeDriver: true,
+        }),
+        Animated.timing(opacityAnim, {
+          toValue: 1,
+          duration: 200,
+          easing: Easing.out(Easing.exp),
+          useNativeDriver: true,
+        }),
+      ])).start();
+    } else {
+      (animation = Animated.parallel([
+        Animated.timing(scaleAnim, {
+          toValue: 0,
+          duration: 200,
+          easing: Easing.out(Easing.exp),
+          useNativeDriver: true,
+        }),
+        Animated.timing(opacityAnim, {
+          toValue: 0,
+          duration: 200,
+          easing: Easing.in(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ])).start(() => setMounted(false));
+    }
+    return () => animation?.stop();
+  }, [visible]);
   return (
-    <Modal
-      animationType="fade"
-      transparent
-      visible={visible}
-      onRequestClose={onCancel}
-    >
-      <Pressable style={style.background} onPress={onCancel}>
-        <Pressable style={style.window}>
+    <Modal transparent visible={mounted} onRequestClose={onCancel}>
+      <AnimatedPressable
+        style={[style.background, { opacity: opacityAnim }]}
+        onPress={onCancel}
+      >
+        <AnimatedPressable
+          style={[
+            style.window,
+            { opacity: opacityAnim, transform: [{ scale: scaleAnim }] },
+          ]}
+        >
           {children}
           <View style={style.submitRow}>
             <Text style={style.submitRowItem} onPress={onSubmit}>
@@ -42,8 +97,8 @@ export function ModalWindow({
               Cancel
             </Text>
           </View>
-        </Pressable>
-      </Pressable>
+        </AnimatedPressable>
+      </AnimatedPressable>
     </Modal>
   );
 }
@@ -72,6 +127,7 @@ const staticStyle = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     userSelect: "none",
+    fontSize: 16,
   },
   window: {
     maxHeight: "90%",

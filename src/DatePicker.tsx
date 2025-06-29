@@ -68,7 +68,7 @@ export function DatePicker({
           setDate(value);
         if (focused.year !== date.year || focused.month !== date.month)
           setFocused({ year: date.year, month: date.month });
-      }, 300);
+      }, 200);
   }, [visible]);
 
   function submit() {
@@ -97,7 +97,7 @@ export function DatePicker({
       colorOverride={colorOverride}
     >
       <View style={style.split}>
-        <View>
+        <View style={style.header}>
           <Text style={style.titleYear} onPress={toggleMode}>
             {date.year}
           </Text>
@@ -146,14 +146,17 @@ const dynamicStyle = (colors: Colors) =>
   });
 
 const staticStyle = StyleSheet.create({
+  header: {
+    marginTop: 4,
+    marginHorizontal: 4,
+    marginBottom: UNIT / 2,
+  },
   split: {
     flexWrap: "wrap",
   },
   titleDate: {
     fontSize: 32,
     fontWeight: 700,
-    width: 200,
-    marginBottom: UNIT / 2,
   },
   table: {
     width: UNIT * 7,
