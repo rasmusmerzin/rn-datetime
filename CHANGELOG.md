@@ -12,6 +12,12 @@ and this project adheres to
 
 ## [Unreleased]
 
+## [1.4.1] - 2025-06-29
+
+### Fixed
+
+- Fixed premature state reset in DatePicker when closing
+
 ### Removed
 
 - Removed modal compatibility layer for web as it is now built into React Native
@@ -121,7 +127,8 @@ and this project adheres to
 
 - Initial release
 
-[unreleased]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.4.0...master
+[unreleased]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.4.1...master
+[1.4.1]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.4.0...v1.4.1
 [1.4.0]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.3.3...v1.4.0
 [1.3.3]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.3.2...v1.3.3
 [1.3.2]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.3.1...v1.3.2
