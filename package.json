@@ -21,21 +21,19 @@
     "dist"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "vitest",
     "build": "tsc",
     "clean": "rm -rf dist",
-    "prepublishOnly": "npm run test && npm run clean && npm run build",
+    "prepublishOnly": "npm test -- --run && npm run clean && npm run build",
     "example": "./scripts/example.sh"
   },
   "devDependencies": {
-    "react-native": "0.80",
     "@babel/core": "7",
-    "@types/jest": "29",
     "@types/react": "19",
     "@types/react-dom": "19",
-    "jest": "29",
     "prettier": "3",
-    "ts-jest": "29",
-    "typescript": "5.8"
+    "react-native": "0.80",
+    "typescript": "5.8",
+    "vitest": "3"
   }
 }

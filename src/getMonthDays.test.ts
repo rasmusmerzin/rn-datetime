@@ -1,4 +1,5 @@
-import getMonthDays from "../src/getMonthDays";
+import { test, expect } from "vitest";
+import getMonthDays from "./getMonthDays";
 
 test("getMonthDays", () => {
   let [days, offset] = getMonthDays(2021, 0);

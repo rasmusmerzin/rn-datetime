@@ -1,4 +1,5 @@
-import { nextMonth, prevMonth } from "../src/YearMonth";
+import { test, expect } from "vitest";
+import { nextMonth, prevMonth } from "./YearMonth";
 
 test("nextMonth", () => {
   let yearMonth = {

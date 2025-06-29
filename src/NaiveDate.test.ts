@@ -1,5 +1,6 @@
-import NaiveTime from "../src/NaiveTime";
-import NaiveDate from "../src/NaiveDate";
+import { test, expect } from "vitest";
+import NaiveTime from "./NaiveTime";
+import NaiveDate from "./NaiveDate";
 
 test("constructor", () => {
   let date = new NaiveDate();
