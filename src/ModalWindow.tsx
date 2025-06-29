@@ -89,6 +89,7 @@ const staticStyle = StyleSheet.create({
     right: UNIT / 2,
   },
   submitRowItem: {
+    fontWeight: 500,
     paddingHorizontal: 15,
     paddingVertical: 7,
   },

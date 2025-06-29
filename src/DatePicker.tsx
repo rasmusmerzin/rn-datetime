@@ -151,9 +151,9 @@ const staticStyle = StyleSheet.create({
   },
   titleDate: {
     fontSize: 32,
-    fontWeight: "700",
+    fontWeight: 700,
     width: 200,
-    marginBottom: UNIT * 0.7,
+    marginBottom: UNIT / 2,
   },
   table: {
     width: UNIT * 7,

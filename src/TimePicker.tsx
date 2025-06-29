@@ -210,6 +210,9 @@ const dynamicStyle = (colors: Colors) =>
   });
 
 const staticStyle = StyleSheet.create({
+  selectedText: {
+    fontWeight: 600,
+  },
   split: {
     flexWrap: "wrap",
     maxHeight: TABLE_DIAMETER + UNIT + TITLE_HEIGHT,
@@ -224,6 +227,7 @@ const staticStyle = StyleSheet.create({
   },
   titleText: {
     fontSize: 56,
+    fontWeight: 600,
   },
   table: {
     width: TABLE_DIAMETER,
@@ -248,6 +252,7 @@ const staticStyle = StyleSheet.create({
   },
   tableInnerText: {
     fontSize: 12,
+    fontWeight: 600,
   },
   ...(() => {
     const generatedStyle: { [key: string]: TextStyle } = {};

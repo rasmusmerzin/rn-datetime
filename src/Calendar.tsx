@@ -131,6 +131,12 @@ const dynamicStyle = (colors: Colors) =>
   });
 
 const staticStyle = StyleSheet.create({
+  selectedText: {
+    fontWeight: 700,
+  },
+  today: {
+    fontWeight: 500,
+  },
   tableItemText: {
     fontSize: 12,
   },
