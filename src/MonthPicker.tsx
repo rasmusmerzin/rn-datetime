@@ -70,18 +70,17 @@ const staticStyle = StyleSheet.create({
   monthPicker: {
     flexDirection: "row",
     alignItems: "center",
-    height: UNIT * 1.1,
+    height: UNIT,
   },
   monthPickerTitle: {
-    flex: 5,
+    flex: 1,
     textAlign: "center",
     fontWeight: "bold",
   },
   monthPickerArrow: {
-    flex: 1,
+    width: UNIT,
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 30,
-    paddingBottom: 10,
   },
 });

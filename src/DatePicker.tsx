@@ -147,9 +147,9 @@ const dynamicStyle = (colors: Colors) =>
 
 const staticStyle = StyleSheet.create({
   header: {
-    marginTop: 4,
-    marginHorizontal: 4,
-    marginBottom: UNIT / 2,
+    paddingTop: 4,
+    paddingHorizontal: 4,
+    paddingBottom: UNIT / 2,
   },
   split: {
     flexWrap: "wrap",
@@ -157,9 +157,10 @@ const staticStyle = StyleSheet.create({
   titleDate: {
     fontSize: 32,
     fontWeight: 700,
+    width: 180,
   },
   table: {
     width: UNIT * 7,
-    height: UNIT * 8.3,
+    height: UNIT * 8,
   },
 });

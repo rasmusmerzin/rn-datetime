@@ -51,7 +51,6 @@ export default () => {
         </Text>
       </View>
       <DatePicker
-        prioritizeYear={true}
         value={date}
         visible={datePickerVisibility}
         onCancel={hideDatePicker}

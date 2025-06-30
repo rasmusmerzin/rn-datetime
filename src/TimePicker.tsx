@@ -217,6 +217,7 @@ const staticStyle = StyleSheet.create({
     flexWrap: "wrap",
     maxHeight: TABLE_DIAMETER + UNIT + TITLE_HEIGHT,
     alignItems: "center",
+    columnGap: UNIT * 0.5,
   },
   title: {
     flex: 1,
