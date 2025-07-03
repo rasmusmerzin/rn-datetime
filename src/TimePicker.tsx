@@ -297,14 +297,15 @@ const staticStyle = StyleSheet.create({
     flexWrap: "wrap",
     maxHeight: TABLE_DIAMETER + UNIT + TITLE_HEIGHT,
     alignItems: "center",
-    columnGap: UNIT * 0.5,
   },
   title: {
     flex: 1,
     minHeight: TITLE_HEIGHT,
     maxHeight: TABLE_DIAMETER + UNIT,
+    width: 160,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
   },
   titleText: {
     fontSize: 56,
