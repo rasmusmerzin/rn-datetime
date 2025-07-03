@@ -23,16 +23,30 @@ This project also includes
 [NaiveTime](https://github.com/rasmusmerzin/rn-datetime/blob/main/src/NaiveTime.ts) types
 which do not include timezone and can be converted into ES Date type (inheriting local timezone).
 
-## Demos
-
-A demo is exported as a Web App and can be viewed at
+A demo is exported as a web app and can be viewed at
 [rasmusmerzin.github.io/rn-datetime](https://rasmusmerzin.github.io/rn-datetime).
 
-> These demos are recorded in GMT+02:00.
+## Screenshots
 
-<img alt="Portrait Demo" src="./demo-portrait.gif" width="240px" />
+### Date Picker
 
-![Landscape Demo](./demo-landscape.gif)
+<div>
+  <img src="./screenshots/datepicker-portrait-light.jpg" alt="Date Picker Portrait Light" width="300" />
+  <img src="./screenshots/datepicker-portrait-dark.jpg" alt="Date Picker Portrait Dark" width="300" />
+</div>
+
+![Date Picker Landscape Light](./screenshots/datepicker-landscape-light.jpg)
+![Date Picker Landscape Dark](./screenshots/datepicker-landscape-dark.jpg)
+
+### Time Picker
+
+<div>
+  <img src="./screenshots/timepicker-portrait-light.jpg" alt="Time Picker Portrait Light" width="300" />
+  <img src="./screenshots/timepicker-portrait-dark.jpg" alt="Time Picker Portrait Dark" width="300" />
+</div>
+
+![Time Picker Landscape Light](./screenshots/timepicker-landscape-light.jpg)
+![Time Picker Landscape Dark](./screenshots/timepicker-landscape-dark.jpg)
 
 ## Installation
 
