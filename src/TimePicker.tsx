@@ -8,7 +8,15 @@ import React, {
 import { ColorOverride, Colors, useColors } from "./colors";
 import { ModalWindow } from "./ModalWindow";
 import { NaiveTime } from "./NaiveTime";
-import { Pressable, StyleSheet, Text, TextStyle, View } from "react-native";
+import {
+  Animated,
+  Easing,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextStyle,
+  View,
+} from "react-native";
 import { Style, mergeStyleSheets } from "./style";
 import { UNIT } from "./constant";
 
@@ -95,6 +103,29 @@ export function TimePicker({
   const [time, setTime] = useState(value || new NaiveTime());
   const [mode, setMode] = useState(defaultMode);
   const stateResetTimeout = useRef<NodeJS.Timeout | null>(null);
+  const selectedAngle = useRef(new Animated.Value(0)).current;
+  const selectedDistance = useRef(new Animated.Value(-OUTER_DIST)).current;
+  const [selectedStyle, selectedInnerStyle] = useMemo<[Style, Style]>(() => {
+    const rotate = selectedAngle.interpolate({
+      inputRange: [0, 360],
+      outputRange: ["0deg", "360deg"],
+    });
+    const rotateReverse = selectedAngle.interpolate({
+      inputRange: [0, 360],
+      outputRange: ["0deg", "-360deg"],
+    });
+    return [
+      {
+        top: (TABLE_DIAMETER - UNIT) / 2,
+        left: (TABLE_DIAMETER - UNIT) / 2,
+        transform: [{ rotate }, { translateY: selectedDistance }],
+      },
+      { transform: [{ rotate: rotateReverse }] },
+    ];
+  }, [selectedAngle, selectedDistance]);
+  const selectedAnimation = useRef<Animated.CompositeAnimation | null>(null);
+  const previousMode = useRef<Mode>(mode);
+  const previousSelectedAngle = useRef(0);
 
   useEffect(() => {
     if (stateResetTimeout.current) clearTimeout(stateResetTimeout.current);
@@ -105,14 +136,52 @@ export function TimePicker({
       }, 200);
   }, [visible]);
 
-  const selectedClass = useMemo(
-    () =>
-      "table" +
-      (mode === Mode.Hour
-        ? (!time.hour || time.hour > 12 ? "Inner" : "Outer") + (time.hour % 12)
-        : "Outer" + Math.floor(time.minute / 5)),
-    [time, mode],
-  );
+  useEffect(() => {
+    let distance = 0;
+    let angle = 0;
+    if (mode === Mode.Hour) {
+      const morningIndex = MORNING_HOURS.indexOf(time.hour);
+      const eveningIndex = EVENING_HOURS.indexOf(time.hour);
+      if (morningIndex >= 0) {
+        distance = OUTER_DIST;
+        angle = (morningIndex * 360) / MORNING_HOURS.length;
+      } else if (eveningIndex >= 0) {
+        distance = INNER_DIST;
+        angle = (eveningIndex * 360) / EVENING_HOURS.length;
+      }
+    } else {
+      distance = OUTER_DIST;
+      angle = (MINUTES.indexOf(time.minute) * 360) / MINUTES.length;
+    }
+    selectedAnimation.current?.stop();
+    if (previousMode.current === mode) {
+      selectedAngle.setValue(angle);
+      selectedDistance.setValue(-distance);
+    } else {
+      const deltaAngle = angle - previousSelectedAngle.current;
+      if (deltaAngle < -180)
+        selectedAngle.setValue(previousSelectedAngle.current - 360);
+      else if (deltaAngle > 180)
+        selectedAngle.setValue(previousSelectedAngle.current + 360);
+      selectedAnimation.current = Animated.parallel([
+        Animated.timing(selectedAngle, {
+          toValue: angle,
+          duration: 200,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        }),
+        Animated.timing(selectedDistance, {
+          toValue: -distance,
+          duration: 200,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        }),
+      ]);
+      selectedAnimation.current.start();
+    }
+    previousMode.current = mode;
+    previousSelectedAngle.current = angle;
+  }, [mode, time]);
 
   function selectHour(hour: number) {
     setTime((time) => new NaiveTime(hour, time.minute));
@@ -165,13 +234,21 @@ export function TimePicker({
             <Minutes onChange={selectMinute} style={style} />
           )}
 
-          <View style={[style.tableItem, style.selected, style[selectedClass]]}>
-            <Text style={[style.tableItemText, style.selectedText]}>
+          <Animated.View
+            style={[style.tableItem, style.selected, selectedStyle]}
+          >
+            <Animated.Text
+              style={[
+                style.tableItemText,
+                style.selectedText,
+                selectedInnerStyle,
+              ]}
+            >
               {mode === Mode.Hour
                 ? time.hour || String(time.hour).padStart(2, "0")
                 : String(time.minute).padStart(2, "0")}
-            </Text>
-          </View>
+            </Animated.Text>
+          </Animated.View>
         </View>
       </View>
     </ModalWindow>
@@ -210,6 +287,9 @@ const dynamicStyle = (colors: Colors) =>
   });
 
 const staticStyle = StyleSheet.create({
+  selected: {
+    pointerEvents: "none",
+  },
   selectedText: {
     fontWeight: 600,
   },
