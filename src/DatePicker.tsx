@@ -6,6 +6,7 @@ import { MonthPicker } from "./MonthPicker";
 import { NaiveDate } from "./NaiveDate";
 import {
   Animated,
+  Easing,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -64,11 +65,6 @@ export function DatePicker({
     return 0;
   }, [previousFocused, focused]);
   const [currentStyle, previousStyle] = useMemo<[Style, Style]>(() => {
-    const currentOpacity = transition;
-    const previousOpacity = transition.interpolate({
-      inputRange: [0, 1],
-      outputRange: [1, 0],
-    });
     const currentTranslateX = transition.interpolate({
       inputRange: [0, 1],
       outputRange: [direction * UNIT * 7, 0],
@@ -78,14 +74,8 @@ export function DatePicker({
       outputRange: [0, -direction * UNIT * 7],
     });
     return [
-      {
-        opacity: currentOpacity,
-        transform: [{ translateX: currentTranslateX }],
-      },
-      {
-        opacity: previousOpacity,
-        transform: [{ translateX: previousTranslateX }],
-      },
+      { transform: [{ translateX: currentTranslateX }] },
+      { transform: [{ translateX: previousTranslateX }] },
     ];
   }, [transition, direction]);
 
@@ -126,11 +116,14 @@ export function DatePicker({
     setPreviousFocused(focused);
     setFocused(target);
     transition.setValue(0);
-    Animated.timing(transition, {
-      toValue: 1,
-      duration: 200,
-      useNativeDriver: true,
-    }).start(() => setPreviousFocused(null));
+    setTimeout(() =>
+      Animated.timing(transition, {
+        toValue: 1,
+        duration: 200,
+        easing: Easing.inOut(Easing.ease),
+        useNativeDriver: true,
+      }).start(() => setPreviousFocused(null)),
+    );
   }
 
   return (
@@ -227,5 +220,6 @@ const staticStyle = StyleSheet.create({
   table: {
     width: UNIT * 7,
     height: UNIT * 8,
+    overflow: "hidden",
   },
 });
