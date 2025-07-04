@@ -4,20 +4,32 @@ import { NaiveDate } from "./NaiveDate";
 import { Pressable, StyleSheet, Text, TextStyle, View } from "react-native";
 import { UNIT } from "./constant";
 import { YearMonth } from "./YearMonth";
-import { getMonthDays } from "./getMonthDays";
+import { getMonthDays, StartOfWeek } from "./getMonthDays";
 import { mergeStyleSheets, Style } from "./style";
 
-const WEEKDAYS = ["M", "T", "W", "T", "F", "S", "S"];
+const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"];
 
-const Weekdays = ({ style }: { style: Record<string, Style> }) => (
-  <>
-    {WEEKDAYS.map((day, i) => (
-      <View key={i} style={[style.tableItem, style["tableItem" + i]]}>
-        <Text style={[style.tableItemText, style.tableWeekDay]}>{day}</Text>
-      </View>
-    ))}
-  </>
-);
+function Weekdays({
+  startOfWeek,
+  style,
+}: {
+  startOfWeek: StartOfWeek;
+  style: Record<string, Style>;
+}) {
+  const days = useMemo(() => {
+    if (startOfWeek === StartOfWeek.Sunday) return WEEKDAYS;
+    return [...WEEKDAYS.slice(1), WEEKDAYS[0]];
+  }, [startOfWeek]);
+  return (
+    <>
+      {days.map((day, i) => (
+        <View key={i} style={[style.tableItem, style["tableItem" + i]]}>
+          <Text style={[style.tableItemText, style.tableWeekDay]}>{day}</Text>
+        </View>
+      ))}
+    </>
+  );
+}
 
 interface DayProps {
   value: number;
@@ -55,18 +67,25 @@ const Day = ({ value, offset, isToday, selected, select, style }: DayProps) => {
 interface Props {
   focused: YearMonth;
   date: NaiveDate;
+  startOfWeek: StartOfWeek;
   setDate?: (date: NaiveDate) => void;
   colorOverride?: ColorOverride;
 }
 
-export function Calendar({ date, setDate, focused, colorOverride }: Props) {
+export function Calendar({
+  date,
+  setDate,
+  focused,
+  colorOverride,
+  startOfWeek,
+}: Props) {
   const colors = useColors(colorOverride);
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
     [colors],
   );
   const [days, offset] = useMemo(
-    () => getMonthDays(focused.year, focused.month),
+    () => getMonthDays(focused.year, focused.month, startOfWeek),
     [focused],
   );
 
@@ -94,7 +113,7 @@ export function Calendar({ date, setDate, focused, colorOverride }: Props) {
   return (
     <>
       <View>
-        <Weekdays style={style} />
+        <Weekdays style={style} startOfWeek={startOfWeek} />
         {days.map((day) => (
           <Day
             style={style}

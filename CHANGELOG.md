@@ -12,6 +12,11 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- Date picker `startOfWeek` property which can be "sunday" or "monday"
+  (default is "sunday")
+
 ## [1.4.3] - 2025-07-04
 
 ### Added

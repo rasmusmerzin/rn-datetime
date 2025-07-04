@@ -1,9 +1,4 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
-import { Calendar } from "./Calendar";
-import { ColorOverride, Colors, useColors } from "./colors";
-import { ModalWindow } from "./ModalWindow";
-import { MonthPicker } from "./MonthPicker";
-import { NaiveDate } from "./NaiveDate";
 import {
   Animated,
   Easing,
@@ -12,23 +7,30 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { Calendar } from "./Calendar";
+import { ColorOverride, Colors, useColors } from "./colors";
+import { ModalWindow } from "./ModalWindow";
+import { MonthPicker } from "./MonthPicker";
+import { NaiveDate } from "./NaiveDate";
+import { StartOfWeek } from "./getMonthDays";
+import { Style, mergeStyleSheets } from "./style";
 import { UNIT } from "./constant";
 import { YearMonth } from "./YearMonth";
 import { YearPicker } from "./YearPicker";
-import { Style, mergeStyleSheets } from "./style";
 
 enum Mode {
   Calendar = "calendar",
   Year = "year",
 }
 
-interface Props {
+export interface DatePickerProps {
   prioritizeYear?: boolean;
   value?: NaiveDate;
   visible: boolean;
   onSubmit(date: NaiveDate): void;
   onCancel(): void;
   colorOverride?: ColorOverride;
+  startOfWeek?: StartOfWeek;
 }
 
 export function DatePicker({
@@ -38,7 +40,8 @@ export function DatePicker({
   onSubmit,
   onCancel,
   colorOverride,
-}: Props) {
+  startOfWeek = StartOfWeek.Sunday,
+}: DatePickerProps) {
   const colors = useColors(colorOverride);
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
@@ -158,6 +161,7 @@ export function DatePicker({
                       focused={previousFocused}
                       date={date}
                       colorOverride={colorOverride}
+                      startOfWeek={startOfWeek}
                     />
                   </Animated.View>
                 )}
@@ -167,6 +171,7 @@ export function DatePicker({
                     date={date}
                     setDate={setDate}
                     colorOverride={colorOverride}
+                    startOfWeek={startOfWeek}
                   />
                 </Animated.View>
               </View>

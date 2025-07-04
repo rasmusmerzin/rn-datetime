@@ -80,7 +80,7 @@ enum Mode {
   Minute = "minute",
 }
 
-interface Props {
+export interface TimePickerProps {
   value?: NaiveTime;
   visible: boolean;
   onSubmit(time: NaiveTime): void;
@@ -95,7 +95,7 @@ export function TimePicker({
   onSubmit,
   onCancel,
   colorOverride,
-}: Props) {
+}: TimePickerProps) {
   const colors = useColors(colorOverride);
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
