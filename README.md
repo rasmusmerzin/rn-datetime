@@ -26,6 +26,13 @@ which do not include timezone and can be converted into ES Date type (inheriting
 A demo is exported as a web app and can be viewed at
 [rasmusmerzin.github.io/rn-datetime](https://rasmusmerzin.github.io/rn-datetime).
 
+## Screencasts
+
+<div>
+  <img src="./screenshots/datepicker.gif" alt="Date Picker" width="300" />
+  <img src="./screenshots/timepicker.gif" alt="Time Picker" width="300" />
+</div>
+
 ## Screenshots
 
 ### Date Picker
