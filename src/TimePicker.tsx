@@ -15,6 +15,7 @@ import {
   StyleSheet,
   Text,
   TextStyle,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { Style, mergeStyleSheets } from "./style";
@@ -209,22 +210,27 @@ export function TimePicker({
     >
       <View style={style.split}>
         <View style={style.title}>
-          <Text
-            style={[style.titleText, mode === Mode.Hour && style.selectedTitle]}
-            onPress={openHours}
-          >
-            {String(time.hour).padStart(2, "0")}
-          </Text>
+          <TouchableOpacity onPress={openHours}>
+            <Text
+              style={[
+                style.titleText,
+                mode === Mode.Hour && style.selectedTitle,
+              ]}
+            >
+              {String(time.hour).padStart(2, "0")}
+            </Text>
+          </TouchableOpacity>
           <Text style={style.titleText}>:</Text>
-          <Text
-            style={[
-              style.titleText,
-              mode === Mode.Minute && style.selectedTitle,
-            ]}
-            onPress={openMinutes}
-          >
-            {String(time.minute).padStart(2, "0")}
-          </Text>
+          <TouchableOpacity onPress={openMinutes}>
+            <Text
+              style={[
+                style.titleText,
+                mode === Mode.Minute && style.selectedTitle,
+              ]}
+            >
+              {String(time.minute).padStart(2, "0")}
+            </Text>
+          </TouchableOpacity>
         </View>
 
         <View style={style.table}>

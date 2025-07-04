@@ -7,6 +7,7 @@ import {
   Pressable,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { UNIT } from "./constant";
@@ -90,12 +91,12 @@ export function ModalWindow({
         >
           {children}
           <View style={style.submitRow}>
-            <Text style={style.submitRowItem} onPress={onSubmit}>
-              OK
-            </Text>
-            <Text style={style.submitRowItem} onPress={onCancel}>
-              Cancel
-            </Text>
+            <TouchableOpacity onPress={onSubmit}>
+              <Text style={style.submitRowItem}>OK</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onCancel}>
+              <Text style={style.submitRowItem}>Cancel</Text>
+            </TouchableOpacity>
           </View>
         </AnimatedPressable>
       </AnimatedPressable>

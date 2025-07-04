@@ -4,7 +4,13 @@ import { ColorOverride, Colors, useColors } from "./colors";
 import { ModalWindow } from "./ModalWindow";
 import { MonthPicker } from "./MonthPicker";
 import { NaiveDate } from "./NaiveDate";
-import { Animated, StyleSheet, Text, View } from "react-native";
+import {
+  Animated,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { UNIT } from "./constant";
 import { YearMonth } from "./YearMonth";
 import { YearPicker } from "./YearPicker";
@@ -65,11 +71,11 @@ export function DatePicker({
     });
     const currentTranslateX = transition.interpolate({
       inputRange: [0, 1],
-      outputRange: [direction * UNIT * 3, 0],
+      outputRange: [direction * UNIT * 7, 0],
     });
     const previousTranslateX = transition.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, -direction * UNIT * 3],
+      outputRange: [0, -direction * UNIT * 7],
     });
     return [
       {
@@ -136,9 +142,9 @@ export function DatePicker({
     >
       <View style={style.split}>
         <View style={style.header}>
-          <Text style={style.titleYear} onPress={toggleMode}>
-            {date.year}
-          </Text>
+          <TouchableOpacity onPress={toggleMode}>
+            <Text style={style.titleYear}>{date.year}</Text>
+          </TouchableOpacity>
           <Text style={style.titleDate}>
             {date.toLocalDate().toDateString().substring(0, 10)}
           </Text>

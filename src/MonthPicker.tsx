@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { ColorOverride, Colors, useColors } from "./colors";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { UNIT } from "./constant";
 import { YearMonth, nextMonth, prevMonth } from "./YearMonth";
 import { mergeStyleSheets } from "./style";
@@ -36,15 +36,15 @@ export function MonthPicker({ focused, setFocused, colorOverride }: Props) {
   const focusNextMonth = () => setFocused(nextMonth(focused));
   return (
     <View style={style.monthPicker}>
-      <Text style={style.monthPickerArrow} onPress={focusPrevMonth}>
-        ‹
-      </Text>
+      <TouchableOpacity style={style.monthPickerArrow} onPress={focusPrevMonth}>
+        <Text style={style.monthPickerArrow}>‹</Text>
+      </TouchableOpacity>
       <Text style={style.monthPickerTitle}>
         {MONTHS[focused.month]} {focused.year}
       </Text>
-      <Text style={style.monthPickerArrow} onPress={focusNextMonth}>
-        ›
-      </Text>
+      <TouchableOpacity style={style.monthPickerArrow} onPress={focusNextMonth}>
+        <Text style={style.monthPickerArrow}>›</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -73,6 +73,10 @@ const staticStyle = StyleSheet.create({
   },
   monthPickerArrow: {
     width: UNIT,
+    height: UNIT,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 30,
