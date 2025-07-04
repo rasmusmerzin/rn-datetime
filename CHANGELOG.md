@@ -12,6 +12,8 @@ and this project adheres to
 
 ## [Unreleased]
 
+## [1.5.0] - 2025-07-04
+
 ### Added
 
 - Date picker `startOfWeek` property which can be "sunday" or "monday"
@@ -145,7 +147,8 @@ and this project adheres to
 
 - Initial release
 
-[unreleased]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.4.3...master
+[unreleased]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.5.0...master
+[1.5.0]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.4.3...v1.5.0
 [1.4.3]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.4.2...v1.4.3
 [1.4.2]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.4.1...v1.4.2
 [1.4.1]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.4.0...v1.4.1
