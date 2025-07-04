@@ -1,19 +1,14 @@
-import React, {
-  useState,
-  useCallback,
-  useMemo,
-  useEffect,
-  useRef,
-} from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { Calendar } from "./Calendar";
 import { ColorOverride, Colors, useColors } from "./colors";
 import { ModalWindow } from "./ModalWindow";
 import { MonthPicker } from "./MonthPicker";
 import { NaiveDate } from "./NaiveDate";
-import { StyleSheet, Text, View } from "react-native";
+import { Animated, StyleSheet, Text, View } from "react-native";
 import { UNIT } from "./constant";
+import { YearMonth } from "./YearMonth";
 import { YearPicker } from "./YearPicker";
-import { mergeStyleSheets } from "./style";
+import { Style, mergeStyleSheets } from "./style";
 
 enum Mode {
   Calendar = "calendar",
@@ -43,13 +38,50 @@ export function DatePicker({
     [colors],
   );
   const [date, setDate] = useState(value || new NaiveDate());
-  const [focused, setFocused] = useState({
+  const [previousFocused, setPreviousFocused] = useState<YearMonth | null>(
+    null,
+  );
+  const [focused, setFocused] = useState<YearMonth>({
     year: date.year,
     month: date.month,
   });
   const [mode, setMode] = useState(prioritizeYear ? Mode.Year : Mode.Calendar);
   const defaultMode = useRef(mode);
   const stateResetTimeout = useRef<NodeJS.Timeout | null>(null);
+  const transition = useRef(new Animated.Value(1)).current;
+  const direction = useMemo<-1 | 0 | 1>(() => {
+    if (!previousFocused) return 0;
+    if (previousFocused.year < focused.year) return 1;
+    if (previousFocused.year > focused.year) return -1;
+    if (previousFocused.month < focused.month) return 1;
+    if (previousFocused.month > focused.month) return -1;
+    return 0;
+  }, [previousFocused, focused]);
+  const [currentStyle, previousStyle] = useMemo<[Style, Style]>(() => {
+    const currentOpacity = transition;
+    const previousOpacity = transition.interpolate({
+      inputRange: [0, 1],
+      outputRange: [1, 0],
+    });
+    const currentTranslateX = transition.interpolate({
+      inputRange: [0, 1],
+      outputRange: [direction * UNIT * 3, 0],
+    });
+    const previousTranslateX = transition.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, -direction * UNIT * 3],
+    });
+    return [
+      {
+        opacity: currentOpacity,
+        transform: [{ translateX: currentTranslateX }],
+      },
+      {
+        opacity: previousOpacity,
+        transform: [{ translateX: previousTranslateX }],
+      },
+    ];
+  }, [transition, direction]);
 
   useEffect(() => {
     defaultMode.current = prioritizeYear ? Mode.Year : Mode.Calendar;
@@ -76,18 +108,24 @@ export function DatePicker({
     else onSubmit(date);
   }
 
-  const toggleMode = useCallback(
-    () => setMode(mode === Mode.Calendar ? Mode.Year : Mode.Calendar),
-    [mode, setMode],
-  );
-  const focusYear = useCallback(
-    (year: number) => {
-      focused.year !== year && setFocused({ ...focused, year });
-      date.year !== year && setDate(new NaiveDate(year, date.month, 1));
-      setMode(Mode.Calendar);
-    },
-    [focused, setFocused, date, setDate, setMode],
-  );
+  const toggleMode = () =>
+    setMode(mode === Mode.Calendar ? Mode.Year : Mode.Calendar);
+  function focusYear(year: number) {
+    focused.year !== year && setFocused({ ...focused, year });
+    date.year !== year && setDate(new NaiveDate(year, date.month, 1));
+    setMode(Mode.Calendar);
+  }
+  function transitionFocus(target: YearMonth) {
+    if (previousFocused) return;
+    setPreviousFocused(focused);
+    setFocused(target);
+    transition.setValue(0);
+    Animated.timing(transition, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: true,
+    }).start(() => setPreviousFocused(null));
+  }
 
   return (
     <ModalWindow
@@ -111,15 +149,28 @@ export function DatePicker({
             <>
               <MonthPicker
                 focused={focused}
-                setFocused={setFocused}
+                setFocused={transitionFocus}
                 colorOverride={colorOverride}
               />
-              <Calendar
-                focused={focused}
-                date={date}
-                setDate={setDate}
-                colorOverride={colorOverride}
-              />
+              <View style={style.calendarRoot}>
+                {previousFocused && (
+                  <Animated.View style={[style.calendarPage, previousStyle]}>
+                    <Calendar
+                      focused={previousFocused}
+                      date={date}
+                      colorOverride={colorOverride}
+                    />
+                  </Animated.View>
+                )}
+                <Animated.View style={[style.calendarPage, currentStyle]}>
+                  <Calendar
+                    focused={focused}
+                    date={date}
+                    setDate={setDate}
+                    colorOverride={colorOverride}
+                  />
+                </Animated.View>
+              </View>
             </>
           ) : (
             <YearPicker
@@ -146,6 +197,14 @@ const dynamicStyle = (colors: Colors) =>
   });
 
 const staticStyle = StyleSheet.create({
+  calendarRoot: {
+    position: "relative",
+  },
+  calendarPage: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+  },
   header: {
     paddingTop: 4,
     paddingHorizontal: 4,

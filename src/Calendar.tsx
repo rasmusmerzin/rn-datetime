@@ -55,7 +55,7 @@ const Day = ({ value, offset, isToday, selected, select, style }: DayProps) => {
 interface Props {
   focused: YearMonth;
   date: NaiveDate;
-  setDate(date: NaiveDate): void;
+  setDate?: (date: NaiveDate) => void;
   colorOverride?: ColorOverride;
 }
 
@@ -73,7 +73,7 @@ export function Calendar({ date, setDate, focused, colorOverride }: Props) {
   const today = useMemo(() => new NaiveDate(), []);
 
   const selectDay = useCallback(
-    (day: number) => setDate(new NaiveDate(focused.year, focused.month, day)),
+    (day: number) => setDate?.(new NaiveDate(focused.year, focused.month, day)),
     [focused, setDate],
   );
   const isToday = useCallback(
@@ -132,10 +132,10 @@ const dynamicStyle = (colors: Colors) =>
 
 const staticStyle = StyleSheet.create({
   selectedText: {
-    fontWeight: 700,
+    fontWeight: "bold",
   },
   today: {
-    fontWeight: 500,
+    fontWeight: "bold",
   },
   tableItemText: {
     fontSize: 12,

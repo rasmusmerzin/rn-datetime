@@ -18,7 +18,7 @@ export interface ColorPalette {
 
 export const COLORS: ColorPalette = {
   light: {
-    primary: "#07f",
+    primary: "#18f",
     shadow: "#999",
     highlight: "#0001",
     background: "#fff",
@@ -26,7 +26,7 @@ export const COLORS: ColorPalette = {
     blurred: "#0008",
   },
   dark: {
-    primary: "#07f",
+    primary: "#18f",
     shadow: "#666",
     highlight: "#fff1",
     background: "#1c1c1c",

@@ -12,6 +12,10 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- Date picker month transition animation
+
 ## [1.4.2] - 2025-07-03
 
 ### Added

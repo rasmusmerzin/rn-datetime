@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { ColorOverride, Colors, useColors } from "./colors";
 import { StyleSheet, Text, View } from "react-native";
 import { UNIT } from "./constant";
@@ -32,14 +32,8 @@ export function MonthPicker({ focused, setFocused, colorOverride }: Props) {
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
     [colors],
   );
-  const focusPrevMonth = useCallback(
-    () => setFocused(prevMonth(focused)),
-    [focused, setFocused],
-  );
-  const focusNextMonth = useCallback(
-    () => setFocused(nextMonth(focused)),
-    [focused, setFocused],
-  );
+  const focusPrevMonth = () => setFocused(prevMonth(focused));
+  const focusNextMonth = () => setFocused(nextMonth(focused));
   return (
     <View style={style.monthPicker}>
       <Text style={style.monthPickerArrow} onPress={focusPrevMonth}>

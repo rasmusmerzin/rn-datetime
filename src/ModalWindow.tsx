@@ -136,6 +136,7 @@ const staticStyle = StyleSheet.create({
     paddingTop: UNIT * 0.5,
     paddingBottom: UNIT * 1.5,
     borderRadius: UNIT * 0.5,
+    overflow: "hidden",
   },
   submitRow: {
     flexDirection: "row-reverse",
