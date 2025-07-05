@@ -12,6 +12,8 @@ and this project adheres to
 
 ## [Unreleased]
 
+## [1.5.1] - 2025-07-05
+
 ### Fixed
 
 - Fixed color scheme switching (reduced `useColors` hook calls)
@@ -151,7 +153,8 @@ and this project adheres to
 
 - Initial release
 
-[unreleased]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.5.0...master
+[unreleased]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.5.1...master
+[1.5.1]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.5.0...v1.5.1
 [1.5.0]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.4.3...v1.5.0
 [1.4.3]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.4.2...v1.4.3
 [1.4.2]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.4.1...v1.4.2
