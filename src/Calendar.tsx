@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { ColorOverride, Colors, useColors } from "./colors";
+import { Colors } from "./colors";
 import { NaiveDate } from "./NaiveDate";
 import { Pressable, StyleSheet, Text, TextStyle, View } from "react-native";
 import { UNIT } from "./constant";
@@ -64,22 +64,21 @@ const Day = ({ value, offset, isToday, selected, select, style }: DayProps) => {
   );
 };
 
-interface Props {
+export interface CalendarProps {
   focused: YearMonth;
   date: NaiveDate;
   startOfWeek: StartOfWeek;
   setDate?: (date: NaiveDate) => void;
-  colorOverride?: ColorOverride;
+  colors: Colors;
 }
 
 export function Calendar({
   date,
   setDate,
   focused,
-  colorOverride,
+  colors,
   startOfWeek,
-}: Props) {
-  const colors = useColors(colorOverride);
+}: CalendarProps) {
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
     [colors],

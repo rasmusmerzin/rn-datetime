@@ -206,7 +206,7 @@ export function TimePicker({
       visible={visible}
       onCancel={onCancel}
       onSubmit={() => onSubmit(time)}
-      colorOverride={colorOverride}
+      colors={colors}
     >
       <View style={style.split}>
         <View style={style.title}>

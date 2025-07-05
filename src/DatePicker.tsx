@@ -134,7 +134,7 @@ export function DatePicker({
       visible={visible}
       onCancel={onCancel}
       onSubmit={submit}
-      colorOverride={colorOverride}
+      colors={colors}
     >
       <View style={style.split}>
         <View style={style.header}>
@@ -152,7 +152,7 @@ export function DatePicker({
               <MonthPicker
                 focused={focused}
                 setFocused={transitionFocus}
-                colorOverride={colorOverride}
+                colors={colors}
               />
               <View style={style.calendarRoot}>
                 {previousFocused && (
@@ -160,7 +160,7 @@ export function DatePicker({
                     <Calendar
                       focused={previousFocused}
                       date={date}
-                      colorOverride={colorOverride}
+                      colors={colors}
                       startOfWeek={startOfWeek}
                     />
                   </Animated.View>
@@ -170,7 +170,7 @@ export function DatePicker({
                     focused={focused}
                     date={date}
                     setDate={setDate}
-                    colorOverride={colorOverride}
+                    colors={colors}
                     startOfWeek={startOfWeek}
                   />
                 </Animated.View>
@@ -180,7 +180,7 @@ export function DatePicker({
             <YearPicker
               selected={date.year}
               select={focusYear}
-              colorOverride={colorOverride}
+              colors={colors}
             />
           )}
         </View>

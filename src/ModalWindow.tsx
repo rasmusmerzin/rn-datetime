@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
-import { ColorOverride, Colors, useColors } from "./colors";
+import { Colors } from "./colors";
 import {
   Animated,
   Easing,
@@ -15,12 +15,12 @@ import { mergeStyleSheets } from "./style";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-interface Props {
+export interface ModalWindowProps {
   visible: boolean;
   onCancel(): void;
   onSubmit(): void;
   children?: ReactNode;
-  colorOverride?: ColorOverride;
+  colors: Colors;
 }
 
 export function ModalWindow({
@@ -28,9 +28,8 @@ export function ModalWindow({
   children,
   onCancel,
   onSubmit,
-  colorOverride,
-}: Props) {
-  const colors = useColors(colorOverride);
+  colors,
+}: ModalWindowProps) {
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
     [colors],

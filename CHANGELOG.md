@@ -12,6 +12,10 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed color scheme switching (reduced `useColors` hook calls)
+
 ## [1.5.0] - 2025-07-04
 
 ### Added

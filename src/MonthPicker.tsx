@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { ColorOverride, Colors, useColors } from "./colors";
+import { Colors } from "./colors";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { UNIT } from "./constant";
 import { YearMonth, nextMonth, prevMonth } from "./YearMonth";
@@ -23,11 +23,10 @@ const MONTHS = [
 interface Props {
   focused: YearMonth;
   setFocused(focused: YearMonth): void;
-  colorOverride?: ColorOverride;
+  colors: Colors;
 }
 
-export function MonthPicker({ focused, setFocused, colorOverride }: Props) {
-  const colors = useColors(colorOverride);
+export function MonthPicker({ focused, setFocused, colors }: Props) {
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
     [colors],

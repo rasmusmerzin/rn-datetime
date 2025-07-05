@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { FlatList, Pressable, StyleSheet, Text } from "react-native";
 import { UNIT } from "./constant";
-import { ColorOverride, Colors, useColors } from "./colors";
+import { Colors } from "./colors";
 import { mergeStyleSheets, Style } from "./style";
 
 const MIN_YEAR = 1900;
@@ -27,10 +27,10 @@ const Year = ({ value, selected, select, style }: YearProps) => {
   );
 };
 
-interface Props {
+export interface YearPickerProps {
   selected: number;
   select(year: number): void;
-  colorOverride?: ColorOverride;
+  colors: Colors;
 }
 
 const getItemLayout = (_: any, index: number) => ({
@@ -41,8 +41,7 @@ const getItemLayout = (_: any, index: number) => ({
 
 const keyExtractor = (value: number, _: any) => String(value);
 
-export function YearPicker({ selected, select, colorOverride }: Props) {
-  const colors = useColors(colorOverride);
+export function YearPicker({ selected, select, colors }: YearPickerProps) {
   const style = useMemo(
     () => mergeStyleSheets(staticStyle, dynamicStyle(colors)),
     [colors],
