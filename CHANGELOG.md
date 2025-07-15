@@ -12,6 +12,10 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Fixed
+
+- Increased date picker title width
+
 ## [1.5.1] - 2025-07-05
 
 ### Fixed

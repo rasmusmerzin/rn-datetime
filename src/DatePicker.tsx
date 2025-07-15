@@ -220,7 +220,7 @@ const staticStyle = StyleSheet.create({
   titleDate: {
     fontSize: 32,
     fontWeight: 700,
-    width: 180,
+    width: 200,
   },
   table: {
     width: UNIT * 7,
