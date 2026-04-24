@@ -12,6 +12,10 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed changelog version diff links
+
 ## [1.5.2] - 2025-07-15
 
 ### Fixed
@@ -28,8 +32,8 @@ and this project adheres to
 
 ### Added
 
-- Date picker `startOfWeek` property which can be "sunday" or "monday"
-  (default is "sunday")
+- Date picker `startOfWeek` property which can be "sunday" or "monday" (default
+  is "sunday")
 
 ## [1.4.3] - 2025-07-04
 
@@ -159,20 +163,20 @@ and this project adheres to
 
 - Initial release
 
-[unreleased]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.5.2...master
-[1.5.2]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.5.1...v1.5.2
-[1.5.1]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.5.0...v1.5.1
-[1.5.0]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.4.3...v1.5.0
-[1.4.3]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.4.2...v1.4.3
-[1.4.2]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.4.1...v1.4.2
-[1.4.1]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.4.0...v1.4.1
-[1.4.0]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.3.3...v1.4.0
-[1.3.3]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.3.2...v1.3.3
-[1.3.2]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.3.1...v1.3.2
-[1.3.1]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.3.0...v1.3.1
-[1.3.0]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.3...v1.3.0
-[1.2.3]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.1...v1.2.3
-[1.2.1]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.2.0...v1.2.1
-[1.2.0]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.0.1...v1.2.0
-[1.0.1]: https://gitlab.com/rasmusmerzin/rn-datetime/compare/v1.0.0...v1.0.1
-[1.0.0]: https://gitlab.com/rasmusmerzin/rn-datetime/tree/v1.0.0
+[unreleased]: https://github.com/rasmusmerzin/rn-datetime/compare/v1.5.2...main
+[1.5.2]: https://github.com/rasmusmerzin/rn-datetime/compare/v1.5.1...v1.5.2
+[1.5.1]: https://github.com/rasmusmerzin/rn-datetime/compare/v1.5.0...v1.5.1
+[1.5.0]: https://github.com/rasmusmerzin/rn-datetime/compare/v1.4.3...v1.5.0
+[1.4.3]: https://github.com/rasmusmerzin/rn-datetime/compare/v1.4.2...v1.4.3
+[1.4.2]: https://github.com/rasmusmerzin/rn-datetime/compare/v1.4.1...v1.4.2
+[1.4.1]: https://github.com/rasmusmerzin/rn-datetime/compare/v1.4.0...v1.4.1
+[1.4.0]: https://github.com/rasmusmerzin/rn-datetime/compare/v1.3.3...v1.4.0
+[1.3.3]: https://github.com/rasmusmerzin/rn-datetime/compare/v1.3.2...v1.3.3
+[1.3.2]: https://github.com/rasmusmerzin/rn-datetime/compare/v1.3.1...v1.3.2
+[1.3.1]: https://github.com/rasmusmerzin/rn-datetime/compare/v1.3.0...v1.3.1
+[1.3.0]: https://github.com/rasmusmerzin/rn-datetime/compare/v1.2.3...v1.3.0
+[1.2.3]: https://github.com/rasmusmerzin/rn-datetime/compare/v1.2.1...v1.2.3
+[1.2.1]: https://github.com/rasmusmerzin/rn-datetime/compare/v1.2.0...v1.2.1
+[1.2.0]: https://github.com/rasmusmerzin/rn-datetime/compare/v1.0.1...v1.2.0
+[1.0.1]: https://github.com/rasmusmerzin/rn-datetime/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/rasmusmerzin/rn-datetime/tree/v1.0.0
